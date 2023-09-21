@@ -1,0 +1,3 @@
+create footer menu for two products.
+add funtion to inkwell to main products
+background to appBar

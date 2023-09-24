@@ -9,82 +9,76 @@ class mainScreen extends StatefulWidget {
 }
 
 class _mainScreenState extends State<mainScreen> {
-  String mainScreenTitle ="eStore";
+  String mainScreenTitle = "eStore";
   List<String> imageAssetPaths = [
     'assets/images/image1.jpeg',
     'assets/images/image2.jpeg',
   ];
   @override
-  
   Widget build(BuildContext context) {
-    return  Scaffold(
+    return Scaffold(
       appBar: AppBar(
-               title: Text(mainScreenTitle),
-               centerTitle: true,
-               toolbarHeight: 60,
-               backgroundColor: Color.fromARGB(255, 204, 235, 26),
-
+        title: Text(mainScreenTitle),
+        centerTitle: true,
+        toolbarHeight: 60,
+        backgroundColor: Color.fromARGB(255, 204, 235, 26),
       ),
-      
+
       body:
-      // Align(
-      //   alignment: Alignment.topCenter,
-      //container with size of screen
-      // child:
-       Container (
-                //  color: Colors.greenAccent,
-                 height: MediaQuery.of(context).size.height,
-                 width :MediaQuery.of(context).size.width,      
-                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children:[
-                  SizedBox(
-                    height: 50,),
-                  //create pictoral slider
-                  // Expanded(
-                  //   child: 
-                    CarouselSlider(
-                      options: CarouselOptions(
-                        height: 200,
-                        enlargeCenterPage: true,
-                        autoPlayCurve: Curves.fastOutSlowIn,
-                        enableInfiniteScroll: true,
-                        autoPlayAnimationDuration: Duration(milliseconds:800),
-                        viewportFraction: 0.8,
+          // Align(
+          //   alignment: Alignment.topCenter,
+          //container with size of screen
+          // child:
+          Container(
+        //  color: Colors.greenAccent,
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            SizedBox(
+              height: 50,
+            ),
+            //create pictoral slider
+            // Expanded(
+            //   child:
+            CarouselSlider(
+              options: CarouselOptions(
+                height: 200,
+                enlargeCenterPage: true,
+                autoPlayCurve: Curves.fastOutSlowIn,
+                enableInfiniteScroll: true,
+                autoPlayAnimationDuration: Duration(milliseconds: 800),
+                viewportFraction: 0.8,
+              ),
+              items: imageAssetPaths.map((String imageAssetPath) {
+                return Builder(
+                  builder: (BuildContext context) {
+                    return Container(
+                      width: MediaQuery.of(context).size.width,
+                      margin: EdgeInsets.symmetric(horizontal: 5.0),
+                      decoration: BoxDecoration(
+                        color: Colors.grey,
                       ),
-                      
-                      items: imageAssetPaths.map((String imageAssetPath) {
-                        return Builder(
-                          builder: (BuildContext context) {
-                            return Container(
-                              width: MediaQuery.of(context).size.width,
-                              margin: EdgeInsets.symmetric(horizontal: 5.0),
-                              decoration: BoxDecoration(
-                                color: Colors.grey,
-                              ),
-                              child: InkWell(
-                                onTap: () => loadProduct(),
-                              child:Image.asset(
-                                imageAssetPath,
-                                fit: BoxFit.cover,
-                              ),
-                              ),
-                            );
-                          },
-                        );
-                      }).toList(),
+                      child: InkWell(
+                        onTap: () => loadProduct(),
+                        child: Image.asset(
+                          imageAssetPath,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    );
+                  },
+                );
+              }).toList(),
+            )
+          ],
+        ),
+      ),
 
-                      )
-
-                
-                 ],
-      
-    ),
-    ),
-   
-    // ),
+      // ),
     );
-
   }
-  loadProduct(){}
+
+  loadProduct() {}
 }

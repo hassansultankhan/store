@@ -20,7 +20,7 @@ class _mainScreenState extends State<mainScreen> {
       appBar: AppBar(
         title: Text(mainScreenTitle),
         centerTitle: true,
-        toolbarHeight: 60,
+        // toolbarHeight: 60,
         backgroundColor: Color.fromARGB(255, 204, 235, 26),
       ),
 

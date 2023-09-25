@@ -1,4 +1,6 @@
+import 'package:estore/mainScreen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'Categories/cat0.dart';
 import 'Categories/cat1.dart';
@@ -12,20 +14,24 @@ class navigationScreen extends StatefulWidget {
 
 class _navigationScreenState extends State<navigationScreen> {
   var screens = [
+    mainScreen(),
     Cat0(),
     Cat1(),
   ];
   int selectedCat = 0;
   @override
   Widget build(BuildContext context) {
+    // Set the status bar color here
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      statusBarColor: Color.fromARGB(
+          255, 39, 142, 211), // Change this color to your desired color
+    ));
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Flavor up'),
-          centerTitle: true,
-          backgroundColor: const Color.fromARGB(255, 186, 241, 35),
+        body: SizedBox(
+          //set size of sized box to maximum size of screen
+          height: MediaQuery.of(context).size.height * .97,
+          child: screens[selectedCat],
         ),
-        body: screens[selectedCat],
-
         // Build bottom navigation bar with product categories
         bottomNavigationBar: BottomNavigationBar(
             currentIndex: selectedCat,
@@ -35,6 +41,8 @@ class _navigationScreenState extends State<navigationScreen> {
             selectedFontSize: 20,
             onTap: (int i) => switchScreen(i, context),
             items: const <BottomNavigationBarItem>[
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.menu), label: "Main Page"),
               BottomNavigationBarItem(
                   icon: Icon(Icons.food_bank), label: "Sauces"),
               BottomNavigationBarItem(

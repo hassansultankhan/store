@@ -21,7 +21,7 @@ class _mainScreenState extends State<mainScreen> {
         title: Text(mainScreenTitle),
         centerTitle: true,
         // toolbarHeight: 60,
-        backgroundColor: Color.fromARGB(255, 204, 235, 26),
+        backgroundColor: Color.fromARGB(255, 74, 230, 8), 
       ),
 
       body:

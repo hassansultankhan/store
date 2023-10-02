@@ -24,7 +24,7 @@ class _navigationScreenState extends State<navigationScreen> {
     // Set the status bar color here
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       statusBarColor: Color.fromARGB(
-          255, 78, 226, 9), // Change this color to your desired color
+          255, 74, 230, 8), // Change this color to your desired color
     ));
     return Scaffold(
         body: SizedBox(
@@ -35,9 +35,9 @@ class _navigationScreenState extends State<navigationScreen> {
         // Build bottom navigation bar with product categories
         bottomNavigationBar: BottomNavigationBar(
             currentIndex: selectedCat,
-            backgroundColor: Color(0xfffece20),
-            selectedItemColor: Colors.brown[800],
-            unselectedItemColor: Colors.brown,
+            backgroundColor: Color.fromARGB(255, 74, 230, 8),
+            selectedItemColor: const Color.fromARGB(255, 255, 255, 255),
+            unselectedItemColor: Color.fromARGB(255, 218, 242, 215),
             selectedFontSize: 20,
             onTap: (int i) => switchScreen(i, context),
             items: const <BottomNavigationBarItem>[

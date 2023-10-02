@@ -13,9 +13,6 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'eStore',
-      theme: ThemeData(
-        primarySwatch: Colors.amber,
-      ),
       home: navigationScreen(),
     );
   }

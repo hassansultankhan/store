@@ -24,7 +24,7 @@ class _navigationScreenState extends State<navigationScreen> {
     // Set the status bar color here
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       statusBarColor: Color.fromARGB(
-          255, 39, 142, 211), // Change this color to your desired color
+          255, 78, 226, 9), // Change this color to your desired color
     ));
     return Scaffold(
         body: SizedBox(

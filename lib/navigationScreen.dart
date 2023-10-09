@@ -6,7 +6,16 @@ import 'Categories/cat0.dart';
 import 'Categories/cat1.dart';
 
 class navigationScreen extends StatefulWidget {
-  const navigationScreen({super.key});
+  final String displayName;
+  final String email;
+  final String photoUrl;
+
+  const navigationScreen({
+    Key? key,
+    required this.displayName,
+    required this.email,
+    required this.photoUrl,
+  }) : super(key: key);
 
   @override
   State<navigationScreen> createState() => _navigationScreenState();
@@ -22,11 +31,24 @@ class _navigationScreenState extends State<navigationScreen> {
   @override
   Widget build(BuildContext context) {
     // Set the status bar color here
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
       statusBarColor: Color.fromARGB(
           255, 74, 230, 8), // Change this color to your desired color
     ));
     return Scaffold(
+        appBar: AppBar(
+          title: const Text("Flavor up"),
+          // add avatar of photo Url from constructor
+          actions: [
+            IconButton(
+              onPressed: () {},
+              icon: CircleAvatar(
+                foregroundImage: NetworkImage(widget.photoUrl),
+                backgroundColor: Colors.white,
+              ),
+            ),
+          ],
+        ),
         body: SizedBox(
           //set size of sized box to maximum size of screen
           height: MediaQuery.of(context).size.height * .97,

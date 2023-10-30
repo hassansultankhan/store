@@ -51,10 +51,12 @@ class _loginScreenState extends State<loginScreen> {
         print('signing out');
         await _googleSignIn.signOut();
       }
+      print("process start");
 
       final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
-      final GoogleSignInAuthentication googleAuth =
-          await googleUser!.authentication;
+      print("sign in step 1");
+      final GoogleSignInAuthentication googleAuth = await googleUser!.authentication;
+      print("sign in step 2");
       final AuthCredential credential = GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,

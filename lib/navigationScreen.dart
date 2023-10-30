@@ -38,7 +38,9 @@ class _navigationScreenState extends State<navigationScreen> {
     return Scaffold(
         appBar: AppBar(
           title: const Text("Flavor up"),
+          centerTitle: true,
           // add avatar of photo Url from constructor
+          backgroundColor: Color.fromARGB(255, 74, 230, 8),
           actions: [
             IconButton(
               onPressed: () {},

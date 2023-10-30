@@ -11,10 +11,10 @@ class _Cat1State extends State<Cat1> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Cat 1'),
-        backgroundColor: Color.fromARGB(255, 204, 235, 26),
-      ),
+      // appBar: AppBar(
+      //   title: Text('Cat 1'),
+      //   backgroundColor: Color.fromARGB(255, 204, 235, 26),
+      // ),
 
       // body: ListView.builder(
       //   itemCount: ,

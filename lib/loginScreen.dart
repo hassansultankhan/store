@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:estore/signupScreen.dart';
+import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'navigationScreen.dart';
 
@@ -18,9 +19,16 @@ class _loginScreenState extends State<loginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+      statusBarColor: Color.fromARGB(
+          255, 14, 41, 0), // Change this color to your desired color
+    ));
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Login Screen'),
+        backgroundColor: Color.fromARGB(255, 63, 158, 22),
+        centerTitle: true,
       ),
       body: Center(
         child: Column(
@@ -55,7 +63,8 @@ class _loginScreenState extends State<loginScreen> {
 
       final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
       print("sign in step 1");
-      final GoogleSignInAuthentication googleAuth = await googleUser!.authentication;
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser!.authentication;
       print("sign in step 2");
       final AuthCredential credential = GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,
@@ -217,6 +226,7 @@ class _loginScreenState extends State<loginScreen> {
                               // Successfully signed in
                               User? user = userCredential.user;
                               if (user != null) {
+                                // ignore: use_build_context_synchronously
                                 Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(

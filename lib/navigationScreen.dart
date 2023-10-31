@@ -33,19 +33,24 @@ class _navigationScreenState extends State<navigationScreen> {
     // Set the status bar color here
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
       statusBarColor: Color.fromARGB(
-          255, 74, 230, 8), // Change this color to your desired color
+          255, 14, 41, 0), // Change this color to your desired color
     ));
     return Scaffold(
         appBar: AppBar(
           title: const Text("Flavor up"),
           centerTitle: true,
           // add avatar of photo Url from constructor
-          backgroundColor: Color.fromARGB(255, 74, 230, 8),
+          backgroundColor: Color.fromARGB(255, 63, 158, 22),
           actions: [
             IconButton(
               onPressed: () {},
               icon: CircleAvatar(
-                foregroundImage: NetworkImage(widget.photoUrl),
+                radius: 20,
+                child: ClipOval(
+                  child: widget.photoUrl.startsWith("http")
+                      ? Image.network(widget.photoUrl)
+                      : Image.asset('assets/images/Carrot_icon.png'),
+                ),
                 backgroundColor: Colors.white,
               ),
             ),

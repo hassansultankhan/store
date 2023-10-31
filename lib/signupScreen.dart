@@ -31,7 +31,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Sign Up')),
+      appBar: AppBar(
+        title: Text('Sign Up'),
+        backgroundColor: Color.fromARGB(255, 63, 158, 22),
+        centerTitle: true,
+      ),
       body: GestureDetector(
         onTap: () {
           FocusScope.of(context).unfocus();

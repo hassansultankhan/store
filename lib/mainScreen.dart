@@ -17,20 +17,9 @@ class _mainScreenState extends State<mainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   title: Text(mainScreenTitle),
-      //   centerTitle: true,
-      //   // toolbarHeight: 60,
-      //   backgroundColor: Color.fromARGB(255, 74, 230, 8), 
-      // ),
 
-      body:
-          // Align(
-          //   alignment: Alignment.topCenter,
-          //container with size of screen
-          // child:
-          Container(
-        //  color: Colors.greenAccent,
+      body:Container(
+  
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
         child: Column(

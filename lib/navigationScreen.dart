@@ -29,6 +29,7 @@ class _navigationScreenState extends State<navigationScreen> {
   ];
   int selectedCat = 0;
   @override
+
   Widget build(BuildContext context) {
     // Set the status bar color here
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
@@ -64,7 +65,7 @@ class _navigationScreenState extends State<navigationScreen> {
         // Build bottom navigation bar with product categories
         bottomNavigationBar: BottomNavigationBar(
             currentIndex: selectedCat,
-            backgroundColor: Color.fromARGB(255, 74, 230, 8),
+            backgroundColor: Color.fromARGB(255, 63, 158, 22),
             selectedItemColor: const Color.fromARGB(255, 255, 255, 255),
             unselectedItemColor: Color.fromARGB(255, 218, 242, 215),
             selectedFontSize: 20,

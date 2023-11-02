@@ -5,6 +5,9 @@ import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'navigationScreen.dart';
 
+//Scaffold --> _handleGooglesignIn(), signin() for Firebase login
+//signin() --> showSignInDialoge(), sendLoginInformaiton()
+
 class loginScreen extends StatefulWidget {
   const loginScreen({super.key});
 
@@ -43,7 +46,7 @@ class _loginScreenState extends State<loginScreen> {
             ),
             ElevatedButton(
               onPressed: () => signin(context),
-              child: const Text('Sign in with Firebase'),
+              child: const Text('Sign in with Store Account'),
             ),
           ],
         ),
@@ -224,6 +227,8 @@ class _loginScreenState extends State<loginScreen> {
                               );
 
                               // Successfully signed in
+                              //If the sign-in is successful (i.e., the email and password are correct),
+                              // a UserCredential object is returned, containing information about the user.
                               User? user = userCredential.user;
                               if (user != null) {
                                 // ignore: use_build_context_synchronously

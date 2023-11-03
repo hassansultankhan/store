@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:estore/signupScreen.dart';
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'navigationScreen.dart';
 
 //Scaffold --> _handleGooglesignIn(), signin() for Firebase login
@@ -79,7 +80,14 @@ class _loginScreenState extends State<loginScreen> {
       final User? user = userCredential.user;
 
       if (user != null) {
-        log = await Navigator.push(
+        //code for shared preference
+        final SharedPreferences loginStatus =
+            await SharedPreferences.getInstance();
+        await loginStatus.setBool('login', true);
+        //shared prefrence code ends here
+
+        // ignore: use_build_context_synchronously
+        log = await Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(
             builder: (context) => navigationScreen(
@@ -88,6 +96,7 @@ class _loginScreenState extends State<loginScreen> {
               photoUrl: user.photoURL ?? '',
             ),
           ),
+          (Route) => false,
         );
         print('$log');
       }
@@ -308,11 +317,12 @@ class _loginScreenState extends State<loginScreen> {
                   await FirebaseAuth.instance
                       .sendPasswordResetEmail(email: emailValue);
                   Navigator.pop(context); // Close the dialog
+                  // ignore: use_build_context_synchronously
                   showDialog(
                     context: context,
                     builder: (context) => AlertDialog(
-                      title: Text('Email Sent'),
-                      content: Text(
+                      title: const Text('Email Sent'),
+                      content: const Text(
                           'Check your email account for login-related information.'),
                       actions: [
                         TextButton(
@@ -336,5 +346,23 @@ class _loginScreenState extends State<loginScreen> {
         );
       },
     );
+  }
+
+  void loginStatusCheck() async {
+    final SharedPreferences loginTest = await SharedPreferences.getInstance();
+    bool test = await loginTest.getBool('login') ?? false;
+    if (test) {
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+          builder: (context) => navigationScreen(
+            displayName: user.displayName ?? '',
+            email: user.email ?? '',
+            photoUrl: user.photoURL ?? '',
+          ),
+        ),
+        (Route) => false,
+      );
+    }
   }
 }

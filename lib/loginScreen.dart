@@ -20,6 +20,11 @@ class _loginScreenState extends State<loginScreen> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
   bool log = false;
+  @override
+  void initState() {
+    super.initState();
+    loginStatusCheck();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -80,12 +85,6 @@ class _loginScreenState extends State<loginScreen> {
       final User? user = userCredential.user;
 
       if (user != null) {
-        //code for shared preference
-        final SharedPreferences loginStatus =
-            await SharedPreferences.getInstance();
-        await loginStatus.setBool('login', true);
-        //shared prefrence code ends here
-
         // ignore: use_build_context_synchronously
         log = await Navigator.pushAndRemoveUntil(
           context,
@@ -349,20 +348,26 @@ class _loginScreenState extends State<loginScreen> {
   }
 
   void loginStatusCheck() async {
-    final SharedPreferences loginTest = await SharedPreferences.getInstance();
-    bool test = await loginTest.getBool('login') ?? false;
-    if (test) {
-      Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(
-          builder: (context) => navigationScreen(
-            displayName: user.displayName ?? '',
-            email: user.email ?? '',
-            photoUrl: user.photoURL ?? '',
+    final SharedPreferences loginStatus = await SharedPreferences.getInstance();
+    bool isLoggedIn = loginStatus.getBool('login') ?? false;
+
+    if (isLoggedIn) {
+      //if the user has logged in then navigate to navigationScreen()
+      User? user = _auth.currentUser;
+      if (user != null) {
+        // ignore: use_build_context_synchronously
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+            builder: (context) => navigationScreen(
+              displayName: user.displayName ?? '',
+              email: user.email ?? '',
+              photoUrl: user.photoURL ?? '',
+            ),
           ),
-        ),
-        (Route) => false,
-      );
+          (route) => false,
+        );
+      }
     }
   }
 }

@@ -3,8 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:estore/signupScreen.dart';
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'navigationScreen.dart';
-
 
 //Scaffold --> _handleGooglesignIn(), signin() for Firebase login
 //signin() --> showSignInDialoge(), sendLoginInformaiton()
@@ -19,6 +19,7 @@ class loginScreen extends StatefulWidget {
 class _loginScreenState extends State<loginScreen> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
+
   bool log = false;
 
   @override
@@ -49,6 +50,32 @@ class _loginScreenState extends State<loginScreen> {
               onPressed: () => signin(context),
               child: const Text('Sign in with Store Account'),
             ),
+            const SizedBox(height: 10),
+            GestureDetector(
+              onTap: () {
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const navigationScreen(
+                      displayName: 'Guest',
+                      email: 'No email provided',
+                      photoUrl: '',
+                    ),
+                  ),
+                  (route) =>
+                      false, // This is the predicate to stop popping routes
+                );
+              },
+              child: const CircleAvatar(
+                radius: 25,
+                backgroundImage: AssetImage("assets/images/Carrot_icon.png"),
+              ),
+            ),
+            const Text(
+                'Sign in as guest'
+                //give text green color
+                ,
+                style: TextStyle(color: Colors.green)),
           ],
         ),
       ),
@@ -80,7 +107,8 @@ class _loginScreenState extends State<loginScreen> {
       final User? user = userCredential.user;
 
       if (user != null) {
-        log = await Navigator.push(
+        // ignore: use_build_context_synchronously
+        log = await Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(
             builder: (context) => navigationScreen(
@@ -89,6 +117,7 @@ class _loginScreenState extends State<loginScreen> {
               photoUrl: user.photoURL ?? '',
             ),
           ),
+          (Route) => false,
         );
         print('$log');
       }
@@ -100,46 +129,65 @@ class _loginScreenState extends State<loginScreen> {
   }
 
   void signin(BuildContext context) {
-    showModalBottomSheet(
-        isScrollControlled: true,
-        context: context,
-        builder: (context) {
-          Padding(
-            padding: EdgeInsets.only(
-              top: 20,
-              left: 20,
-              right: 20,
-              bottom: MediaQuery.of(context).viewInsets.top,
-            ),
-          );
-          return Wrap(children: [
-            ListTile(
-              leading: Icon(Icons.login),
-              title: Text('Sign In'),
-              onTap: () {
-                Navigator.pop(context); // Close the bottom sheet
-                // Show the sign-in AlertDialog
-                showSignInDialog(context);
-                print("object");
-              },
-            ),
-            ListTile(
-                leading: Icon(Icons.person_add),
-                title: Text('Sign Up'),
-                onTap: () async {
-                  Navigator.pop(context); // Close the bottom sheet
-                  final success = await Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => SignUpScreen()),
-                  );
+    // Check if the user is already logged in
+    User? user = _auth.currentUser;
+    if (user != null) {
+      // User is already logged in, navigate to navigationScreen
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+          builder: (context) => navigationScreen(
+            displayName: user.displayName ?? '',
+            email: user.email ?? '',
+            photoUrl: user.photoURL ?? '',
+          ),
+        ),
+        (route) => false,
+      );
+    } else {
+      // User is not logged in, show the sign-in dialog
 
-                  if (success == true) {
-                    // Handle successful sign up (you can show a success message here)
-                  }
-                }),
-            // const SizedBox(height: 150,)
-          ]);
-        });
+      showModalBottomSheet(
+          isScrollControlled: true,
+          context: context,
+          builder: (context) {
+            Padding(
+              padding: EdgeInsets.only(
+                top: 20,
+                left: 20,
+                right: 20,
+                bottom: MediaQuery.of(context).viewInsets.top,
+              ),
+            );
+            return Wrap(children: [
+              ListTile(
+                leading: Icon(Icons.login),
+                title: Text('Sign In'),
+                onTap: () {
+                  Navigator.pop(context); // Close the bottom sheet
+                  // Show the sign-in AlertDialog
+                  showSignInDialog(context);
+                  print("object");
+                },
+              ),
+              ListTile(
+                  leading: Icon(Icons.person_add),
+                  title: Text('Sign Up'),
+                  onTap: () async {
+                    Navigator.pop(context); // Close the bottom sheet
+                    final success = await Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => SignUpScreen()),
+                    );
+
+                    if (success == true) {
+                      // Handle successful sign up (you can show a success message here)
+                    }
+                  }),
+              // const SizedBox(height: 150,)
+            ]);
+          });
+    }
   }
 
   void showSignInDialog(BuildContext context) {
@@ -309,11 +357,12 @@ class _loginScreenState extends State<loginScreen> {
                   await FirebaseAuth.instance
                       .sendPasswordResetEmail(email: emailValue);
                   Navigator.pop(context); // Close the dialog
+                  // ignore: use_build_context_synchronously
                   showDialog(
                     context: context,
                     builder: (context) => AlertDialog(
-                      title: Text('Email Sent'),
-                      content: Text(
+                      title: const Text('Email Sent'),
+                      content: const Text(
                           'Check your email account for login-related information.'),
                       actions: [
                         TextButton(
@@ -337,5 +386,29 @@ class _loginScreenState extends State<loginScreen> {
         );
       },
     );
+  }
+
+  void loginStatusCheck() async {
+    final SharedPreferences loginStatus = await SharedPreferences.getInstance();
+    bool isLoggedIn = loginStatus.getBool('login') ?? false;
+
+    if (isLoggedIn) {
+      //if the user has logged in then navigate to navigationScreen()
+      User? user = _auth.currentUser;
+      if (user != null) {
+        // ignore: use_build_context_synchronously
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+            builder: (context) => navigationScreen(
+              displayName: user.displayName ?? '',
+              email: user.email ?? '',
+              photoUrl: user.photoURL ?? '',
+            ),
+          ),
+          (route) => false,
+        );
+      }
+    }
   }
 }

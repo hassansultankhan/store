@@ -1,3 +1,4 @@
+import 'menuItem.dart';
 import 'package:flutter/material.dart';
 
 class Cat0 extends StatefulWidget {
@@ -8,21 +9,20 @@ class Cat0 extends StatefulWidget {
 }
 
 class _Cat0State extends State<Cat0> {
+  List<MenuItem> menuItems = [
+    MenuItem(
+      title: "green chatni",
+      category: "chatnis",
+      size: "500ml",
+      price: 550,
+      imagePath: 'assets/images/apple.png',
+    ),
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   title: Text('Cat 1'),
-      //   backgroundColor: Color.fromARGB(255, 204, 235, 26),
-      // ),
-
-      // body: ListView.builder(
-      //   itemCount: ,
-      //   itemBuilder: (BuildContext c, int index){
-
-      //   }
-
-      //   ),
+      body: Column(),
     );
   }
 }

@@ -28,7 +28,7 @@ class _Cat0State extends State<Cat0> {
         category: "Chatnis",
         size: "700ml",
         price: 500,
-        imagePath: 'assets/images/yellowChatni.png'),
+        imagePath: 'assets/images/YellowChatni.png'),
   ];
 
   int _hoveredIndex = -1;

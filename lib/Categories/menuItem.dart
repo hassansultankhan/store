@@ -2,7 +2,7 @@ class MenuItem {
   late String title;
   late String category;
   late String size;
-  late double price;
+  late int price;
   late String imagePath;
 
   MenuItem({

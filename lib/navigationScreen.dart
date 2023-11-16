@@ -55,13 +55,17 @@ class _navigationScreenState extends State<navigationScreen> {
                     context,
                     MaterialPageRoute(builder: (context) => loginScreen()),
                     (route) => false);
-                // Navigator.popUntil(context, ModalRoute.withName('/'));
-                // Navigator.pop(context);
+     
               }),
           actions: [
-            // create a back button on the left of appbar that navigates back to the login screen
-            IconButton(onPressed: _signOut, icon: const Icon(Icons.logout)),
 
+            IconButton(
+              onPressed: (){},
+              icon: const Icon(Icons.shopping_cart_rounded,
+              size: 30,
+              ),
+              ),
+            
             IconButton(
               onPressed: () {
                 Future.delayed(Duration.zero, () {
@@ -120,16 +124,6 @@ class _navigationScreenState extends State<navigationScreen> {
     // Sign out from Google
     await _googleSignIn.signOut();
 
-    // You can also add additional cleanup code for Firestore or other services
-
-    // Navigate to the login screen or home screen as needed
-
-    // Navigator.pop(
-    //     context,
-    //     MaterialPageRoute(
-    //         builder: (context) =>
-    //             const loginScreen())); // Replace with your routes
-
     Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(builder: (context) => const loginScreen()),
@@ -138,21 +132,40 @@ class _navigationScreenState extends State<navigationScreen> {
 
   showCredentials(name, email, photo) {
     return AlertDialog(
-      // Main title of alert box
-      // title: Text("Your login details are"),
-
-      // cross button for alert box
+    
       actions: [
-        IconButton(
+        Row(
+          children: [
+      const SizedBox(width:10),     
+      IconButton(
+        icon: const Icon(Icons.logout,
+        
+        size: 30,
+        color: Colors.black,
+        ),
+        alignment: Alignment.bottomLeft,
+        onPressed:() => _signOut(),
+              ),
+        
+      
+      SizedBox(width: MediaQuery.of(context).size.width - 240),
+      IconButton(
           icon: const Icon(
-            Icons.check_rounded,
-            size: 40,
-            color: Colors.greenAccent,
+            Icons.remove_circle_outline,
+            size: 30,
+            color: Colors.black,
           ),
           onPressed: () {
             Navigator.pop(context); // Close the AlertDialog
           },
         ),
+
+          ],
+
+        )
+
+      
+       
       ],
 
       // Display details of login (login credentials)

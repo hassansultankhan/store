@@ -1,6 +1,3 @@
-
-import 'package:flutter/foundation.dart';
-
 import 'menuItem.dart';
 import 'package:flutter/material.dart';
 
@@ -19,22 +16,28 @@ class _Cat0State extends State<Cat0> {
       size: "500ml",
       price: 550,
       imagePath: 'assets/images/greenChatni.jpg',
+      soldStatus: false,
+      qtySold: 0,
     ),
     MenuItem(
-        title: "Red Chatni",
-        category: "chatnis",
-        size: "200 ml",
-        price: 340,
-        imagePath: 'assets/images/redChatni.jpg'),
+      title: "Red Chatni",
+      category: "chatnis",
+      size: "200 ml",
+      price: 340,
+      imagePath: 'assets/images/redChatni.jpg',
+      soldStatus: false,
+      qtySold: 0,
+    ),
     MenuItem(
-        title: "Yellow Chatni",
-        category: "Chatnis",
-        size: "700ml",
-        price: 500,
-        imagePath: 'assets/images/YellowChatni.jpg'),
+      title: "Yellow Chatni",
+      category: "Chatnis",
+      size: "700ml",
+      price: 500,
+      imagePath: 'assets/images/YellowChatni.jpg',
+      soldStatus: true,
+      qtySold: 0,
+    ),
   ];
-
-  int _hoveredIndex = -1;
 
   @override
   Widget build(BuildContext context) {
@@ -49,104 +52,171 @@ class _Cat0State extends State<Cat0> {
               Padding(
                 padding: EdgeInsets.fromLTRB(15, 15, 15, 0),
                 child: ListTile(
-                    shape: 
-                    RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12)),
                     tileColor: const Color.fromARGB(255, 189, 223, 207),
                     leading: CircleAvatar(
                         backgroundImage: AssetImage(menuItem.imagePath),
                         radius: 30,
                         backgroundColor: Colors.grey),
                     title: Text(menuItem.title,
-                    style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                    
-                    subtitle: Text("${menuItem.price.toString()} Rs.", 
-                    style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
-                    trailing: IconButton(
-                      icon: const Icon(Icons.add_shopping_cart_rounded,),
-                      color: const Color.fromARGB(255, 255, 255, 255),
-                      iconSize: 30,
-                      onPressed: () {},
+                        style: const TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold)),
+                    subtitle: Text("${menuItem.price.toString()} Rs.",
+                        style: const TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.w600)),
+                    trailing: Icon(
+                      Icons.add_shopping_cart_rounded,
+                      size: 30,
+                      color: menuItem.soldStatus
+                          ? Colors.green
+                          : const Color.fromARGB(255, 255, 255, 255),
                     ),
-                    onTap: (){
-                      Future.delayed(Duration.zero,(){
+                    onTap: () {
+                      Future.delayed(Duration.zero, () {
                         showDialog(
                           context: context,
-                          builder: (context)=> itemAlert(
+                          builder: (context) => itemAlert(
                             menuItem.imagePath,
                             menuItem.title,
                             menuItem.category,
                             menuItem.size,
-                            menuItem.price
-                            ),
-                          );
-                    }
-                    );
-                    }
+                            menuItem.price,
+                            menuItem.soldStatus,
+                          ),
+                        );
+                      });
+                    }),
               ),
-              ),
-            ]
-            
-            ),
+            ]),
           );
         }),
       ),
     );
   }
-  itemAlert(String _imagePath, String _title, String _category, String _size, int _price ){
+
+  //Alert box for item details
+
+  itemAlert(
+    String _imagePath,
+    String _title,
+    String _category,
+    String _size,
+    int _price,
+    bool _soldStatus,
+  ) {
+    int quantity = 1; // Default quantity
+
     return AlertDialog(
       contentPadding: const EdgeInsets.all(5),
       elevation: 4,
-      title:  Text(_title, textAlign: TextAlign.center, style: const TextStyle(color: Colors.green),),
-      content:
-      SingleChildScrollView(child:ListBody(
-        children: <Widget>[
-          const SizedBox(height: 20,),
-          Row(mainAxisAlignment: MainAxisAlignment.center,
-          children:<Widget> [
-            ClipRRect(
-            borderRadius: BorderRadius.circular(20),
-            clipBehavior: Clip.antiAlias,
-            child: Image.asset(_imagePath, height: 150, width: 150,
-            fit: BoxFit.cover,),
-            )
+      title: Text(
+        _title,
+        textAlign: TextAlign.center,
+        style: const TextStyle(color: Colors.green),
+      ),
+      content: SingleChildScrollView(
+        child: ListBody(children: <Widget>[
+          const SizedBox(
+            height: 20,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              ClipRRect(
+                borderRadius: BorderRadius.circular(20),
+                clipBehavior: Clip.antiAlias,
+                child: Image.asset(
+                  _imagePath,
+                  height: 150,
+                  width: 150,
+                  fit: BoxFit.cover,
+                ),
+              )
             ],
-            ),
-            Divider(),
-            Row(mainAxisAlignment: MainAxisAlignment.center,
-             children: <Widget>[
-             Column(crossAxisAlignment: CrossAxisAlignment.start,
-              children:[
+          ),
+          Divider(),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
                   Text("Category: $_category"),
-                  const SizedBox(height: 8,),
+                  const SizedBox(
+                    height: 8,
+                  ),
                   Text("Size: $_size"),
-                  const SizedBox(height: 8,),
+                  const SizedBox(
+                    height: 8,
+                  ),
                   Text("Price: $_price"),
                 ],
+              ),
+              const SizedBox(
+                width: 10,
+              ),
+              IconButton(
+                onPressed: () {
+                  // Your logic when the "Add to Cart" button is pressed
+                  // Use the quantity variable here
+                },
+                icon: Icon(
+                  Icons.add_shopping_cart_rounded,
+                  color: _soldStatus
+                      ? Colors.green
+                      : const Color.fromARGB(255, 255, 255, 255),
+                  size: 40,
                 ),
-                const SizedBox(width: 10,),
-                IconButton(onPressed: (){}, 
-                icon: const Icon(Icons.add_shopping_cart_rounded,
-                size: 40,)
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              IconButton(
+                onPressed: () {
+                  if (quantity > 1) {
+                    setState(() {
+                      quantity--;
+                    });
+                  }
+                },
+                icon: Icon(Icons.remove_circle),
+              ),
+              SizedBox(
+                width: 50,
+                child: Center(
+                  child: Text(
+                    '$quantity',
+                    style: TextStyle(fontSize: 18),
+                  ),
                 ),
-                ]
-                ),
-           
-        ]
+              ),
+              IconButton(
+                onPressed: () {
+                  setState(() {
+                    quantity++;
+                  });
+                  print(quantity);
+                },
+                icon: Icon(Icons.add_box),
+              ),
+            ],
+          ),
+        ]),
       ),
-      ),
-        
-
       actions: <Widget>[
         IconButton(
-        icon:const Icon(
-          Icons.remove_circle_outline,
-          size: 30,
+          icon: const Icon(
+            Icons.close,
+            size: 30,
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
-        onPressed: () {
-          Navigator.pop(context);
-        },
-        ),
-
       ],
     );
   }

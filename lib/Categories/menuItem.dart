@@ -4,6 +4,8 @@ class MenuItem {
   late String size;
   late int price;
   late String imagePath;
+  late bool soldStatus;
+  late int qtySold;
 
   MenuItem({
     required this.title,
@@ -11,5 +13,7 @@ class MenuItem {
     required this.size,
     required this.price,
     required this.imagePath,
+    required this.soldStatus,
+    required this.qtySold,
   });
 }

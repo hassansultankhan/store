@@ -34,7 +34,7 @@ class _Cat0State extends State<Cat0> {
       size: "700ml",
       price: 500,
       imagePath: 'assets/images/YellowChatni.jpg',
-      soldStatus: true,
+      soldStatus: false,
       qtySold: 0,
     ),
   ];
@@ -75,15 +75,23 @@ class _Cat0State extends State<Cat0> {
                     onTap: () {
                       Future.delayed(Duration.zero, () {
                         showDialog(
-                          context: context,
+                          context: context, //create location tag
                           builder: (context) => itemAlert(
+                            context, //pass location tag to itemAlert, that where does itemAlert lyes
                             menuItem.imagePath,
                             menuItem.title,
                             menuItem.category,
                             menuItem.size,
                             menuItem.price,
                             menuItem.soldStatus,
-                          ),
+                            () {
+                            // Logic to update soldStatus to true
+                            setState(() { //function passed as parameter to itemAlert
+                              menuItem.soldStatus = !menuItem.soldStatus;
+                            }
+                          );
+                            }
+                         ),
                         );
                       });
                     }),
@@ -97,127 +105,156 @@ class _Cat0State extends State<Cat0> {
 
   //Alert box for item details
 
-  itemAlert(
-    String _imagePath,
-    String _title,
-    String _category,
-    String _size,
-    int _price,
-    bool _soldStatus,
-  ) {
-    int quantity = 1; // Default quantity
+  Widget itemAlert(
+  BuildContext context, //receive location tag from where itemAlert is called
+  String _imagePath,
+  String _title,
+  String _category,
+  String _size,
+  int _price,
+  bool _soldStatus,
+  Function() updateSoldStatus, //setState function recieved as parameter
+) {
+  int quantity = 1; // Default quantity
 
-    return AlertDialog(
-      contentPadding: const EdgeInsets.all(5),
-      elevation: 4,
-      title: Text(
-        _title,
-        textAlign: TextAlign.center,
-        style: const TextStyle(color: Colors.green),
-      ),
-      content: SingleChildScrollView(
-        child: ListBody(children: <Widget>[
-          const SizedBox(
-            height: 20,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              ClipRRect(
-                borderRadius: BorderRadius.circular(20),
-                clipBehavior: Clip.antiAlias,
-                child: Image.asset(
-                  _imagePath,
-                  height: 150,
-                  width: 150,
-                  fit: BoxFit.cover,
-                ),
-              )
-            ],
-          ),
-          Divider(),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text("Category: $_category"),
+      return StatefulBuilder(
+        builder: (BuildContext context, StateSetter alertSetState) { //create state builder for alertDialog
+          return AlertDialog(
+            contentPadding: const EdgeInsets.all(5),
+            elevation: 4,
+            title: Text(
+              _title,
+              textAlign: TextAlign.center,
+              style: const TextStyle(color: Colors.green),
+            ),
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: <Widget>[
                   const SizedBox(
-                    height: 8,
+                    height: 20,
                   ),
-                  Text("Size: $_size"),
-                  const SizedBox(
-                    height: 8,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(20),
+                        clipBehavior: Clip.antiAlias,
+                        child: Image.asset(
+                          _imagePath,
+                          height: 150,
+                          width: 150,
+                          fit: BoxFit.cover,
+                        ),
+                      )
+                    ],
                   ),
-                  Text("Price: $_price"),
+                  Divider(),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("Category: $_category"),
+                          const SizedBox(
+                            height: 8,
+                          ),
+                          Text("Size: $_size"),
+                          const SizedBox(
+                            height: 8,
+                          ),
+                          Text("Price: $_price"),
+                        ],
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        
+                        children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 20, top: 20),
+                                    child: IconButton(
+                                      onPressed: () {
+                                        // Call the function to update soldStatus to true
+                                        updateSoldStatus();
+                                        // logic when the "Add to Cart" button is pressed
+                                      },
+                                      icon: Icon(
+                                        Icons.add_shopping_cart_rounded,
+                                        color: _soldStatus ? Colors.green : Colors.black,
+                                        size: 40,
+                                      ),
+                                    ),
+                                  ),
+                                  const Padding(
+                                    padding: EdgeInsets.only(left: 27, top: 10),
+                                    child: Text(
+                                      "Place Order",
+                                      style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                ]
+
+                      )
+                        
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      IconButton(
+                        onPressed: () {
+                          if (quantity > 1) {
+                            alertSetState(() {
+                              quantity--;
+                              print(quantity.toString());
+                            });
+                          }
+                        },
+                        icon: Icon(Icons.remove_circle),
+                      ),
+                      SizedBox(
+                        width: 50,
+                        child: Center(
+                          child: Text(
+                            '$quantity',
+                            style: TextStyle(fontSize: 18),
+                          ),
+                        ),
+                      ),
+                      IconButton(
+                        onPressed: () {
+                          alertSetState(() {
+                            quantity++;
+                          });
+                          print(quantity);
+                        },
+                        icon: Icon(Icons.add_box),
+                      ),
+                    ],
+                  ),
                 ],
               ),
-              const SizedBox(
-                width: 10,
-              ),
+            ),
+            actions: <Widget>[
               IconButton(
-                onPressed: () {
-                  // Your logic when the "Add to Cart" button is pressed
-                  // Use the quantity variable here
-                },
-                icon: Icon(
-                  Icons.add_shopping_cart_rounded,
-                  color: _soldStatus
-                      ? Colors.green
-                      : const Color.fromARGB(255, 255, 255, 255),
-                  size: 40,
+                icon: const Icon(
+                  Icons.close,
+                  size: 30,
                 ),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
               ),
             ],
-          ),
-          const SizedBox(height: 16),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              IconButton(
-                onPressed: () {
-                  if (quantity > 1) {
-                    setState(() {
-                      quantity--;
-                    });
-                  }
-                },
-                icon: Icon(Icons.remove_circle),
-              ),
-              SizedBox(
-                width: 50,
-                child: Center(
-                  child: Text(
-                    '$quantity',
-                    style: TextStyle(fontSize: 18),
-                  ),
-                ),
-              ),
-              IconButton(
-                onPressed: () {
-                  setState(() {
-                    quantity++;
-                  });
-                  print(quantity);
-                },
-                icon: Icon(Icons.add_box),
-              ),
-            ],
-          ),
-        ]),
-      ),
-      actions: <Widget>[
-        IconButton(
-          icon: const Icon(
-            Icons.close,
-            size: 30,
-          ),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-      ],
-    );
-  }
+          );
+        },
+      );
+    }
 }
+
+

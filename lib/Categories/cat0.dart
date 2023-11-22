@@ -1,5 +1,6 @@
 import 'menuItem.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class Cat0 extends StatefulWidget {
   const Cat0({Key? key}) : super(key: key);
@@ -178,6 +179,18 @@ class _Cat0State extends State<Cat0> {
                               alertSetState(() {
                                 _soldStatus = !_soldStatus;
                               });
+                             Fluttertoast.showToast(
+                msg: 'Added to Cart!',
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.BOTTOM,
+                timeInSecForIosWeb: 1,
+                backgroundColor: Colors.grey,
+                textColor: Colors.white,
+                fontSize: 16.0,
+              );
+                              // ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                              //     content: Text("Sending Message"),
+                              // ));
                             },
                             icon: Icon(
                               Icons.add_shopping_cart_rounded,
@@ -251,4 +264,5 @@ class _Cat0State extends State<Cat0> {
       },
     );
   }
+
 }

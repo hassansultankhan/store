@@ -6,6 +6,7 @@ class MenuItem {
   late String imagePath;
   late bool soldStatus;
   late int qtySold;
+  late int productNo;
 
   MenuItem({
     required this.title,
@@ -15,5 +16,6 @@ class MenuItem {
     required this.imagePath,
     required this.soldStatus,
     required this.qtySold,
+    required this.productNo,
   });
 }

@@ -12,32 +12,32 @@ class Cat0 extends StatefulWidget {
 class _Cat0State extends State<Cat0> {
   List<MenuItem> menuItems = [
     MenuItem(
-      title: "Green Chatni",
-      category: "chatnis",
-      size: "500ml",
-      price: 550,
-      imagePath: 'assets/images/greenChatni.jpg',
-      soldStatus: false,
-      qtySold: 0,
-    ),
+        title: "Green Chatni",
+        category: "chatnis",
+        size: "500ml",
+        price: 550,
+        imagePath: 'assets/images/greenChatni.jpg',
+        soldStatus: false,
+        qtySold: 0,
+        productNo: 001),
     MenuItem(
-      title: "Red Chatni",
-      category: "chatnis",
-      size: "200 ml",
-      price: 340,
-      imagePath: 'assets/images/redChatni.jpg',
-      soldStatus: false,
-      qtySold: 0,
-    ),
+        title: "Red Chatni",
+        category: "chatnis",
+        size: "200 ml",
+        price: 340,
+        imagePath: 'assets/images/redChatni.jpg',
+        soldStatus: false,
+        qtySold: 0,
+        productNo: 002),
     MenuItem(
-      title: "Yellow Chatni",
-      category: "Chatnis",
-      size: "700ml",
-      price: 500,
-      imagePath: 'assets/images/YellowChatni.jpg',
-      soldStatus: false,
-      qtySold: 0,
-    ),
+        title: "Yellow Chatni",
+        category: "Chatnis",
+        size: "700ml",
+        price: 500,
+        imagePath: 'assets/images/YellowChatni.jpg',
+        soldStatus: false,
+        qtySold: 0,
+        productNo: 003),
   ];
 
   @override
@@ -84,6 +84,8 @@ class _Cat0State extends State<Cat0> {
                               menuItem.category,
                               menuItem.size,
                               menuItem.price,
+                              menuItem.qtySold,
+                              menuItem.productNo,
                               menuItem.soldStatus, () {
                             // Logic to update soldStatus to true
                             setState(() {
@@ -111,6 +113,8 @@ class _Cat0State extends State<Cat0> {
     String _category,
     String _size,
     int _price,
+    int _qtySold,
+    int _productNo,
     bool _soldStatus,
     Function() updateSoldStatus,
   ) {
@@ -179,18 +183,14 @@ class _Cat0State extends State<Cat0> {
                               alertSetState(() {
                                 _soldStatus = !_soldStatus;
                               });
-                             Fluttertoast.showToast(
-                msg: 'Added to Cart!',
-                toastLength: Toast.LENGTH_SHORT,
-                gravity: ToastGravity.BOTTOM,
-                timeInSecForIosWeb: 1,
-                backgroundColor: Colors.grey,
-                textColor: Colors.white,
-                fontSize: 16.0,
-              );
-                              // ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                              //     content: Text("Sending Message"),
-                              // ));
+                              showToast(_soldStatus);
+
+                              print('Title: $_title\n'
+                                  'Category: $_category\n'
+                                  'Size: $_size\n'
+                                  'Price: $_price\n'
+                                  'Quantity Sold: $_qtySold\n'
+                                  'Product No. : $_productNo\n');
                             },
                             icon: Icon(
                               Icons.add_shopping_cart_rounded,
@@ -220,7 +220,9 @@ class _Cat0State extends State<Cat0> {
                         if (quantity > 1) {
                           alertSetState(() {
                             quantity--;
-                            print(quantity.toString());
+                            // print(quantity.toString());
+                            _qtySold = quantity;
+                            print(_qtySold.toString());
                           });
                         }
                       },
@@ -240,7 +242,6 @@ class _Cat0State extends State<Cat0> {
                         alertSetState(() {
                           quantity++;
                         });
-                        print(quantity);
                       },
                       icon: Icon(Icons.add_box),
                     ),
@@ -265,4 +266,21 @@ class _Cat0State extends State<Cat0> {
     );
   }
 
+  void showToast(bool SoldMessageStatus) async {
+    String alertMessage;
+    if (SoldMessageStatus) {
+      alertMessage = "Order added to Cart";
+    } else {
+      alertMessage = "Product removed from Cart";
+    }
+    await Fluttertoast.showToast(
+      msg: alertMessage,
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.BOTTOM,
+      timeInSecForIosWeb: 1,
+      backgroundColor: Colors.grey,
+      textColor: Colors.white,
+      fontSize: 16.0,
+    );
+  }
 }

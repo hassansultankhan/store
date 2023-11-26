@@ -55,17 +55,17 @@ class _navigationScreenState extends State<navigationScreen> {
                     context,
                     MaterialPageRoute(builder: (context) => loginScreen()),
                     (route) => false);
-     
               }),
           actions: [
-
             IconButton(
-              onPressed: (){},
-              icon: const Icon(Icons.shopping_cart_rounded,
-              size: 30,
+              onPressed: () {
+                // CartScreen;
+              },
+              icon: const Icon(
+                Icons.shopping_cart_rounded,
+                size: 30,
               ),
-              ),
-            
+            ),
             IconButton(
               onPressed: () {
                 Future.delayed(Duration.zero, () {
@@ -132,40 +132,32 @@ class _navigationScreenState extends State<navigationScreen> {
 
   showCredentials(name, email, photo) {
     return AlertDialog(
-    
       actions: [
         Row(
           children: [
-      const SizedBox(width:10),     
-      IconButton(
-        icon: const Icon(Icons.logout,
-        
-        size: 30,
-        color: Colors.black,
-        ),
-        alignment: Alignment.bottomLeft,
-        onPressed:() => _signOut(),
+            const SizedBox(width: 10),
+            IconButton(
+              icon: const Icon(
+                Icons.logout,
+                size: 30,
+                color: Colors.black,
               ),
-        
-      
-      SizedBox(width: MediaQuery.of(context).size.width - 240),
-      IconButton(
-          icon: const Icon(
-            Icons.remove_circle_outline,
-            size: 30,
-            color: Colors.black,
-          ),
-          onPressed: () {
-            Navigator.pop(context); // Close the AlertDialog
-          },
-        ),
-
+              alignment: Alignment.bottomLeft,
+              onPressed: () => _signOut(),
+            ),
+            SizedBox(width: MediaQuery.of(context).size.width - 240),
+            IconButton(
+              icon: const Icon(
+                Icons.remove_circle_outline,
+                size: 30,
+                color: Colors.black,
+              ),
+              onPressed: () {
+                Navigator.pop(context); // Close the AlertDialog
+              },
+            ),
           ],
-
         )
-
-      
-       
       ],
 
       // Display details of login (login credentials)

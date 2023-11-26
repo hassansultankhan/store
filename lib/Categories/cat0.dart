@@ -1,3 +1,4 @@
+import 'package:estore/Cart/cartItems.dart';
 import 'menuItem.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -39,6 +40,8 @@ class _Cat0State extends State<Cat0> {
         qtySold: 0,
         productNo: 003),
   ];
+
+  List<CartItem> cartItems = [];
 
   @override
   Widget build(BuildContext context) {
@@ -191,6 +194,8 @@ class _Cat0State extends State<Cat0> {
                                   'Price: $_price\n'
                                   'Quantity Sold: $_qtySold\n'
                                   'Product No. : $_productNo\n');
+
+                              setState(() {});
                             },
                             icon: Icon(
                               Icons.add_shopping_cart_rounded,

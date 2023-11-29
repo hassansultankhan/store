@@ -1,9 +1,12 @@
+import 'package:estore/Cart/cartItems.dart';
 import 'package:estore/loginScreen.dart';
 import 'package:estore/mainScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+
+import 'package:estore/Database/dbinitialization.dart';
 
 import 'Categories/cat0.dart';
 import 'Categories/cat1.dart';
@@ -59,7 +62,8 @@ class _navigationScreenState extends State<navigationScreen> {
           actions: [
             IconButton(
               onPressed: () {
-                // CartScreen;
+                // Show added cart items in AlertDialog
+                showCartItems();
               },
               icon: const Icon(
                 Icons.shopping_cart_rounded,
@@ -192,6 +196,42 @@ class _navigationScreenState extends State<navigationScreen> {
           ],
         ),
       ),
+    );
+  }
+
+  // Method to retrieve all cart items from the database
+  Future<List<CartItem>> getAllCartItems() async {
+    Dbfiles dbfiles = Dbfiles();
+    return await dbfiles.getCartItems();
+  }
+
+  // Method to show added cart items in AlertDialog
+  void showCartItems() async {
+    List<CartItem> cartItems = await getAllCartItems();
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Cart Items'),
+          content: Column(
+            children: cartItems.map((item) {
+              return ListTile(
+                title: Text(item.title),
+                subtitle: Text('${item.qtySold} x ${item.price} Rs'),
+              );
+            }).toList(),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context); // Close the AlertDialog
+              },
+              child: const Text('Close'),
+            ),
+          ],
+        );
+      },
     );
   }
 }

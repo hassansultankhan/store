@@ -1,4 +1,5 @@
 class CartItem {
+  final int id; // Add an ID field for database operations
   final String title;
   final String category;
   final String size;
@@ -7,6 +8,7 @@ class CartItem {
   final int productNo;
 
   CartItem({
+    required this.id,
     required this.title,
     required this.category,
     required this.size,
@@ -14,4 +16,17 @@ class CartItem {
     required this.qtySold,
     required this.productNo,
   });
+
+  // Method to convert CartItem to a map for database operations
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'title': title,
+      'category': category,
+      'size': size,
+      'price': price,
+      'quantity': qtySold,
+      'product_no': productNo,
+    };
+  }
 }

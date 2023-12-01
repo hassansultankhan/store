@@ -29,7 +29,7 @@ class Dbfiles {
   FutureOr<void> createTable(Database db, int version) async {
     await db.execute('''Create table cart_items(
             id INTEGER PRIMARY KEY,
-            Title TEXT, 
+            title TEXT, 
             category TEXT,
             size TEXT,
             price INTEGER,

@@ -191,12 +191,12 @@ class _Cat0State extends State<Cat0> {
                               });
                               showToast(_soldStatus);
 
-                              print('Title: $_title\n'
-                                  'Category: $_category\n'
-                                  'Size: $_size\n'
-                                  'Price: $_price\n'
-                                  'Quantity Sold: $_qtySold\n'
-                                  'Product No. : $_productNo\n');
+                              // print('Title: $_title\n'
+                              //     'Category: $_category\n'
+                              //     'Size: $_size\n'
+                              //     'Price: $_price\n'
+                              //     'Quantity Sold: $_qtySold\n'
+                              //     'Product No. : $_productNo\n');
 
                               // Create a CartItem object
                               CartItem cartItem = CartItem(
@@ -225,8 +225,16 @@ class _Cat0State extends State<Cat0> {
                               // Retrieve and print all cart items from the database
                               List<CartItem> allCartItems =
                                   await dbfiles.getCartItems();
-                              print('All Cart Items: $allCartItems');
-
+                                for (CartItem cartItem in allCartItems) {
+                                        print('Cart Item ID: ${cartItem.id}\n'
+                                            'Title: ${cartItem.title}\n'
+                                            'Category: ${cartItem.category}\n'
+                                            'Size: ${cartItem.size}\n'
+                                            'Price: ${cartItem.price}\n'
+                                            'Quantity Sold: ${cartItem.qtySold}\n'
+                                            'Product No. : ${cartItem.productNo}\n');
+                                      
+                                      }
                               setState(() {});
                             },
                             icon: Icon(

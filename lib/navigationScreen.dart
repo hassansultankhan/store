@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:estore/Cart/cartItems.dart';
 import 'package:estore/loginScreen.dart';
 import 'package:estore/mainScreen.dart';
@@ -62,7 +64,8 @@ class _navigationScreenState extends State<navigationScreen> {
           actions: [
             IconButton(
               onPressed: () {
-                // Show added cart items in AlertDialog
+                // Show added cart items in AlertDialog  XXXXXXXXXXXXX
+                
                 showCartItems();
               },
               icon: const Icon(
@@ -208,7 +211,7 @@ class _navigationScreenState extends State<navigationScreen> {
   // Method to show added cart items in AlertDialog
   void showCartItems() async {
     List<CartItem> cartItems = await getAllCartItems();
-
+    print('Cart Items: $cartItems');
     showDialog(
       context: context,
       builder: (context) {

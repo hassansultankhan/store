@@ -27,15 +27,15 @@ class Dbfiles {
   }
 
   FutureOr<void> createTable(Database db, int version) async {
-    await db.execute('''Create table cart_items(
-            id INTEGER PRIMARY KEY,
-            title TEXT, 
-            category TEXT,
-            size TEXT,
-            price INTEGER,
-            quantity INTEGER,
-            product_no INTEGER)
-            ''');
+    await db.execute('''CREATE TABLE cart_items(
+          id INTEGER PRIMARY KEY,
+          title TEXT, 
+          category TEXT,
+          size TEXT,
+          price INTEGER,
+          quantity INTEGER,
+          product_no INTEGER)
+          ''');
   }
 
   Future<List<CartItem>> getCartItems() async {

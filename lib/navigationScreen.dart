@@ -65,7 +65,7 @@ class _navigationScreenState extends State<navigationScreen> {
             IconButton(
               onPressed: () {
                 // Show added cart items in AlertDialog  XXXXXXXXXXXXX
-                
+
                 showCartItems();
               },
               icon: const Icon(

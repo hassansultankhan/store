@@ -184,6 +184,7 @@ class _Cat0State extends State<Cat0> {
                           padding: const EdgeInsets.only(left: 20, top: 20),
                           child: IconButton(
                             onPressed: () async {
+                              //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
                               // update cart
                               updateSoldStatus();
                               alertSetState(() {
@@ -197,6 +198,7 @@ class _Cat0State extends State<Cat0> {
                               //     'Price: $_price\n'
                               //     'Quantity Sold: $_qtySold\n'
                               //     'Product No. : $_productNo\n');
+                              print('Title in itemAlert: $_title');
 
                               // Create a CartItem object
                               CartItem cartItem = CartItem(
@@ -225,16 +227,15 @@ class _Cat0State extends State<Cat0> {
                               // Retrieve and print all cart items from the database
                               List<CartItem> allCartItems =
                                   await dbfiles.getCartItems();
-                                for (CartItem cartItem in allCartItems) {
-                                        print('Cart Item ID: ${cartItem.id}\n'
-                                            'Title: ${cartItem.title}\n'
-                                            'Category: ${cartItem.category}\n'
-                                            'Size: ${cartItem.size}\n'
-                                            'Price: ${cartItem.price}\n'
-                                            'Quantity Sold: ${cartItem.qtySold}\n'
-                                            'Product No. : ${cartItem.productNo}\n');
-                                      
-                                      }
+                              for (CartItem cartItem in allCartItems) {
+                                print('Cart Item ID: ${cartItem.id}\n'
+                                    'Title: ${cartItem.title}\n'
+                                    'Category: ${cartItem.category}\n'
+                                    'Size: ${cartItem.size}\n'
+                                    'Price: ${cartItem.price}\n'
+                                    'Quantity Sold: ${cartItem.qtySold}\n'
+                                    'Product No. : ${cartItem.productNo}\n');
+                              }
                               setState(() {});
                             },
                             icon: Icon(

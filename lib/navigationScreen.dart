@@ -1,5 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:estore/Cart/cartItems.dart';
 import 'package:estore/loginScreen.dart';
 import 'package:estore/mainScreen.dart';
@@ -66,7 +67,7 @@ class _navigationScreenState extends State<navigationScreen> {
               onPressed: () {
                 // Show added cart items in AlertDialog  XXXXXXXXXXXXX
 
-                showCartItems();
+                showCartItems2();
               },
               icon: const Icon(
                 Icons.shopping_cart_rounded,
@@ -217,13 +218,29 @@ class _navigationScreenState extends State<navigationScreen> {
       builder: (context) {
         return AlertDialog(
           title: const Text('Cart Items'),
-          content: Column(
-            children: cartItems.map((item) {
-              return ListTile(
-                title: Text(item.title),
-                subtitle: Text('${item.qtySold} x ${item.price} Rs'),
-              );
-            }).toList(),
+          content: Container(
+            height: 400,
+            child: SingleChildScrollView(
+              child: Column(
+                children: cartItems.map((item) {
+                  return ListTile(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    tileColor: Color.fromARGB(255, 147, 201, 111),
+                    title: Text(
+                      item.title,
+                      style: TextStyle(color: Colors.black),
+                    ),
+                    subtitle: Text(
+                      '${item.qtySold} x ${item.price} Rs = ${item.qtySold * item.price} Rs',
+                      style: TextStyle(color: Colors.black),
+                    ),
+                    // Add other properties of ListTile as needed
+                  );
+                }).toList(),
+              ),
+            ),
           ),
           actions: [
             TextButton(
@@ -236,5 +253,21 @@ class _navigationScreenState extends State<navigationScreen> {
         );
       },
     );
+  }
+
+  void showCartItems2() async {
+    List<CartItem> cartItems = await getAllCartItems();
+    print('Cart Items: $cartItems');
+
+    // Print details of each item in the terminal
+    for (CartItem item in cartItems) {
+      print('Cart Item ID: ${item.id}\n'
+          'Title: ${item.title}\n'
+          'Category: ${item.category}\n'
+          'Size: ${item.size}\n'
+          'Price: ${item.price}\n'
+          'Quantity Sold: ${item.qtySold}\n'
+          'Product No. : ${item.productNo}\n');
+    }
   }
 }

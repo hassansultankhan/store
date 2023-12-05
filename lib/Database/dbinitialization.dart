@@ -19,6 +19,7 @@ class Dbfiles {
   Future<Database> initializeDb() async {
     Directory documentDirectory =
         await getApplicationDocumentsDirectory(); //access to application directory
+    // ignore: unused_local_variable
     String path = await getDatabasesPath(); //set path to directory
     String dbPath = join(await documentDirectory.path,
         "cart.db"); //create database title and link paths

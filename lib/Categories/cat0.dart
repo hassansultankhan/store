@@ -3,6 +3,7 @@ import 'menuItem.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:estore/Database/dbinitialization.dart';
+// ignore: duplicate_import
 import 'package:estore/Cart/cartItems.dart';
 
 class Cat0 extends StatefulWidget {

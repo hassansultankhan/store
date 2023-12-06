@@ -29,14 +29,14 @@ class Dbfiles {
 
   FutureOr<void> createTable(Database db, int version) async {
     await db.execute('''CREATE TABLE cart_items(
-          id INTEGER PRIMARY KEY AUTOINCREMENT,
-          title TEXT, 
-          category TEXT,
-          size TEXT,
-          price INTEGER,
-          quantity INTEGER,
-          product_no INTEGER)
-          ''');
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        title TEXT, 
+        category TEXT,
+        size TEXT,
+        price INTEGER,
+        qtySold INTEGER, 
+        product_no INTEGER)
+        ''');
   }
 
   Future<List<CartItem>> getCartItems() async {
@@ -45,11 +45,12 @@ class Dbfiles {
     return List.generate(maps.length, (i) {
       return CartItem(
         id: maps[i]['id'],
-        title: maps[i]['title'] ?? '', // Use an empty string if title is null
+        title: maps[i]['title'] ?? '',
         category: maps[i]['category'] ?? '',
         size: maps[i]['size'] ?? '',
-        price: maps[i]['price'] ?? 0, // Use 0 if price is null
-        qtySold: maps[i]['quantity'] ?? 0,
+        price: maps[i]['price'] ?? 0,
+        qtySold: maps[i]['qtySold'] ??
+            0, // Updated to use 'qtySold' from the database
         productNo: maps[i]['product_no'] ?? 0,
       );
     });
@@ -58,12 +59,19 @@ class Dbfiles {
   // Function to insert a cart item into the database
   Future<void> insertCartItem(CartItem cartItem) async {
     final Database db = await this.db;
-    await db.insert(
-      'cart_items',
-      cartItem.toMap(),
-      conflictAlgorithm: ConflictAlgorithm
-          .replace, //This option specifies that if there's a conflict (i.e., a row with the same primary key already exists), replace the existing row with the new data.
-    );
+    if (cartItem.id == 0) {
+      // Exclude 'id' from the map when it's 0 to let the database generate a new id
+      await db.insert(
+        'cart_items',
+        cartItem.toMap()..remove('id'),
+      );
+    } else {
+      await db.insert(
+        'cart_items',
+        cartItem.toMap(),
+        conflictAlgorithm: ConflictAlgorithm.replace,
+      );
+    }
   }
 
   // Function to delete a cart item from the database

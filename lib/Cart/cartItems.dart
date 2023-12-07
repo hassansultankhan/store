@@ -4,6 +4,7 @@ class CartItem {
   final String category;
   final String size;
   final int price;
+  final String imagePath;
   final int qtySold;
   final int productNo;
 
@@ -13,6 +14,7 @@ class CartItem {
     required this.category,
     required this.size,
     required this.price,
+    required this.imagePath,
     required this.qtySold,
     required this.productNo,
   });
@@ -21,6 +23,7 @@ class CartItem {
     required this.category,
     required this.size,
     required this.price,
+    required this.imagePath,
     required this.qtySold,
     required this.productNo,
   }) : id = 0;

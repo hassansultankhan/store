@@ -34,6 +34,7 @@ class Dbfiles {
         category TEXT,
         size TEXT,
         price INTEGER,
+        imagepath TEXT,
         qtySold INTEGER, 
         product_no INTEGER)
         ''');
@@ -49,6 +50,7 @@ class Dbfiles {
         category: maps[i]['category'] ?? '',
         size: maps[i]['size'] ?? '',
         price: maps[i]['price'] ?? 0,
+        imagePath: maps[i]['imagepath'] ?? '',
         qtySold: maps[i]['qtySold'] ??
             0, // Updated to use 'qtySold' from the database
         productNo: maps[i]['product_no'] ?? 0,

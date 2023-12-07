@@ -22,7 +22,7 @@ class _Cat0State extends State<Cat0> {
         price: 550,
         imagePath: 'assets/images/greenChatni.jpg',
         soldStatus: false,
-        qtySold: 0,
+        qtySold: 1,
         productNo: 001),
     MenuItem(
         title: "Red Chatni",
@@ -31,7 +31,7 @@ class _Cat0State extends State<Cat0> {
         price: 340,
         imagePath: 'assets/images/redChatni.jpg',
         soldStatus: false,
-        qtySold: 0,
+        qtySold: 1,
         productNo: 002),
     MenuItem(
         title: "Yellow Chatni",
@@ -40,7 +40,7 @@ class _Cat0State extends State<Cat0> {
         price: 500,
         imagePath: 'assets/images/YellowChatni.jpg',
         soldStatus: false,
-        qtySold: 0,
+        qtySold: 1,
         productNo: 003),
   ];
 
@@ -128,6 +128,7 @@ class _Cat0State extends State<Cat0> {
 
     return StatefulBuilder(
       builder: (BuildContext context, StateSetter alertSetState) {
+
         return AlertDialog(
           contentPadding: const EdgeInsets.all(5),
           elevation: 4,
@@ -202,6 +203,7 @@ class _Cat0State extends State<Cat0> {
                                 category: _category,
                                 size: _size,
                                 price: _price,
+                                imagePath: _imagePath,
                                 qtySold: _qtySold,
                                 productNo: _productNo,
                               );
@@ -261,9 +263,9 @@ class _Cat0State extends State<Cat0> {
                         if (quantity > 1) {
                           alertSetState(() {
                             quantity--;
-                            // print(quantity.toString());
                             _qtySold = quantity;
                             print(_qtySold.toString());
+                            
                           });
                         }
                       },
@@ -282,6 +284,8 @@ class _Cat0State extends State<Cat0> {
                       onPressed: () {
                         alertSetState(() {
                           quantity++;
+                          _qtySold = quantity;
+                          print(_qtySold.toString());
                         });
                       },
                       icon: Icon(Icons.add_box),

@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-
 import 'package:estore/Database/dbinitialization.dart';
 
 import 'Categories/cat0.dart';
@@ -176,7 +175,7 @@ class _navigationScreenState extends State<navigationScreen> {
             Text('$email'),
             //display argument photo in avatar of redius 15
             // Display either network or asset image based on the condition
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             photo.startsWith('http') // Check if it's a network image
                 ? Image.network(
                     photo,
@@ -223,22 +222,39 @@ class _navigationScreenState extends State<navigationScreen> {
             child: SingleChildScrollView(
               child: Column(
                 children: cartItems.map((item) {
-                  return ListTile(
+                  return Padding(padding: const EdgeInsets.symmetric(vertical: 10),
+                  
+                  child:ListTile(
+                    
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15),
                     ),
-                    tileColor: Color.fromARGB(255, 147, 201, 111),
+                    tileColor: const Color.fromARGB(255, 147, 201, 111),
                     title: Text(
                       item.title,
-                      style: TextStyle(color: Colors.black),
+                      style: const TextStyle(color: Colors.black),
                     ),
                     subtitle: Text(
                       '${item.qtySold} x ${item.price} Rs = ${item.qtySold * item.price} Rs',
-                      style: TextStyle(color: Colors.black),
+                      style: const TextStyle(color: Colors.black),
                     ),
-                    // Add other properties of ListTile as needed
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                       CircleAvatar(
+                        backgroundImage: AssetImage(item.imagePath),
+                        radius: 30,
+                        backgroundColor: Colors.grey),
+                  
+                       const Icon(Icons.delete,
+                  ),
+                    ]
+                  ),
+                  ),
                   );
+                
                 }).toList(),
+                
               ),
             ),
           ),
@@ -255,19 +271,4 @@ class _navigationScreenState extends State<navigationScreen> {
     );
   }
 
-  void showCartItems2() async {
-    List<CartItem> cartItems = await getAllCartItems();
-    print('Cart Items: $cartItems');
-
-    // Print details of each item in the terminal
-    for (CartItem item in cartItems) {
-      print('Cart Item ID: ${item.id}\n'
-          'Title: ${item.title}\n'
-          'Category: ${item.category}\n'
-          'Size: ${item.size}\n'
-          'Price: ${item.price}\n'
-          'Quantity Sold: ${item.qtySold}\n'
-          'Product No. : ${item.productNo}\n');
-    }
-  }
 }

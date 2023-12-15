@@ -216,6 +216,11 @@ class _Cat0State extends State<Cat0> {
                               if (_soldStatus) {
                                 // Insert the CartItem into the database
                                 await dbfiles.insertCartItem(cartItem);
+                                // After inserting into the database
+                                await dbfiles.insertCartItem(cartItem);
+                                // Print the inserted item
+                                print('Inserted Cart Item Image Path: ${cartItem.imagePath}');
+
                               } else {
                                 // If _soldStatus is false, delete the entry with the given id
                                 await dbfiles.deleteCartItem(cartItem.id);
@@ -230,6 +235,7 @@ class _Cat0State extends State<Cat0> {
                                     'Category: ${cartItem.category}\n'
                                     'Size: ${cartItem.size}\n'
                                     'Price: ${cartItem.price}\n'
+                                    'Image URL: ${cartItem.imagePath}\n'
                                     'Quantity Sold: ${cartItem.qtySold}\n'
                                     'Product No. : ${cartItem.productNo}\n');
                               }

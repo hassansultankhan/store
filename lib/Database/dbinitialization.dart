@@ -45,16 +45,16 @@ class Dbfiles {
     final List<Map<String, dynamic>> maps = await db.query('cart_items');
     return List.generate(maps.length, (i) {
       return CartItem(
-        id: maps[i]['id'],
-        title: maps[i]['title'] ?? '',
-        category: maps[i]['category'] ?? '',
-        size: maps[i]['size'] ?? '',
-        price: maps[i]['price'] ?? 0,
-        imagePath: maps[i]['imagepath'] ?? '',
-        qtySold: maps[i]['qtySold'] ??
-            0, // Updated to use 'qtySold' from the database
-        productNo: maps[i]['product_no'] ?? 0,
-      );
+              id: maps[i]['id'],
+              title: maps[i]['title'] ?? '',
+              category: maps[i]['category'] ?? '',
+              size: maps[i]['size'] ?? '',
+              price: maps[i]['price'] ?? 0,
+              imagePath: maps[i]['imagePath'] ?? '', 
+              qtySold: maps[i]['qtySold'] ?? 0,
+              productNo: maps[i]['product_no'] ?? 0,
+            );
+
     });
   }
 

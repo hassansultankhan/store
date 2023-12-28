@@ -1,6 +1,5 @@
 // ignore_for_file: use_build_context_synchronously
-
-import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:estore/Cart/cartItems.dart';
 import 'package:estore/loginScreen.dart';
 import 'package:estore/mainScreen.dart';
@@ -211,64 +210,78 @@ class _navigationScreenState extends State<navigationScreen> {
   // Method to show added cart items in AlertDialog
   void showCartItems() async {
     List<CartItem> cartItems = await getAllCartItems();
-    print('Cart Items: $cartItems');
+    for (CartItem item in cartItems) {
+      print('Title: ${item.title}');
+      print('Image Path: ${item.imagePath}');
+      print('-----------------------');
+    }
+
     showDialog(
       context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: const Text('Cart Items'),
-          content: Container(
-            height: 400,
-            child: SingleChildScrollView(
-              child: Column(
-                children: cartItems.map((item) {
-                  return Padding(padding: const EdgeInsets.symmetric(vertical: 10),
-                  
-                  child:ListTile(
-                    
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    tileColor: const Color.fromARGB(255, 147, 201, 111),
-                    title: Text(
-                      item.title,
-                      style: const TextStyle(color: Colors.black),
-                    ),
-                    subtitle: Text(
-                      '${item.qtySold} x ${item.price} Rs = ${item.qtySold * item.price} Rs',
-                      style: const TextStyle(color: Colors.black),
-                    ),
-                  trailing: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                       CircleAvatar(
-                        backgroundImage: AssetImage(item.imagePath),
-                        radius: 30,
-                        backgroundColor: Colors.grey),
-                  
-                       const Icon(Icons.delete,
+      builder: (BuildContext ctx) {
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter alertsetState) {
+            return AlertDialog(
+              title: const Text('Cart Items'),
+              content: Container(
+                height: 400,
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: cartItems.map((item) {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        child: ListTile(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          tileColor: const Color.fromARGB(255, 147, 201, 111),
+                          contentPadding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                          title: Text(
+                            item.title,
+                            style: const TextStyle(color: Colors.black),
+                          ),
+                          subtitle: Text(
+                            '${item.qtySold} x ${item.price} Rs = ${item.qtySold * item.price} Rs',
+                            style: const TextStyle(
+                                color: Colors.black, fontSize: 12),
+                          ),
+                          trailing: Wrap(
+                            children: [
+                              CircleAvatar(
+                                  backgroundImage: AssetImage(item.imagePath),
+                                  radius: 25,
+                                  backgroundColor: Colors.grey),
+                              IconButton(
+                                padding: EdgeInsets.zero,
+                                onPressed: () async {
+                                  await Dbfiles().deleteCartItem(item.id);
+                                  alertsetState(() {
+                                    cartItems.remove(item);
+                                    print('Dialog content is being rebuilt');
+                                  });
+                                },
+                                icon: Icon(Icons.delete),
+                              )
+                            ],
+                          ),
+                        ),
+                      );
+                    }).toList(),
                   ),
-                    ]
-                  ),
-                  ),
-                  );
-                
-                }).toList(),
-                
+                ),
               ),
-            ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context); // Close the AlertDialog
-              },
-              child: const Text('Close'),
-            ),
-          ],
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context); // Close the AlertDialog
+                  },
+                  child: const Text('Close'),
+                ),
+              ],
+            );
+          },
         );
       },
     );
   }
-
 }

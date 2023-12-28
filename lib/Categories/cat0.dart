@@ -128,7 +128,6 @@ class _Cat0State extends State<Cat0> {
 
     return StatefulBuilder(
       builder: (BuildContext context, StateSetter alertSetState) {
-
         return AlertDialog(
           contentPadding: const EdgeInsets.all(5),
           elevation: 4,
@@ -217,10 +216,9 @@ class _Cat0State extends State<Cat0> {
                                 // Insert the CartItem into the database
                                 await dbfiles.insertCartItem(cartItem);
                                 // After inserting into the database
-                                await dbfiles.insertCartItem(cartItem);
-                                // Print the inserted item
-                                print('Inserted Cart Item Image Path: ${cartItem.imagePath}');
-
+                                // Print the image path to make sure the url value is passed
+                                print(
+                                    'Inserted Cart Item Image Path: ${cartItem.imagePath}');
                               } else {
                                 // If _soldStatus is false, delete the entry with the given id
                                 await dbfiles.deleteCartItem(cartItem.id);
@@ -271,7 +269,6 @@ class _Cat0State extends State<Cat0> {
                             quantity--;
                             _qtySold = quantity;
                             print(_qtySold.toString());
-                            
                           });
                         }
                       },

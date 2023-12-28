@@ -29,15 +29,15 @@ class Dbfiles {
 
   FutureOr<void> createTable(Database db, int version) async {
     await db.execute('''CREATE TABLE cart_items(
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        title TEXT, 
-        category TEXT,
-        size TEXT,
-        price INTEGER,
-        imagepath TEXT,
-        qtySold INTEGER, 
-        product_no INTEGER)
-        ''');
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      title TEXT, 
+      category TEXT,
+      size TEXT,
+      price INTEGER,
+      imagePath TEXT,
+      qtysold INTEGER, 
+      product_no INTEGER)
+  ''');
   }
 
   Future<List<CartItem>> getCartItems() async {
@@ -45,16 +45,15 @@ class Dbfiles {
     final List<Map<String, dynamic>> maps = await db.query('cart_items');
     return List.generate(maps.length, (i) {
       return CartItem(
-              id: maps[i]['id'],
-              title: maps[i]['title'] ?? '',
-              category: maps[i]['category'] ?? '',
-              size: maps[i]['size'] ?? '',
-              price: maps[i]['price'] ?? 0,
-              imagePath: maps[i]['imagePath'] ?? '', 
-              qtySold: maps[i]['qtySold'] ?? 0,
-              productNo: maps[i]['product_no'] ?? 0,
-            );
-
+        id: maps[i]['id'],
+        title: maps[i]['title'] ?? '',
+        category: maps[i]['category'] ?? '',
+        size: maps[i]['size'] ?? '',
+        price: maps[i]['price'] ?? 0,
+        imagePath: maps[i]['imagePath'] ?? '',
+        qtySold: maps[i]['qtysold'] ?? 0,
+        productNo: maps[i]['product_no'] ?? 0,
+      );
     });
   }
 

@@ -36,6 +36,7 @@ class CartItem {
       'category': category,
       'size': size,
       'price': price,
+      'imagePath': imagePath,
       'qtySold': qtySold,
       'product_no': productNo,
     };

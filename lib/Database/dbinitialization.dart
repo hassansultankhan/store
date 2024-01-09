@@ -76,12 +76,12 @@ class Dbfiles {
   }
 
   // Function to delete a cart item from the database
-  Future<void> deleteCartItem(int id) async {
-    final Database db = await this.db;
-    await db.delete(
-      'cart_items',
-      where: 'id = ?',
-      whereArgs: [id],
-    );
-  }
+  Future<void> deleteCartItem(int productNo) async {
+  final Database db = await this.db;
+  await db.delete(
+    'cart_items',
+    where: 'product_no = ?',
+    whereArgs: [productNo],
+  );
+}
 }

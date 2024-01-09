@@ -222,8 +222,18 @@ class _navigationScreenState extends State<navigationScreen> {
         return StatefulBuilder(
           builder: (BuildContext context, StateSetter alertsetState) {
             return AlertDialog(
+   
+                shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.all(
+                                Radius.elliptical(20, 20),
+                              ),
+                            ),
+
+
               title: const Text('Cart Items'),
               content: Container(
+                
+               
                 height: 400,
                 child: SingleChildScrollView(
                   child: Column(
@@ -270,7 +280,28 @@ class _navigationScreenState extends State<navigationScreen> {
                   ),
                 ),
               ),
-              actions: [
+               actions: [
+            Center(
+                  child: ElevatedButton(
+                    onPressed: () {
+                      
+                    },
+                    style: ElevatedButton.styleFrom(
+                      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8), 
+                      backgroundColor: const Color.fromARGB(255, 63, 158, 22),
+                    ),
+                    child: const Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text('Place Order', style: TextStyle(fontSize: 14)), 
+                        SizedBox(width: 8), 
+                        Icon(Icons.shopping_bag, size: 20), 
+                      ],
+                    ),
+                  ),
+                ),
+
+
                 TextButton(
                   onPressed: () {
                     Navigator.pop(context); // Close the AlertDialog

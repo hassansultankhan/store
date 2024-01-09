@@ -221,7 +221,9 @@ class _Cat0State extends State<Cat0> {
                                     'Inserted Cart Item Image Path: ${cartItem.imagePath}');
                               } else {
                                 // If _soldStatus is false, delete the entry with the given id
-                                await dbfiles.deleteCartItem(cartItem.id);
+                                await dbfiles.deleteCartItem(cartItem.productNo);
+
+                                print("item deleted on _soldStatus being false");
                               }
 
                               // Retrieve and print all cart items from the database

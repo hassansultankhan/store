@@ -8,6 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:estore/Database/dbinitialization.dart';
+import 'package:estore/Cart/checkOut.dart';
 
 import 'Categories/cat0.dart';
 import 'Categories/cat1.dart';
@@ -280,35 +281,41 @@ class _navigationScreenState extends State<navigationScreen> {
                   ),
                 ),
               ),
-               actions: [
-            Center(
-                  child: ElevatedButton(
-                    onPressed: () {
-                      
-                    },
-                    style: ElevatedButton.styleFrom(
-                      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8), 
-                      backgroundColor: const Color.fromARGB(255, 63, 158, 22),
-                    ),
-                    child: const Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text('Place Order', style: TextStyle(fontSize: 14)), 
-                        SizedBox(width: 8), 
-                        Icon(Icons.shopping_bag, size: 20), 
-                      ],
+             actions: [
+                  Center(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => checkOut(
+                              displayName: widget.displayName,
+                              email: widget.email,
+                            ),
+                          ),
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                        backgroundColor: const Color.fromARGB(255, 63, 158, 22),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text('Check Out', style: TextStyle(fontSize: 14)),
+                          SizedBox(width: 8),
+                          Icon(Icons.shopping_bag, size: 20),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-
-
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(context); // Close the AlertDialog
-                  },
-                  child: const Text('Close'),
-                ),
-              ],
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context); // Close the AlertDialog
+                    },
+                    child: const Text('Close'),
+                  ),
+                ],
             );
           },
         );

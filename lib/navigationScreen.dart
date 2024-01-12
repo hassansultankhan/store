@@ -265,7 +265,7 @@ class _navigationScreenState extends State<navigationScreen> {
                               IconButton(
                                 padding: EdgeInsets.zero,
                                 onPressed: () async {
-                                  await Dbfiles().deleteCartItem(item.id);
+                                  await Dbfiles().deleteCartItem(item.productNo); 
                                   alertsetState(() {
                                     cartItems.remove(item);
                                     print('Dialog content is being rebuilt');
@@ -299,7 +299,7 @@ class _navigationScreenState extends State<navigationScreen> {
                         padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                         backgroundColor: const Color.fromARGB(255, 63, 158, 22),
                       ),
-                      child: Row(
+                      child: const Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Text('Check Out', style: TextStyle(fontSize: 14)),

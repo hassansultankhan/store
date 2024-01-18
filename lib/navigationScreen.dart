@@ -288,7 +288,7 @@ class _navigationScreenState extends State<navigationScreen> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => checkOut(
+                            builder: (context) => CheckOut(
                               displayName: widget.displayName,
                               email: widget.email,
                             ),

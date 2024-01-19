@@ -7,6 +7,8 @@ class CheckOut extends StatelessWidget {
   final String email;
   final String displayName;
 
+  bool formValid = false;
+
   CheckOut({
     required this.email,
     required this.displayName,
@@ -17,6 +19,8 @@ class CheckOut extends StatelessWidget {
   final TextEditingController fullNameController = TextEditingController();
   final TextEditingController addressController = TextEditingController();
   final TextEditingController cityController = TextEditingController();
+
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -89,8 +93,11 @@ class CheckOut extends StatelessWidget {
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                 ),
-                // Input fields for phone number, full name, and address
-                 
+          
+          // Input fields for phone number, full name, and address
+          Form(child:Column(
+          children:[
+               
           TextFormField(
             controller: fullNameController,
             decoration: InputDecoration(labelText: 'Full Name'),
@@ -138,34 +145,32 @@ class CheckOut extends StatelessWidget {
               return null;
             },
           ),
+          ]
+          ),
+          ),
+
                 SizedBox(height: 20),
                 // Place Order button
                 
+        // change icon here XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
                 IconButton(
                   onPressed: ()async{
-                    await placeOrder(cartItems, total);
+                    if(
+                     _formKey.currentState != null && _formKey.currentState!.validate()){
+                    await placeOrder(cartItems, total); 
+                  }
+                  else  {print("invalid value passed");}
                   },
                   icon: Icon(Icons.shopping_bag_rounded, size: 50,),
                   color: Colors.greenAccent,
                   focusColor: Colors.green[30],
                 
                   ),
-                // ElevatedButton(
-                //   onPressed: () async {
-                //     await placeOrder(cartItems, total);
-                //   },
-                //   style: ElevatedButton.styleFrom(
-                //     padding: EdgeInsets.symmetric(horizontal: 100, vertical: 8),
-                //     backgroundColor: const Color.fromARGB(255, 63, 158, 22),
-                //   ),
-                //   child: Row(
-                //     mainAxisSize: MainAxisSize.min,
-                //     children: [
-                //       Text('PLACE ORDER', style: TextStyle(fontSize: 14)),
-                //       SizedBox(width: 8),
-                //       Icon(Icons.shopping_bag, size: 20),
-                //     ],
-                //   ),
+
+                  
+
+
+            
                 
               ],
             );

@@ -3,16 +3,21 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:estore/Cart/cartItems.dart';
 import 'package:estore/Database/dbinitialization.dart';
 
-class CheckOut extends StatelessWidget {
+class CheckOut extends StatefulWidget {
   final String email;
   final String displayName;
-
-  bool formValid = false;
 
   CheckOut({
     required this.email,
     required this.displayName,
   });
+
+  @override
+  _CheckOutState createState() => _CheckOutState();
+}
+
+class _CheckOutState extends State<CheckOut> {
+  bool formValid = false;
 
   // Controllers for text fields
   final TextEditingController phoneNumberController = TextEditingController();
@@ -36,11 +41,11 @@ class CheckOut extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Text(
-                  displayName,
+                  widget.displayName,
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 ),
                 Text(
-                  email,
+                  widget.email,
                   style: TextStyle(fontSize: 14),
                 ),
               ],
@@ -57,7 +62,8 @@ class CheckOut extends StatelessWidget {
             return Text('Error: ${snapshot.error}');
           } else {
             List<CartItem> cartItems = snapshot.data ?? [];
-            int total = cartItems.fold<int>(0, (sum, item) => sum + item.qtySold * item.price);
+            int total = cartItems.fold<int>(
+                0, (sum, item) => sum + item.qtySold * item.price);
 
             return ListView(
               padding: EdgeInsets.all(15),
@@ -84,7 +90,7 @@ class CheckOut extends StatelessWidget {
                 ),
                 // Total sum
                 Container(
-                  padding: EdgeInsets.all(20),
+                  padding: EdgeInsets.all(30),
                   decoration: BoxDecoration(
                     border: Border(top: BorderSide(color: Colors.grey)),
                   ),
@@ -93,85 +99,97 @@ class CheckOut extends StatelessWidget {
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                 ),
-          
-          // Input fields for phone number, full name, and address
-          Form(child:Column(
-          children:[
-               
-          TextFormField(
-            controller: fullNameController,
-            decoration: InputDecoration(labelText: 'Full Name'),
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Please enter your full name';
-              }
-              // Add more validation logic if needed
-              return null;
-            },
-          ),
-          TextFormField(
-            controller: phoneNumberController,
-            decoration: InputDecoration(labelText: 'Phone Number'),
-            keyboardType: TextInputType.phone,
-            validator: (value) {
-                if (value!.isEmpty){   
-                   return 'Enter a valid contact number';
-                } else if(!isValidPhoneNumber(value)){
-                   return 'Enter a Vali numberic contact number'; 
-                }    
-            }     
-            ),
-          
-          TextFormField(
-            controller: addressController,
-            decoration: InputDecoration(labelText: 'House Address'),
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Please enter your address';
-              }
-              // Add more validation logic if needed
-              return null;
-            
-            },
-          ),
-          TextFormField(
-            controller: cityController,
-            decoration: InputDecoration(labelText: 'City'),
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Please enter your city';
-              }
-              // Add more validation logic if needed
-              return null;
-            },
-          ),
-          ]
-          ),
-          ),
+
+                // Input fields for phone number, full name, and address
+                Form(
+                  key: _formKey,
+                  child: Column(children: [
+                    TextFormField(
+                      controller: fullNameController,
+                      decoration: InputDecoration(labelText: 'Full Name'),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter your full name';
+                        }
+                        // Add more validation logic if needed
+                        return null;
+                      },
+                      onChanged: (value) => formValidation(),
+                    ),
+                    TextFormField(
+                      controller: phoneNumberController,
+                      decoration: InputDecoration(labelText: 'Phone Number'),
+                      keyboardType: TextInputType.phone,
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Enter a valid contact number';
+                        } else if (!isValidPhoneNumber(value)) {
+                          return 'Enter a valid numeric contact number';
+                        }
+                        return null;
+                      },
+                      onChanged: (value) => formValidation(),
+                    ),
+                    TextFormField(
+                      controller: addressController,
+                      decoration: InputDecoration(labelText: 'House Address'),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter your address';
+                        }
+                        // Add more validation logic if needed
+                        return null;
+                      },
+                      onChanged: (value) => formValidation(),
+                    ),
+                    TextFormField(
+                      controller: cityController,
+                      decoration: InputDecoration(labelText: 'City'),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter your city';
+                        }
+                        // Add more validation logic if needed
+                        return null;
+                      },
+                      onChanged: (value) => formValidation(),
+                    ),
+                  ]),
+                ),
 
                 SizedBox(height: 20),
                 // Place Order button
-                
-        // change icon here XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-                IconButton(
-                  onPressed: ()async{
-                    if(
-                     _formKey.currentState != null && _formKey.currentState!.validate()){
-                    await placeOrder(cartItems, total); 
-                  }
-                  else  {print("invalid value passed");}
-                  },
-                  icon: Icon(Icons.shopping_bag_rounded, size: 50,),
-                  color: Colors.greenAccent,
-                  focusColor: Colors.green[30],
-                
+                UnconstrainedBox(
+                    child: SizedBox(
+                  height: 50,
+                  width: 200,
+                  child: ElevatedButton(
+                    onPressed: formValid
+                        ? () async => await placeOrder(cartItems, total)
+                        : null,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: formValid ? Colors.green : Colors.grey,
+                      shadowColor: Colors.black,
+                      elevation: 20,
+                      tapTargetSize: MaterialTapTargetSize
+                          .padded, // make the button bigger
+                    ).copyWith(
+                      fixedSize: MaterialStateProperty.all(Size(130, 40)),
+                    ),
+                    child: const Center(
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            "PLACE ORDER",
+                            style: TextStyle(fontSize: 18),
+                          ),
+                          Icon(Icons.shopping_bag_rounded, size: 30),
+                        ],
+                      ),
+                    ),
                   ),
-
-                  
-
-
-            
-                
+                )),
               ],
             );
           }
@@ -187,23 +205,24 @@ class CheckOut extends StatelessWidget {
     // Create a new order document
     DocumentReference orderRef = await firestore.collection('orders').add({
       'fullName': fullNameController.text,
-      'userName': displayName,
-      'userEmail': email,
+      'userName': widget.displayName,
+      'userEmail': widget.email,
       'phoneNumber': phoneNumberController.text,
       'address': addressController.text,
       'city': cityController.text,
-      'items': cartItems.map((item) => {
-        'id': item.id,
-        'title': item.title,
-        'category': item.category,
-        'size': item.size,
-        'price': item.price,
-        'imagePath': item.imagePath,
-        'qtySold': item.qtySold,
-        'productNo': item.productNo,
-      }).toList(),
+      'items': cartItems
+          .map((item) => {
+                'id': item.id,
+                'title': item.title,
+                'category': item.category,
+                'size': item.size,
+                'price': item.price,
+                'imagePath': item.imagePath,
+                'qtySold': item.qtySold,
+                'productNo': item.productNo,
+              })
+          .toList(),
       'totalAmount': total,
-      
     });
 
     print('Order placed successfully! Order ID: ${orderRef.id}');
@@ -213,9 +232,16 @@ class CheckOut extends StatelessWidget {
     Dbfiles dbfiles = Dbfiles();
     return await dbfiles.getCartItems();
   }
-   bool isValidPhoneNumber(String phoneNumber) {
+
+  bool isValidPhoneNumber(String phoneNumber) {
     // Use a regular expression to check if the phone number is numeric
     final phoneRegExp = RegExp(r'^[0-9]+$');
     return phoneRegExp.hasMatch(phoneNumber);
+  }
+
+  formValidation() {
+    setState(() {
+      formValid = _formKey.currentState?.validate() ?? false;
+    });
   }
 }

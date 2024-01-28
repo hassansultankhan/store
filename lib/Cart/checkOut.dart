@@ -18,6 +18,7 @@ class CheckOut extends StatefulWidget {
 
 class _CheckOutState extends State<CheckOut> {
   bool formValid = false;
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   // Controllers for text fields
   final TextEditingController phoneNumberController = TextEditingController();
@@ -25,184 +26,188 @@ class _CheckOutState extends State<CheckOut> {
   final TextEditingController addressController = TextEditingController();
   final TextEditingController cityController = TextEditingController();
 
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  List<CartItem> cartItems = [];
+  int total = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchCartItems();
+  }
+
+  Future<void> fetchCartItems() async {
+    try {
+      List<CartItem> items = await getAllCartItems();
+      setState(() {
+        cartItems = items;
+        total = cartItems.fold<int>(
+            0, (sum, item) => sum + item.qtySold * item.price);
+      });
+    } catch (error) {
+      print('Error fetching cart items: $error');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('CHECKOUT'),
-        centerTitle: true,
-        actions: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Text(
-                  widget.displayName,
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                ),
-                Text(
-                  widget.email,
-                  style: TextStyle(fontSize: 14),
-                ),
-              ],
+    return GestureDetector( // Wrap the Scaffold body with GestureDetector
+      onTap: () {
+        FocusScope.of(context).unfocus(); // Dismiss keyboard on tap outside
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('CHECKOUT'),
+          centerTitle: true,
+          actions: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Text(
+                    widget.displayName,
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                    widget.email,
+                    style: TextStyle(fontSize: 14),
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
-      ),
-      body: FutureBuilder<List<CartItem>>(
-        future: getAllCartItems(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return CircularProgressIndicator();
-          } else if (snapshot.hasError) {
-            return Text('Error: ${snapshot.error}');
-          } else {
-            List<CartItem> cartItems = snapshot.data ?? [];
-            int total = cartItems.fold<int>(
-                0, (sum, item) => sum + item.qtySold * item.price);
-
-            return ListView(
-              padding: EdgeInsets.all(15),
+          ],
+        ),
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                // List of items
-                ListView.builder(
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  itemCount: cartItems.length,
-                  itemBuilder: (context, index) {
-                    CartItem item = cartItems[index];
-                    return ListTile(
-                      title: Text(item.title),
-                      subtitle: Text(
-                        '${item.qtySold} x ${item.price} Rs = ${item.qtySold * item.price} Rs',
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    ListView.builder(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemCount: cartItems.length,
+                      itemBuilder: (context, index) {
+                        CartItem item = cartItems[index];
+                        return ListTile(
+                          title: Text(item.title),
+                          subtitle: Text(
+                            '${item.qtySold} x ${item.price} Rs = ${item.qtySold * item.price} Rs',
+                          ),
+                          leading: CircleAvatar(
+                            backgroundImage: AssetImage(item.imagePath),
+                            radius: 25,
+                            backgroundColor: Colors.grey,
+                          ),
+                        );
+                      },
+                    ),
+                    Container(
+                      padding: EdgeInsets.all(30),
+                      decoration: BoxDecoration(
+                        border: Border(top: BorderSide(color: Colors.grey)),
                       ),
-                      leading: CircleAvatar(
-                        backgroundImage: AssetImage(item.imagePath),
-                        radius: 25,
-                        backgroundColor: Colors.grey,
+                      child: Text(
+                        'Total: $total Rs',
+                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                       ),
-                    );
-                  },
+                    ),
+                  ],
                 ),
-                // Total sum
-                Container(
-                  padding: EdgeInsets.all(30),
-                  decoration: BoxDecoration(
-                    border: Border(top: BorderSide(color: Colors.grey)),
-                  ),
-                  child: Text(
-                    'Total: $total Rs',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-                ),
-
-                // Input fields for phone number, full name, and address
+                SizedBox(height: 20),
                 Form(
                   key: _formKey,
-                  child: Column(children: [
-                    TextFormField(
-                      controller: fullNameController,
-                      decoration: InputDecoration(labelText: 'Full Name'),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter your full name';
-                        }
-                        // Add more validation logic if needed
-                        return null;
-                      },
-                      onChanged: (value) => formValidation(),
-                    ),
-                    TextFormField(
-                      controller: phoneNumberController,
-                      decoration: InputDecoration(labelText: 'Phone Number'),
-                      keyboardType: TextInputType.phone,
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return 'Enter a valid contact number';
-                        } else if (!isValidPhoneNumber(value)) {
-                          return 'Enter a valid numeric contact number';
-                        }
-                        return null;
-                      },
-                      onChanged: (value) => formValidation(),
-                    ),
-                    TextFormField(
-                      controller: addressController,
-                      decoration: InputDecoration(labelText: 'House Address'),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter your address';
-                        }
-                        // Add more validation logic if needed
-                        return null;
-                      },
-                      onChanged: (value) => formValidation(),
-                    ),
-                    TextFormField(
-                      controller: cityController,
-                      decoration: InputDecoration(labelText: 'City'),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter your city';
-                        }
-                        // Add more validation logic if needed
-                        return null;
-                      },
-                      onChanged: (value) => formValidation(),
-                    ),
-                  ]),
+                  child: Column(
+                    children: [
+                      TextFormField(
+                        controller: fullNameController,
+                        decoration: InputDecoration(labelText: 'Full Name'),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your full name';
+                          }
+                          return null;
+                        },
+                        onChanged: (value) => formValidation(),
+                      ),
+                      TextFormField(
+                        controller: phoneNumberController,
+                        decoration: InputDecoration(labelText: 'Phone Number'),
+                        keyboardType: TextInputType.phone,
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Enter a valid contact number';
+                          } else if (!isValidPhoneNumber(value)) {
+                            return 'Enter a valid numeric contact number';
+                          }
+                          return null;
+                        },
+                        onChanged: (value) => formValidation(),
+                      ),
+                      TextFormField(
+                        controller: addressController,
+                        decoration: InputDecoration(labelText: 'House Address'),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your address';
+                          }
+                          return null;
+                        },
+                        onChanged: (value) => formValidation(),
+                      ),
+                      TextFormField(
+                        controller: cityController,
+                        decoration: InputDecoration(labelText: 'City'),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your city';
+                          }
+                          return null;
+                        },
+                        onChanged: (value) => formValidation(),
+                      ),
+                    ],
+                  ),
                 ),
-
                 SizedBox(height: 20),
-                // Place Order button
-                UnconstrainedBox(
-                    child: SizedBox(
+                SizedBox(
                   height: 50,
                   width: 200,
                   child: ElevatedButton(
-                    onPressed: formValid
-                        ? () async => await placeOrder(cartItems, total)
-                        : null,
+                    onPressed: formValid ? () async => await placeOrder() : null,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: formValid ? Colors.green : Colors.grey,
                       shadowColor: Colors.black,
                       elevation: 20,
-                      tapTargetSize: MaterialTapTargetSize
-                          .padded, // make the button bigger
-                    ).copyWith(
-                      fixedSize: MaterialStateProperty.all(Size(130, 40)),
                     ),
-                    child: const Center(
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            "PLACE ORDER",
-                            style: TextStyle(fontSize: 18),
-                          ),
-                          Icon(Icons.shopping_bag_rounded, size: 30),
-                        ],
-                      ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text("PLACE ORDER", style: TextStyle(fontSize: 18)),
+                        Icon(Icons.shopping_bag_rounded, size: 30),
+                      ],
                     ),
                   ),
-                )),
+                ),
               ],
-            );
-          }
-        },
+            ),
+          ),
+        ),
       ),
     );
   }
 
-  Future<void> placeOrder(List<CartItem> cartItems, int total) async {
-    // Initialize Firestore
+  Future<void> placeOrder() async {
+    if (!_formKey.currentState!.validate()) {
+      return;
+    }
+
     FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-    // Create a new order document
     DocumentReference orderRef = await firestore.collection('orders').add({
       'fullName': fullNameController.text,
       'userName': widget.displayName,
@@ -234,7 +239,6 @@ class _CheckOutState extends State<CheckOut> {
   }
 
   bool isValidPhoneNumber(String phoneNumber) {
-    // Use a regular expression to check if the phone number is numeric
     final phoneRegExp = RegExp(r'^[0-9]+$');
     return phoneRegExp.hasMatch(phoneNumber);
   }

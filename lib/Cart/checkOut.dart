@@ -125,10 +125,11 @@ class _CheckOutState extends State<CheckOut> {
                     children: [
                       TextFormField(
                         controller: fullNameController,
-                        decoration: InputDecoration(labelText: 'Full Name'),
+                        decoration: const InputDecoration(labelText: 'Full Name',
+                        ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please enter your full name';
+                            return 'Please enter your full name'; 
                           }
                           return null;
                         },

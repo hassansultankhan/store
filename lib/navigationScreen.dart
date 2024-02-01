@@ -38,8 +38,14 @@ class _navigationScreenState extends State<navigationScreen> {
     Cat1(),
   ];
   int selectedCat = 0;
+
+  // Define cartItems list
+  List<CartItem> cartItems = [];
+
   @override
   Widget build(BuildContext context) {
+    
+
     // Set the status bar color here
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
       statusBarColor: Color.fromARGB(
@@ -62,38 +68,43 @@ class _navigationScreenState extends State<navigationScreen> {
                     (route) => false);
               }),
           actions: [
-            IconButton(
-              onPressed: () {
-                // Show added cart items in AlertDialog  XXXXXXXXXXXXX
-
-                showCartItems();
-              },
-              icon: const Icon(
-                Icons.shopping_cart_rounded,
-                size: 30,
+  // Check if cartItems list is not empty
+  if (cartItems.isNotEmpty)
+    Center(
+      child: ElevatedButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => CheckOut(
+                displayName: widget.displayName,
+                email: widget.email,
               ),
             ),
-            IconButton(
-              onPressed: () {
-                Future.delayed(Duration.zero, () {
-                  showDialog(
-                    context: context,
-                    builder: (context) => showCredentials(
-                        widget.displayName, widget.email, widget.photoUrl),
-                  );
-                });
-              },
-              icon: CircleAvatar(
-                radius: 20,
-                child: ClipOval(
-                  child: widget.photoUrl.startsWith("http")
-                      ? Image.network(widget.photoUrl)
-                      : Image.asset('assets/images/Carrot_icon.png'),
-                ),
-                backgroundColor: Colors.white,
-              ),
-            ),
+          );
+        },
+        style: ElevatedButton.styleFrom(
+          padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+          backgroundColor: const Color.fromARGB(255, 63, 158, 22),
+        ),
+        child: const Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text('Check Out', style: TextStyle(fontSize: 14)),
+            SizedBox(width: 8),
+            Icon(Icons.shopping_bag, size: 20),
           ],
+        ),
+      ),
+    ),
+  TextButton(
+    onPressed: () {
+      Navigator.pop(context); // Close the AlertDialog
+    },
+    child: const Text('Close'),
+  ),
+],
+
         ),
         body: SizedBox(
           //set size of sized box to maximum size of screen

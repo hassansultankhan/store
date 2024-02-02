@@ -1,5 +1,3 @@
-// ignore_for_file: use_build_context_synchronously
-// import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:estore/Cart/cartItems.dart';
 import 'package:estore/loginScreen.dart';
 import 'package:estore/mainScreen.dart';
@@ -38,14 +36,9 @@ class _navigationScreenState extends State<navigationScreen> {
     Cat1(),
   ];
   int selectedCat = 0;
-
-  // Define cartItems list
-  List<CartItem> cartItems = [];
-
+  bool cartNotEmpty = true;
   @override
   Widget build(BuildContext context) {
-    
-
     // Set the status bar color here
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
       statusBarColor: Color.fromARGB(
@@ -68,43 +61,38 @@ class _navigationScreenState extends State<navigationScreen> {
                     (route) => false);
               }),
           actions: [
-  // Check if cartItems list is not empty
-  if (cartItems.isNotEmpty)
-    Center(
-      child: ElevatedButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => CheckOut(
-                displayName: widget.displayName,
-                email: widget.email,
+            IconButton(
+              onPressed: () {
+                // Show added cart items in AlertDialog  XXXXXXXXXXXXX
+
+                showCartItems();
+              },
+              icon: const Icon(
+                Icons.shopping_cart_rounded,
+                size: 30,
               ),
             ),
-          );
-        },
-        style: ElevatedButton.styleFrom(
-          padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-          backgroundColor: const Color.fromARGB(255, 63, 158, 22),
-        ),
-        child: const Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text('Check Out', style: TextStyle(fontSize: 14)),
-            SizedBox(width: 8),
-            Icon(Icons.shopping_bag, size: 20),
+            IconButton(
+              onPressed: () {
+                Future.delayed(Duration.zero, () {
+                  showDialog(
+                    context: context,
+                    builder: (context) => showCredentials(
+                        widget.displayName, widget.email, widget.photoUrl),
+                  );
+                });
+              },
+              icon: CircleAvatar(
+                radius: 20,
+                child: ClipOval(
+                  child: widget.photoUrl.startsWith("http")
+                      ? Image.network(widget.photoUrl)
+                      : Image.asset('assets/images/Carrot_icon.png'),
+                ),
+                backgroundColor: Colors.white,
+              ),
+            ),
           ],
-        ),
-      ),
-    ),
-  TextButton(
-    onPressed: () {
-      Navigator.pop(context); // Close the AlertDialog
-    },
-    child: const Text('Close'),
-  ),
-],
-
         ),
         body: SizedBox(
           //set size of sized box to maximum size of screen
@@ -222,30 +210,36 @@ class _navigationScreenState extends State<navigationScreen> {
   // Method to show added cart items in AlertDialog
   void showCartItems() async {
     List<CartItem> cartItems = await getAllCartItems();
-    for (CartItem item in cartItems) {
-      print('Title: ${item.title}');
-      print('Image Path: ${item.imagePath}');
-      print('-----------------------');
+    if (cartItems.isEmpty) {
+      print('Cart is empty');
+      setState(() {
+        cartNotEmpty = false; // Set to false when the cart is empty
+      });
+    } else {
+      setState(() {
+        cartNotEmpty = true; // Set to true when there are items in the cart
+      });
+      for (CartItem item in cartItems) {
+        print('Title: ${item.title}');
+        print('Image Path: ${item.imagePath}');
+        print('-----------------------');
+      }
     }
 
+// ignore_for_file: use_build_context_synchronously
     showDialog(
       context: context,
       builder: (BuildContext ctx) {
         return StatefulBuilder(
           builder: (BuildContext context, StateSetter alertsetState) {
             return AlertDialog(
-   
-                shape: const RoundedRectangleBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.elliptical(20, 20),
-                              ),
-                            ),
-
-
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(
+                  Radius.elliptical(20, 20),
+                ),
+              ),
               title: const Text('Cart Items'),
               content: Container(
-                
-               
                 height: 400,
                 child: SingleChildScrollView(
                   child: Column(
@@ -276,7 +270,8 @@ class _navigationScreenState extends State<navigationScreen> {
                               IconButton(
                                 padding: EdgeInsets.zero,
                                 onPressed: () async {
-                                  await Dbfiles().deleteCartItem(item.productNo); 
+                                  await Dbfiles()
+                                      .deleteCartItem(item.productNo);
                                   alertsetState(() {
                                     cartItems.remove(item);
                                     print('Dialog content is being rebuilt');
@@ -292,41 +287,46 @@ class _navigationScreenState extends State<navigationScreen> {
                   ),
                 ),
               ),
-             actions: [
-                  Center(
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => CheckOut(
-                              displayName: widget.displayName,
-                              email: widget.email,
-                            ),
-                          ),
-                        );
-                      },
-                      style: ElevatedButton.styleFrom(
-                        padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                        backgroundColor: const Color.fromARGB(255, 63, 158, 22),
-                      ),
-                      child: const Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text('Check Out', style: TextStyle(fontSize: 14)),
-                          SizedBox(width: 8),
-                          Icon(Icons.shopping_bag, size: 20),
-                        ],
-                      ),
+              actions: [
+                Center(
+                  child: ElevatedButton(
+                    onPressed: cartNotEmpty
+                        ? () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => CheckOut(
+                                  displayName: widget.displayName,
+                                  email: widget.email,
+                                ),
+                              ),
+                            );
+                          }
+                        : null,
+                    style: ElevatedButton.styleFrom(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                      backgroundColor: cartNotEmpty
+                          ? const Color.fromARGB(255, 63, 158, 22)
+                          : Colors.grey,
+                    ),
+                    child: const Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text('Check Out', style: TextStyle(fontSize: 14)),
+                        SizedBox(width: 8),
+                        Icon(Icons.shopping_bag, size: 20),
+                      ],
                     ),
                   ),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.pop(context); // Close the AlertDialog
-                    },
-                    child: const Text('Close'),
-                  ),
-                ],
+                ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context); // Close the AlertDialog
+                  },
+                  child: const Text('Close'),
+                ),
+              ],
             );
           },
         );

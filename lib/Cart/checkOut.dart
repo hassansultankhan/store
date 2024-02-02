@@ -1,7 +1,9 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:estore/Cart/cartItems.dart';
 import 'package:estore/Database/dbinitialization.dart';
+import 'package:uuid/uuid.dart';
 
 class CheckOut extends StatefulWidget {
   final String email;
@@ -202,38 +204,103 @@ class _CheckOutState extends State<CheckOut> {
     );
   }
 
-  Future<void> placeOrder() async {
-    if (!_formKey.currentState!.validate()) {
-      return;
-    }
 
-    FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-    DocumentReference orderRef = await firestore.collection('orders').add({
-      'fullName': fullNameController.text,
-      'userName': widget.displayName,
-      'userEmail': widget.email,
-      'phoneNumber': phoneNumberController.text,
-      'address': addressController.text,
-      'city': cityController.text,
-      'items': cartItems
-          .map((item) => {
-                'id': item.id,
-                'title': item.title,
-                'category': item.category,
-                'size': item.size,
-                'price': item.price,
-                'imagePath': item.imagePath,
-                'qtySold': item.qtySold,
-                'productNo': item.productNo,
-              })
-          .toList(),
-      'totalAmount': total,
-    });
+// Inside _CheckOutState class
 
-    print('Order placed successfully! Order ID: ${orderRef.id}');
+Future<void> placeOrder() async {
+  if (!_formKey.currentState!.validate()) {
+    return;
   }
 
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+  late int randomNumber; 
+  bool uniqueIdFound = false;
+
+  while (!uniqueIdFound) {
+    randomNumber = Random().nextInt(90000) + 100000; 
+
+    var existingDoc = await firestore.collection('orders').doc(randomNumber.toString()).get();
+    if (!existingDoc.exists) {
+      uniqueIdFound = true;
+    }
+  }
+
+  // Create the order with the unique random ID
+  Map<String, dynamic> orderData = {
+    'orderId': randomNumber.toString(), 
+    'fullName': fullNameController.text,
+    'userName': widget.displayName,
+    'userEmail': widget.email,
+    'phoneNumber': phoneNumberController.text,
+    'address': addressController.text,
+    'city': cityController.text,
+    'items': cartItems
+        .map((item) => {
+              'id': item.id,
+              'title': item.title,
+              'category': item.category,
+              'size': item.size,
+              'price': item.price,
+              'imagePath': item.imagePath,
+              'qtySold': item.qtySold,
+              'productNo': item.productNo,
+            })
+        .toList(),
+    'totalAmount': total,
+  };
+
+  // Add the order to Firestore with the unique random ID
+  await firestore.collection('orders').doc(orderData['orderId']).set(orderData);
+
+  print('Order placed successfully! Order ID: ${orderData['orderId']}');
+  // ignore: use_build_context_synchronously
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text('Order Details'),
+        content: FutureBuilder<DocumentSnapshot>(
+          future: firestore.collection('orders').doc(orderData['orderId']).get(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return CircularProgressIndicator(); // Show loading indicator while fetching data
+            }
+            if (snapshot.hasError) {
+              return Text('Error: ${snapshot.error}');
+            }
+            if (!snapshot.hasData || !snapshot.data!.exists) {
+              return Text('No data found for order ID: ${orderData['orderId']}');
+            }
+
+            // Extract order data from snapshot
+            Map<String, dynamic> order = snapshot.data!.data() as Map<String, dynamic>;
+
+            // Build the content of the dialog with order details
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text('Order ID: ${order['orderId']}'),
+                Text('Full Name: ${order['fullName']}'),
+                Text('Email: ${order['userEmail']}'),
+                // Add more order details as needed
+              ],
+            );
+          },
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop(); // Close the dialog
+            },
+            child: Text('Close'),
+          ),
+        ],
+      );
+      });
+}
   Future<List<CartItem>> getAllCartItems() async {
     Dbfiles dbfiles = Dbfiles();
     return await dbfiles.getCartItems();

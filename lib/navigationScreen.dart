@@ -210,28 +210,33 @@ class _navigationScreenState extends State<navigationScreen> {
   // Method to show added cart items in AlertDialog
   void showCartItems() async {
     List<CartItem> cartItems = await getAllCartItems();
-    if (cartItems.isEmpty) {
-      print('Cart is empty');
-      setState(() {
-        cartNotEmpty = false; // Set to false when the cart is empty
-      });
-    } else {
-      setState(() {
-        cartNotEmpty = true; // Set to true when there are items in the cart
-      });
+    // if (cartItems.isEmpty) {
+    //   print('Cart is empty');
+    //   setState(() {
+    //     cartNotEmpty = false; // Set to false when the cart is empty
+    //   });
+    // } else {
+    //   setState(() {
+    //     cartNotEmpty = true; // Set to true when there are items in the cart
+    //   });
       for (CartItem item in cartItems) {
         print('Title: ${item.title}');
         print('Image Path: ${item.imagePath}');
         print('-----------------------');
       }
-    }
+    // }
 
 // ignore_for_file: use_build_context_synchronously
+    setState(() {
+
     showDialog(
+      
       context: context,
       builder: (BuildContext ctx) {
+        
         return StatefulBuilder(
           builder: (BuildContext context, StateSetter alertsetState) {
+            bool isCartEmpty = cartItems.isEmpty;
             return AlertDialog(
               shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(
@@ -290,8 +295,11 @@ class _navigationScreenState extends State<navigationScreen> {
               actions: [
                 Center(
                   child: ElevatedButton(
-                    onPressed: cartNotEmpty
-                        ? () {
+                    onPressed: isCartEmpty
+                        ? 
+                        null
+                        :
+                        () {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -301,8 +309,7 @@ class _navigationScreenState extends State<navigationScreen> {
                                 ),
                               ),
                             );
-                          }
-                        : null,
+                          },
                     style: ElevatedButton.styleFrom(
                       padding:
                           EdgeInsets.symmetric(horizontal: 12, vertical: 8),
@@ -332,5 +339,6 @@ class _navigationScreenState extends State<navigationScreen> {
         );
       },
     );
+    });
   }
 }

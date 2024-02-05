@@ -1,4 +1,5 @@
 import 'package:estore/Cart/cartItems.dart';
+import 'package:estore/Cart/ordersHistory.dart';
 import 'package:estore/loginScreen.dart';
 import 'package:estore/mainScreen.dart';
 import 'package:flutter/material.dart';
@@ -195,6 +196,34 @@ class _navigationScreenState extends State<navigationScreen> {
                       ),
                     ),
                   ),
+            const SizedBox(height: 20),
+            Container(
+              child: UnconstrainedBox(
+                child: SizedBox(
+                  width: 180,
+                  child: ElevatedButton(
+                      style: ButtonStyle(
+                        elevation: MaterialStateProperty.all<double>(8),
+                      ),
+                      onPressed: () {
+                        Navigator.of(context).pushReplacement(MaterialPageRoute(
+                          builder: (contect) => ordersHistory(),
+                        ));
+                      },
+                      child: const Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: <Widget>[
+                          Text(
+                            'Your Orders',
+                            style: TextStyle(
+                                fontSize: 15, fontWeight: FontWeight.bold),
+                          ),
+                          Icon(Icons.shopping_bag_rounded)
+                        ],
+                      )),
+                ),
+              ),
+            ),
           ],
         ),
       ),
@@ -210,135 +239,127 @@ class _navigationScreenState extends State<navigationScreen> {
   // Method to show added cart items in AlertDialog
   void showCartItems() async {
     List<CartItem> cartItems = await getAllCartItems();
-    // if (cartItems.isEmpty) {
-    //   print('Cart is empty');
-    //   setState(() {
-    //     cartNotEmpty = false; // Set to false when the cart is empty
-    //   });
-    // } else {
-    //   setState(() {
-    //     cartNotEmpty = true; // Set to true when there are items in the cart
-    //   });
-      for (CartItem item in cartItems) {
-        print('Title: ${item.title}');
-        print('Image Path: ${item.imagePath}');
-        print('-----------------------');
-      }
+
+    for (CartItem item in cartItems) {
+      print('Title: ${item.title}');
+      print('Image Path: ${item.imagePath}');
+      print('-----------------------');
+    }
     // }
 
 // ignore_for_file: use_build_context_synchronously
     setState(() {
-
-    showDialog(
-      
-      context: context,
-      builder: (BuildContext ctx) {
-        
-        return StatefulBuilder(
-          builder: (BuildContext context, StateSetter alertsetState) {
-            bool isCartEmpty = cartItems.isEmpty;
-            return AlertDialog(
-              shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(
-                  Radius.elliptical(20, 20),
+      showDialog(
+        context: context,
+        builder: (BuildContext ctx) {
+          return StatefulBuilder(
+            builder: (BuildContext context, StateSetter alertsetState) {
+              bool isCartEmpty = cartItems.isEmpty;
+              return AlertDialog(
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(
+                    Radius.elliptical(20, 20),
+                  ),
                 ),
-              ),
-              title: const Text('Cart Items'),
-              content: Container(
-                height: 400,
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: cartItems.map((item) {
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 10),
-                        child: ListTile(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15),
+                title: const Text('Cart Items'),
+                content: Container(
+                  height: 400,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: cartItems.map((item) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 10),
+                          child: ListTile(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                            tileColor: const Color.fromARGB(255, 147, 201, 111),
+                            contentPadding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                            title: Text(
+                              item.title,
+                              style: const TextStyle(color: Colors.black),
+                            ),
+                            subtitle: Text(
+                              '${item.qtySold} x ${item.price} Rs = ${item.qtySold * item.price} Rs',
+                              style: const TextStyle(
+                                  color: Colors.black, fontSize: 12),
+                            ),
+                            trailing: Wrap(
+                              children: [
+                                CircleAvatar(
+                                    backgroundImage: AssetImage(item.imagePath),
+                                    radius: 25,
+                                    backgroundColor: Colors.grey),
+                                IconButton(
+                                  padding: EdgeInsets.zero,
+                                  onPressed: () async {
+                                    await Dbfiles()
+                                        .deleteCartItem(item.productNo);
+                                    alertsetState(() {
+                                      cartItems.remove(item);
+                                      print('Dialog content is being rebuilt');
+                                    });
+                                  },
+                                  icon: Icon(Icons.delete),
+                                )
+                              ],
+                            ),
                           ),
-                          tileColor: const Color.fromARGB(255, 147, 201, 111),
-                          contentPadding: EdgeInsets.fromLTRB(10, 0, 0, 0),
-                          title: Text(
-                            item.title,
-                            style: const TextStyle(color: Colors.black),
-                          ),
-                          subtitle: Text(
-                            '${item.qtySold} x ${item.price} Rs = ${item.qtySold * item.price} Rs',
-                            style: const TextStyle(
-                                color: Colors.black, fontSize: 12),
-                          ),
-                          trailing: Wrap(
-                            children: [
-                              CircleAvatar(
-                                  backgroundImage: AssetImage(item.imagePath),
-                                  radius: 25,
-                                  backgroundColor: Colors.grey),
-                              IconButton(
-                                padding: EdgeInsets.zero,
-                                onPressed: () async {
-                                  await Dbfiles()
-                                      .deleteCartItem(item.productNo);
-                                  alertsetState(() {
-                                    cartItems.remove(item);
-                                    print('Dialog content is being rebuilt');
-                                  });
-                                },
-                                icon: Icon(Icons.delete),
-                              )
-                            ],
-                          ),
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                ),
+                actions: [
+                  Center(
+                    child: Container(
+                      width: 170,
+                      child: ElevatedButton(
+                        onPressed: isCartEmpty
+                            ? null
+                            : () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => CheckOut(
+                                        displayName: widget.displayName,
+                                        email: widget.email,
+                                        photoUrl: widget.photoUrl),
+                                  ),
+                                );
+                              },
+                        style: ElevatedButton.styleFrom(
+                          elevation: 7,
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                          backgroundColor: cartNotEmpty
+                              ? const Color.fromARGB(255, 63, 158, 22)
+                              : Colors.grey,
                         ),
-                      );
-                    }).toList(),
-                  ),
-                ),
-              ),
-              actions: [
-                Center(
-                  child: ElevatedButton(
-                    onPressed: isCartEmpty
-                        ? 
-                        null
-                        :
-                        () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => CheckOut(
-                                  displayName: widget.displayName,
-                                  email: widget.email,
-                                ),
-                              ),
-                            );
-                          },
-                    style: ElevatedButton.styleFrom(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                      backgroundColor: cartNotEmpty
-                          ? const Color.fromARGB(255, 63, 158, 22)
-                          : Colors.grey,
-                    ),
-                    child: const Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text('Check Out', style: TextStyle(fontSize: 14)),
-                        SizedBox(width: 8),
-                        Icon(Icons.shopping_bag, size: 20),
-                      ],
+                        child: const Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text('Check Out', style: TextStyle(fontSize: 14)),
+                            SizedBox(width: 8),
+                            Icon(Icons.shopping_cart_checkout_rounded,
+                                size: 20),
+                          ],
+                        ),
+                      ),
                     ),
                   ),
-                ),
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(context); // Close the AlertDialog
-                  },
-                  child: const Text('Close'),
-                ),
-              ],
-            );
-          },
-        );
-      },
-    );
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context); // Close the AlertDialog
+                    },
+                    child: const Text('Close'),
+                  ),
+                ],
+              );
+            },
+          );
+        },
+      );
     });
   }
 }

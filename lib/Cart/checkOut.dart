@@ -1,17 +1,21 @@
 import 'dart:math';
+import 'package:estore/Cart/thankyou.dart';
+import 'package:estore/navigationScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:estore/Cart/cartItems.dart';
 import 'package:estore/Database/dbinitialization.dart';
-import 'package:uuid/uuid.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class CheckOut extends StatefulWidget {
   final String email;
   final String displayName;
+  final String photoUrl;
 
   CheckOut({
     required this.email,
     required this.displayName,
+    required this.photoUrl,
   });
 
   @override
@@ -52,7 +56,8 @@ class _CheckOutState extends State<CheckOut> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector( // Wrap the Scaffold body with GestureDetector
+    return GestureDetector(
+      // Wrap the Scaffold body with GestureDetector
       onTap: () {
         FocusScope.of(context).unfocus(); // Dismiss keyboard on tap outside
       },
@@ -115,7 +120,8 @@ class _CheckOutState extends State<CheckOut> {
                       ),
                       child: Text(
                         'Total: $total Rs',
-                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold),
                       ),
                     ),
                   ],
@@ -127,11 +133,12 @@ class _CheckOutState extends State<CheckOut> {
                     children: [
                       TextFormField(
                         controller: fullNameController,
-                        decoration: const InputDecoration(labelText: 'Full Name',
+                        decoration: const InputDecoration(
+                          labelText: 'Full Name',
                         ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please enter your full name'; 
+                            return 'Please enter your full name';
                           }
                           return null;
                         },
@@ -181,7 +188,8 @@ class _CheckOutState extends State<CheckOut> {
                   height: 50,
                   width: 200,
                   child: ElevatedButton(
-                    onPressed: formValid ? () async => await placeOrder() : null,
+                    onPressed:
+                        formValid ? () async => await placeOrder() : null,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: formValid ? Colors.green : Colors.grey,
                       shadowColor: Colors.black,
@@ -204,103 +212,164 @@ class _CheckOutState extends State<CheckOut> {
     );
   }
 
-
-
 // Inside _CheckOutState class
 
-Future<void> placeOrder() async {
-  if (!_formKey.currentState!.validate()) {
-    return;
-  }
-
-  FirebaseFirestore firestore = FirebaseFirestore.instance;
-
-  late int randomNumber; 
-  bool uniqueIdFound = false;
-
-  while (!uniqueIdFound) {
-    randomNumber = Random().nextInt(90000) + 100000; 
-
-    var existingDoc = await firestore.collection('orders').doc(randomNumber.toString()).get();
-    if (!existingDoc.exists) {
-      uniqueIdFound = true;
+  Future<void> placeOrder() async {
+    if (!_formKey.currentState!.validate()) {
+      return;
     }
+
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+    late int randomNumber;
+    bool uniqueIdFound = false;
+
+    while (!uniqueIdFound) {
+      randomNumber = Random().nextInt(90000) + 1000000;
+
+      var existingDoc = await firestore
+          .collection('orders')
+          .doc(randomNumber.toString())
+          .get();
+      if (!existingDoc.exists) {
+        uniqueIdFound = true;
+      }
+    }
+
+    // Create the order with the unique random ID
+    Map<String, dynamic> orderData = {
+      'orderId': randomNumber.toString(),
+      'fullName': fullNameController.text,
+      'userName': widget.displayName,
+      'userEmail': widget.email,
+      'phoneNumber': phoneNumberController.text,
+      'address': addressController.text,
+      'city': cityController.text,
+      'items': cartItems
+          .map((item) => {
+                'id': item.id,
+                'title': item.title,
+                'category': item.category,
+                'size': item.size,
+                'price': item.price,
+                'imagePath': item.imagePath,
+                'qtySold': item.qtySold,
+                'productNo': item.productNo,
+              })
+          .toList(),
+      'totalAmount': total,
+    };
+
+    // Add the order to Firestore with the unique random ID
+    try {
+      await firestore
+          .collection('orders')
+          .doc(orderData['orderId'])
+          .set(orderData);
+
+      print('Order placed successfully! Order ID: ${orderData['orderId']}');
+    } catch (error) {
+      Fluttertoast.showToast(msg: 'Error placing order, check your internet');
+      print('Error placing order: $error');
+    }
+    // ignore: use_build_context_synchronously
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Your Order is placed'),
+            content: FutureBuilder<DocumentSnapshot>(
+              future: firestore
+                  .collection('orders')
+                  .doc(orderData['orderId'])
+                  .get(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return SizedBox(
+                    height: MediaQuery.of(context).size.height / 2,
+                    child: Center(child: CircularProgressIndicator()),
+                  );
+                }
+                if (snapshot.hasError) {
+                  return Text('Error: ${snapshot.error}');
+                }
+                if (!snapshot.hasData || !snapshot.data!.exists) {
+                  return Text(
+                      'No data found for order ID: ${orderData['orderId']}');
+                }
+
+                // Extract order data from snapshot
+                Map<String, dynamic> order =
+                    snapshot.data!.data() as Map<String, dynamic>;
+
+                // Build the content of the dialog with order details
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text('Order ID: ${order['orderId']}'),
+                    Text('Full Name: ${order['fullName']}'),
+                    Text('Email: ${order['userEmail']}'),
+                    Text('Address: ${order['address']}'),
+                    Text('City: ${order['city']}'),
+                    Text('Phone Number: ${order['phoneNumber']}'),
+                    SizedBox(height: 10),
+                    const Text(
+                      "Items Included",
+                      style: TextStyle(color: Colors.green, fontSize: 20),
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(color: Colors.green)),
+
+                      height: 200, // Adjust the height as needed
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.vertical,
+                        child: Column(
+                          children: order['items'].map<Widget>((orderedItem) {
+                            return ListTile(
+                              title: Text(
+                                  "${orderedItem['title']}, Size: ${orderedItem['size']}"),
+                              subtitle: Text(
+                                  '\ ${orderedItem['price']} x ${orderedItem['qtySold']}'),
+                            );
+                          }).toList(),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Text("Total: ${order['totalAmount']}"),
+                    // Add more order details as needed
+                  ],
+                );
+              },
+            ),
+            actions: [
+              Padding(
+                  padding: EdgeInsets.fromLTRB(0, 0, 10, 10),
+                  child: IconButton(
+                      onPressed: () {
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => thankyou(
+                                    displayName_: widget.displayName,
+                                    email_: widget.email,
+                                    photoUrl_: widget.photoUrl)));
+                      },
+                      icon: const Icon(
+                        Icons.check_circle_outline,
+                        color: Colors.green,
+                        size: 40,
+                      ))),
+            ],
+          );
+        });
   }
 
-  // Create the order with the unique random ID
-  Map<String, dynamic> orderData = {
-    'orderId': randomNumber.toString(), 
-    'fullName': fullNameController.text,
-    'userName': widget.displayName,
-    'userEmail': widget.email,
-    'phoneNumber': phoneNumberController.text,
-    'address': addressController.text,
-    'city': cityController.text,
-    'items': cartItems
-        .map((item) => {
-              'id': item.id,
-              'title': item.title,
-              'category': item.category,
-              'size': item.size,
-              'price': item.price,
-              'imagePath': item.imagePath,
-              'qtySold': item.qtySold,
-              'productNo': item.productNo,
-            })
-        .toList(),
-    'totalAmount': total,
-  };
-
-  // Add the order to Firestore with the unique random ID
-  await firestore.collection('orders').doc(orderData['orderId']).set(orderData);
-
-  print('Order placed successfully! Order ID: ${orderData['orderId']}');
-  // ignore: use_build_context_synchronously
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: Text('Order Details'),
-        content: FutureBuilder<DocumentSnapshot>(
-          future: firestore.collection('orders').doc(orderData['orderId']).get(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return CircularProgressIndicator(); // Show loading indicator while fetching data
-            }
-            if (snapshot.hasError) {
-              return Text('Error: ${snapshot.error}');
-            }
-            if (!snapshot.hasData || !snapshot.data!.exists) {
-              return Text('No data found for order ID: ${orderData['orderId']}');
-            }
-
-            // Extract order data from snapshot
-            Map<String, dynamic> order = snapshot.data!.data() as Map<String, dynamic>;
-
-            // Build the content of the dialog with order details
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text('Order ID: ${order['orderId']}'),
-                Text('Full Name: ${order['fullName']}'),
-                Text('Email: ${order['userEmail']}'),
-                // Add more order details as needed
-              ],
-            );
-          },
-        ),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop(); // Close the dialog
-            },
-            child: Text('Close'),
-          ),
-        ],
-      );
-      });
-}
   Future<List<CartItem>> getAllCartItems() async {
     Dbfiles dbfiles = Dbfiles();
     return await dbfiles.getCartItems();

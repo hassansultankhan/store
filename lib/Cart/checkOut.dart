@@ -1,11 +1,12 @@
 import 'dart:math';
 import 'package:estore/Cart/thankyou.dart';
-import 'package:estore/navigationScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:estore/Cart/cartItems.dart';
 import 'package:estore/Database/dbinitialization.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+//for readable timestamp
+import 'package:intl/intl.dart';
 
 class CheckOut extends StatefulWidget {
   final String email;
@@ -224,19 +225,54 @@ class _CheckOutState extends State<CheckOut> {
     late int randomNumber;
     bool uniqueIdFound = false;
 
+    // Show a circular progress indicator in an AlertDialog
+    showDialog(
+      context: context,
+      barrierDismissible: false, // Prevent users from dismissing the dialog
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              CircularProgressIndicator(),
+              SizedBox(height: 16),
+              Text('Processing Order...'),
+            ],
+          ),
+        );
+      },
+    );
+
     while (!uniqueIdFound) {
       randomNumber = Random().nextInt(90000) + 1000000;
 
-      var existingDoc = await firestore
-          .collection('orders')
-          .doc(randomNumber.toString())
-          .get();
-      if (!existingDoc.exists) {
-        uniqueIdFound = true;
+      try {
+        var existingDoc = await firestore
+            .collection('orders')
+            .doc(randomNumber.toString())
+            .get();
+        if (!existingDoc.exists) {
+          uniqueIdFound = true;
+        }
+      } catch (error) {
+        print('Error connecting to Firestore: $error');
+        Fluttertoast.showToast(
+          msg: "Check your internet connection",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+        );
+        break;
       }
     }
 
+    // Hide the AlertDialog
+    Navigator.pop(context);
+
     // Create the order with the unique random ID
+    Timestamp timestamp = Timestamp.now();
+    DateTime dateTime = timestamp.toDate();
     Map<String, dynamic> orderData = {
       'orderId': randomNumber.toString(),
       'fullName': fullNameController.text,
@@ -245,6 +281,7 @@ class _CheckOutState extends State<CheckOut> {
       'phoneNumber': phoneNumberController.text,
       'address': addressController.text,
       'city': cityController.text,
+      'timestamp': timestamp,
       'items': cartItems
           .map((item) => {
                 'id': item.id,
@@ -267,7 +304,8 @@ class _CheckOutState extends State<CheckOut> {
           .doc(orderData['orderId'])
           .set(orderData);
 
-      print('Order placed successfully! Order ID: ${orderData['orderId']}');
+      print(
+          'Order placed successfully! Order ID: ${orderData['orderId']} $dateTime');
     } catch (error) {
       Fluttertoast.showToast(msg: 'Error placing order, check your internet');
       print('Error placing order: $error');
@@ -302,6 +340,11 @@ class _CheckOutState extends State<CheckOut> {
                 Map<String, dynamic> order =
                     snapshot.data!.data() as Map<String, dynamic>;
 
+                //convert timestamp into a readable form
+                DateTime dateTimeFromDB = order['timestamp'].toDate();
+                String formattedDateTime =
+                    DateFormat('yyyy-MM-dd HH:mm:ss').format(dateTimeFromDB);
+
                 // Build the content of the dialog with order details
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -313,6 +356,7 @@ class _CheckOutState extends State<CheckOut> {
                     Text('Address: ${order['address']}'),
                     Text('City: ${order['city']}'),
                     Text('Phone Number: ${order['phoneNumber']}'),
+                    Text('Time Stamp: $formattedDateTime'),
                     SizedBox(height: 10),
                     const Text(
                       "Items Included",

@@ -77,11 +77,33 @@ class Dbfiles {
 
   // Function to delete a cart item from the database
   Future<void> deleteCartItem(int productNo) async {
-  final Database db = await this.db;
-  await db.delete(
-    'cart_items',
-    where: 'product_no = ?',
-    whereArgs: [productNo],
-  );
-}
+    final Database db = await this.db;
+    await db.delete(
+      'cart_items',
+      where: 'product_no = ?',
+      whereArgs: [productNo],
+    );
+  }
+
+  Future<void> deleteAllCartItems() async {
+    try {
+      // Get the path to the application document directory
+      Directory documentDirectory = await getApplicationDocumentsDirectory();
+      // Set the path to the database file
+      String dbPath = join(documentDirectory.path, "cart.db");
+
+      // Open the database
+      Database db = await openDatabase(dbPath);
+
+      // Delete all rows from the 'cart_items' table
+      await db.delete('cart_items');
+
+      // Close the database
+      await db.close();
+
+      print('All cart items deleted successfully.');
+    } catch (error) {
+      print('Error deleting cart items: $error');
+    }
+  }
 }

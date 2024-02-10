@@ -1,3 +1,6 @@
+import 'dart:math';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:estore/signupScreen.dart';
@@ -57,12 +60,18 @@ class _loginScreenState extends State<loginScreen> {
             ),
             const SizedBox(height: 10),
             GestureDetector(
-              onTap: () {
+              //this function will assign new guest name and save it to firestore "guests" collection
+              //also it will save it to local directory database (sqlite)
+              //so that it checks if there is already a guest name assigned to application.
+
+              onTap: () async {
+                String guestName = await saveGuestToFirestore('guest');
+                // ignore: use_build_context_synchronously
                 Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const navigationScreen(
-                      displayName: 'Guest',
+                    builder: (context) => navigationScreen(
+                      displayName: guestName,
                       email: 'No email provided',
                       photoUrl: '',
                     ),
@@ -398,22 +407,71 @@ class _loginScreenState extends State<loginScreen> {
     bool isLoggedIn = loginStatus.getBool('login') ?? false;
 
     if (isLoggedIn) {
-      //if the user has logged in then navigate to navigationScreen()
-      User? user = _auth.currentUser;
-      if (user != null) {
+      // If the user has logged in, retrieve the guest name from shared preferences
+      String? guestName = loginStatus.getString('guestName');
+      if (guestName != null && guestName.isNotEmpty) {
+        // Navigate to navigationScreen with the retrieved guest name
         // ignore: use_build_context_synchronously
         Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(
             builder: (context) => navigationScreen(
-              displayName: user.displayName ?? '',
-              email: user.email ?? '',
-              photoUrl: user.photoURL ?? '',
+              displayName: guestName,
+              email: 'No email provided',
+              photoUrl: '',
             ),
           ),
           (route) => false,
         );
       }
     }
+  }
+
+  Future<String> saveGuestToFirestore(String guestName) async {
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+    // Check if the guest name already exists in Firestore
+    bool exists = await checkIfGuestExists(guestName);
+
+    if (!exists) {
+      // If the guest name doesn't exist, save it to Firestore
+      await firestore.collection('guests').add({
+        'name': guestName,
+        // Add any other guest information you want to save
+      });
+
+      // Save the guest name to shared preferences
+      await saveGuestNameToSharedPreferences(guestName);
+
+      return guestName; // Return the original guest name
+    } else {
+      // If the guest name already exists, generate a new name and try again
+      String newGuestName = generateUniqueGuestName();
+      // Recursively call saveGuestToFirestore with the new name
+      return saveGuestToFirestore(newGuestName);
+    }
+  }
+
+  Future<void> saveGuestNameToSharedPreferences(String guestName) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('guestName', guestName);
+  }
+
+  Future<bool> checkIfGuestExists(String guestName) async {
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+    QuerySnapshot querySnapshot = await firestore
+        .collection('guests')
+        .where('name', isEqualTo: guestName)
+        .get();
+
+    return querySnapshot.docs.isNotEmpty;
+  }
+
+  String generateUniqueGuestName() {
+    int randomNumber = Random().nextInt(100000) + 1;
+    // unique guest name
+    String guestName = 'Guest_$randomNumber';
+    return guestName;
   }
 }

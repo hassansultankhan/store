@@ -196,7 +196,7 @@ class _CheckOutState extends State<CheckOut> {
                       shadowColor: Colors.black,
                       elevation: 20,
                     ),
-                    child: Row(
+                    child: const Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Text("PLACE ORDER", style: TextStyle(fontSize: 18)),
@@ -230,7 +230,7 @@ class _CheckOutState extends State<CheckOut> {
       context: context,
       barrierDismissible: false, // Prevent users from dismissing the dialog
       builder: (BuildContext context) {
-        return AlertDialog(
+        return const AlertDialog(
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -244,7 +244,7 @@ class _CheckOutState extends State<CheckOut> {
     );
 
     while (!uniqueIdFound) {
-      randomNumber = Random().nextInt(90000) + 1000000;
+      randomNumber = Random().nextInt(900000) + 1000000;
 
       try {
         var existingDoc = await firestore
@@ -412,6 +412,10 @@ class _CheckOutState extends State<CheckOut> {
             ],
           );
         });
+    if (uniqueIdFound) {
+      // Delete all cart items from the database
+      await deleteAllCartItems();
+    }
   }
 
   Future<List<CartItem>> getAllCartItems() async {
@@ -428,5 +432,15 @@ class _CheckOutState extends State<CheckOut> {
     setState(() {
       formValid = _formKey.currentState?.validate() ?? false;
     });
+  }
+
+  Future<void> deleteAllCartItems() async {
+    try {
+      Dbfiles dbfiles = Dbfiles();
+      await dbfiles.deleteAllCartItems();
+      print('All cart items deleted successfully.');
+    } catch (error) {
+      print('Error deleting cart items: $error');
+    }
   }
 }

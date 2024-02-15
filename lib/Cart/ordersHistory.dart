@@ -4,7 +4,15 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl/intl.dart';
 
 class ordersHistory extends StatefulWidget {
-  const ordersHistory({super.key});
+  final String displayName;
+
+  const ordersHistory(
+    this.displayName, {
+    Key? key,
+  }) : super(key: key);
+
+  //build constructor for ordershistory
+
 
   @override
   State<ordersHistory> createState() => _ordersHistoryState();
@@ -17,14 +25,17 @@ class _ordersHistoryState extends State<ordersHistory> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Orders History'),
+        // title: Text('Orders History'),
+        title: Text("Order History (${widget.displayName})"),
+        
         centerTitle: true,
       ),
       body: Container(
         child: StreamBuilder<QuerySnapshot>(
           stream: FirebaseFirestore.instance
               .collection('orders')
-              .orderBy('timestamp', descending: true)
+              .where("userName", isEqualTo: widget.displayName)
+              // .orderBy('timestamp', descending: true) // requires composite  index in firestore, not working
               .snapshots(),
           builder:
               (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {

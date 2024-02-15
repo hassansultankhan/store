@@ -85,12 +85,12 @@ class _navigationScreenState extends State<navigationScreen> {
               },
               icon: CircleAvatar(
                 radius: 20,
+                backgroundColor: Colors.white,
                 child: ClipOval(
                   child: widget.photoUrl.startsWith("http")
                       ? Image.network(widget.photoUrl)
                       : Image.asset('assets/images/Carrot_icon.png'),
                 ),
-                backgroundColor: Colors.white,
               ),
             ),
           ],
@@ -207,7 +207,9 @@ class _navigationScreenState extends State<navigationScreen> {
                       ),
                       onPressed: () {
                         Navigator.of(context).pushReplacement(MaterialPageRoute(
-                          builder: (contect) => ordersHistory(),
+                          builder: (contect) => ordersHistory(
+                            widget.displayName
+                          ),
                         ));
                       },
                       child: const Row(

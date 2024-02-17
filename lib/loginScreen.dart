@@ -24,6 +24,8 @@ class _loginScreenState extends State<loginScreen> {
   final GoogleSignIn _googleSignIn = GoogleSignIn();
 
   bool log = false;
+  String guestName = '';
+
   @override
   void initState() {
     super.initState();
@@ -61,11 +63,16 @@ class _loginScreenState extends State<loginScreen> {
             const SizedBox(height: 10),
             GestureDetector(
               //this function will assign new guest name and save it to firestore "guests" collection
-              //also it will save it to local directory database (sqlite)
+              //also it will save it to sharedPreferance
               //so that it checks if there is already a guest name assigned to application.
 
               onTap: () async {
-                String guestName = await saveGuestToFirestore('guest');
+                if (guestName.isEmpty) {
+                  guestName = await generateUniqueGuestName();
+                  saveGuestNameToSharedPreferences(guestName);
+                  saveGuestToFirestore(guestName);
+                }
+
                 // ignore: use_build_context_synchronously
                 Navigator.pushAndRemoveUntil(
                   context,
@@ -445,10 +452,8 @@ class _loginScreenState extends State<loginScreen> {
 
       return guestName; // Return the original guest name
     } else {
-      // If the guest name already exists, generate a new name and try again
-      String newGuestName = generateUniqueGuestName();
-      // Recursively call saveGuestToFirestore with the new name
-      return saveGuestToFirestore(newGuestName);
+      // If the guest name already exists in Firestore, retrieve and return it
+      return guestName;
     }
   }
 
@@ -468,10 +473,23 @@ class _loginScreenState extends State<loginScreen> {
     return querySnapshot.docs.isNotEmpty;
   }
 
-  String generateUniqueGuestName() {
-    int randomNumber = Random().nextInt(100000) + 1;
-    // unique guest name
-    String guestName = 'Guest_$randomNumber';
-    return guestName;
+  Future<String> generateUniqueGuestName() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    // Check if the guest name is already stored in shared preferences
+    String storedGuestName = prefs.getString('guestName') ?? '';
+
+    if (storedGuestName.isNotEmpty) {
+      return storedGuestName;
+    } else {
+      // If the guest name is not stored, generate a new one
+      int randomNumber = Random().nextInt(100000) + 1;
+      String newGuestName = 'Guest_$randomNumber';
+
+      // Save the new guest name to shared preferences
+      await prefs.setString('guestName', newGuestName);
+
+      return newGuestName;
+    }
   }
 }

@@ -207,9 +207,8 @@ class _navigationScreenState extends State<navigationScreen> {
                       ),
                       onPressed: () {
                         Navigator.of(context).pushReplacement(MaterialPageRoute(
-                          builder: (contect) => ordersHistory(
-                            widget.displayName
-                          ),
+                          builder: (contect) =>
+                              OrdersHistory(widget.displayName),
                         ));
                       },
                       child: const Row(

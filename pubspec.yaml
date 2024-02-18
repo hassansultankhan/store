@@ -76,9 +76,20 @@ flutter:
     - assets/images/image1.jpeg
     - assets/images/image2.jpeg
     - assets/images/Carrot_icon.png
-    - assets/images/YellowChatni.jpg
-    - assets/images/redChatni.jpg
-    - assets/images/greenChatni.jpg
+    - assets/images/chutni/YellowChatni.jpg
+    - assets/images/chutni/redChatni.jpg
+    - assets/images/chutni/greenChatni.jpg
+    - assets/images/chutni/imli.jpg
+    - assets/images/chutni/khubani.jpg
+    - assets/images/chutni/mango.jpg
+    - assets/images/chutni/cranberry.jpg
+
+    - assets/images/sauces/BlackBeanSauce.jpg
+    - assets/images/sauces/HotPepperSauce.jpg
+    - assets/images/sauces/ketoSauce.jpg
+    - assets/images/sauces/mirchisauce.jpg
+    - assets/images/sauces/Peanutsauce.jpg
+    - assets/images/sauces/Tomatosauce.jpg
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

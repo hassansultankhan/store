@@ -19,7 +19,7 @@ class _mainScreenState extends State<mainScreen> {
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
-          height: MediaQuery.of(context).size.height,
+          // height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -27,9 +27,6 @@ class _mainScreenState extends State<mainScreen> {
               SizedBox(
                 height: 50,
               ),
-              //create pictoral slider
-              // Expanded(
-              //   child:
               CarouselSlider(
                 options: CarouselOptions(
                   height: 200,
@@ -60,30 +57,39 @@ class _mainScreenState extends State<mainScreen> {
                   );
                 }).toList(),
               ),
-
               Padding(
-                padding: EdgeInsets.all(10),
+                padding: EdgeInsets.fromLTRB(40, 20, 40, 20),
                 child: Column(
                   children: <Widget>[
-                    Container(
-                      height: 100,
-                      color: Colors.lightGreen,
+                    Padding(
+                      padding: EdgeInsets.only(bottom: 20.0),
+                      child: Container(
+                        height: 200,
+                        //make borders round
+                        decoration: const BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(40.0)),
+                          color: Colors.lightGreen,
+                          image: DecorationImage(
+                            image:
+                                AssetImage('assets/images/chutni/chutnis.jpg'),
+                            fit: BoxFit
+                                .cover, // Adjust the fit based on your requirements
+                          ),
+                        ),
+                      ),
                     ),
                     Container(
-                      height: 100,
-                      color: Colors.lightGreen,
-                    ),
-                    Container(
-                      height: 100,
-                      color: Colors.lightGreen,
-                    ),
-                    Container(
-                      height: 100,
-                      color: Colors.lightGreen,
-                    ),
-                    Container(
-                      height: 100,
-                      color: Colors.lightGreen,
+                      height: 200,
+                      //make borders round
+                      decoration: const BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(40.0)),
+                        color: Colors.lightGreen,
+                        image: DecorationImage(
+                          image: AssetImage('assets/images/sacuce/sauces.jpeg'),
+                          fit: BoxFit
+                              .cover, // Adjust the fit based on your requirements
+                        ),
+                      ),
                     ),
                   ],
                 ),

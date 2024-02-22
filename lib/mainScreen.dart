@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
+
 class mainScreen extends StatefulWidget {
   mainScreen({super.key});
 
@@ -14,12 +15,29 @@ class _mainScreenState extends State<mainScreen> {
     'assets/images/image1.jpeg',
     'assets/images/image2.jpeg',
   ];
+
+List<Map<String, dynamic>> packageData = [
+  {'imagePath': 'assets/images/packages/package1.jpg', 'fontColor': Colors.black},
+  {'imagePath': 'assets/images/packages/package2.jpg', 'fontColor': Colors.green},
+  {'imagePath': 'assets/images/packages/package3.jpg', 'fontColor': Colors.green},
+  {'imagePath': 'assets/images/packages/package4.jpg', 'fontColor': Colors.green},
+];
+  //   List<Color> fontColors =[
+  //   Colors.black,
+  //   Colors.green,
+  //   Colors.green,
+  //   Colors.green,
+  // ];
+
+  
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.amber,
       body: SingleChildScrollView(
         child: Container(
-          // height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -58,38 +76,68 @@ class _mainScreenState extends State<mainScreen> {
                 }).toList(),
               ),
               Padding(
-                padding: EdgeInsets.fromLTRB(40, 20, 40, 20),
+                padding: EdgeInsets.fromLTRB(50, 20, 50, 20),
                 child: Column(
                   children: <Widget>[
                     Padding(
+                      
                       padding: EdgeInsets.only(bottom: 20.0),
-                      child: Container(
-                        height: 200,
-                        //make borders round
-                        decoration: const BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(40.0)),
-                          color: Colors.lightGreen,
-                          image: DecorationImage(
-                            image:
-                                AssetImage('assets/images/chutni/chutnis.jpg'),
-                            fit: BoxFit
-                                .cover, // Adjust the fit based on your requirements
+                      child: Stack(
+                        children: <Widget>[
+                          Container(
+                            height: 150,
+                            decoration: const BoxDecoration(
+                              borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                              color: Colors.lightGreen,
+                              image: DecorationImage(
+                                image: AssetImage('assets/images/packages/package1.jpg'),
+                                fit: BoxFit.cover,
+                              ),
+                            ),
                           ),
-                        ),
+                          Positioned(
+                            top: 10,
+                            left: 16,
+                            child: Row(
+                              children: [
+                                IconButton(
+                                  icon: Icon(Icons.add_shopping_cart_rounded),
+                                  onPressed: () {},
+                                  color: Colors.green,
+                                  iconSize: 60,
+                                ),
+                                SizedBox(width: 10), // Adjust the spacing as needed
+                                const Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "HOME MADE",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w700,
+                                        fontSize: 30,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                    Text(
+                                      "Package of 3 sauces",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w700,
+                                        fontSize: 20,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                    Container(
-                      height: 200,
-                      //make borders round
-                      decoration: const BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(40.0)),
-                        color: Colors.lightGreen,
-                        image: DecorationImage(
-                          image: AssetImage('assets/images/sacuce/sauces.jpeg'),
-                          fit: BoxFit
-                              .cover, // Adjust the fit based on your requirements
-                        ),
-                      ),
+
+
+
+
                     ),
                   ],
                 ),
@@ -98,7 +146,6 @@ class _mainScreenState extends State<mainScreen> {
           ),
         ),
       ),
-      // ),
     );
   }
 

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
-
 class mainScreen extends StatefulWidget {
   mainScreen({super.key});
 
@@ -16,21 +15,32 @@ class _mainScreenState extends State<mainScreen> {
     'assets/images/image2.jpeg',
   ];
 
-List<Map<String, dynamic>> packageData = [
-  {'imagePath': 'assets/images/packages/package1.jpg', 'fontColor': Colors.black},
-  {'imagePath': 'assets/images/packages/package2.jpg', 'fontColor': Colors.green},
-  {'imagePath': 'assets/images/packages/package3.jpg', 'fontColor': Colors.green},
-  {'imagePath': 'assets/images/packages/package4.jpg', 'fontColor': Colors.green},
-];
-  //   List<Color> fontColors =[
-  //   Colors.black,
-  //   Colors.green,
-  //   Colors.green,
-  //   Colors.green,
-  // ];
-
-  
-
+   List<Map<String, dynamic>> packageData = [
+    {
+      'imagePath': 'assets/images/packages/package1.jpg',
+      'fontColor': Colors.black,
+      'title': 'HOME MADE',
+      'subtitle': 'Package of 3 sauces',
+    },
+    {
+      'imagePath': 'assets/images/packages/package2.jpg',
+      'fontColor': Colors.green,
+      'title': 'IMPORTED YUMS',
+      'subtitle': 'Package of 6',
+    },
+    {
+      'imagePath': 'assets/images/packages/package3.jpg',
+      'fontColor': Colors.black,
+      'title': 'FASTFOOD DELICIAS',
+      'subtitle': 'Package of 5',
+    },
+    {
+      'imagePath': 'assets/images/packages/package4.jpg',
+      'fontColor': Colors.black,
+      'title': 'SPECIAL OFFERS',
+      'subtitle': 'Limited Offer',
+    },
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -77,69 +87,71 @@ List<Map<String, dynamic>> packageData = [
               ),
               Padding(
                 padding: EdgeInsets.fromLTRB(50, 20, 50, 20),
-                child: Column(
-                  children: <Widget>[
-                    Padding(
-                      
-                      padding: EdgeInsets.only(bottom: 20.0),
-                      child: Stack(
-                        children: <Widget>[
-                          Container(
-                            height: 150,
-                            decoration: const BoxDecoration(
-                              borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                              color: Colors.lightGreen,
-                              image: DecorationImage(
-                                image: AssetImage('assets/images/packages/package1.jpg'),
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          ),
-                          Positioned(
-                            top: 10,
-                            left: 16,
-                            child: Row(
-                              children: [
-                                IconButton(
-                                  icon: Icon(Icons.add_shopping_cart_rounded),
-                                  onPressed: () {},
-                                  color: Colors.green,
-                                  iconSize: 60,
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemCount: packageData.length,
+                  itemBuilder: (context, index) {
+                    final data = packageData[index];
+                    return Column(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(bottom: 20.0),
+                          child: Stack(
+                            children: <Widget>[
+                              Container(
+                                height: 150,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                                  color: Colors.lightGreen,
+                                  image: DecorationImage(
+                                    image: AssetImage(data['imagePath']),
+                                    fit: BoxFit.cover,
+                                  ),
                                 ),
-                                SizedBox(width: 10), // Adjust the spacing as needed
-                                const Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                              ),
+                              Positioned(
+                                top: 10,
+                                left: 16,
+                                child: Row(
                                   children: [
-                                    Text(
-                                      "HOME MADE",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w700,
-                                        fontSize: 30,
-                                        color: Colors.black,
-                                      ),
+                                    IconButton(
+                                      icon: Icon(Icons.add_shopping_cart_rounded),
+                                      onPressed: () {},
+                                      color: data['fontColor'],
+                                      iconSize: 60,
                                     ),
-                                    Text(
-                                      "Package of 3 sauces",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w700,
-                                        fontSize: 20,
-                                        color: Colors.black,
-                                      ),
+                                    SizedBox(width: 10),
+                                    Column (
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                         Text (
+                                          data['title'],
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.w700,
+                                            fontSize: 22,
+                                            color: data["fontColor"],
+                                          ),
+                                        ),
+                                        Text(
+                                          data['subtitle'],
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.w700,
+                                            fontSize: 20,
+                                            color: data["fontColor"],
+                                          ),
+                                        ),
+                                      ],
                                     ),
-
                                   ],
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
-
-
-
-
-                    ),
-                  ],
+                        ),
+                      ],
+                    );
+                  },
                 ),
               ),
             ],

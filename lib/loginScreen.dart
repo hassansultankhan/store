@@ -82,7 +82,7 @@ class _loginScreenState extends State<loginScreen> {
                       SizedBox(width: 10),
                       CircleAvatar(
                         backgroundImage:
-                            AssetImage("assets/item_list/sauce_2.png"),
+                            AssetImage("assets/icons/google.png"),
                         radius: 20,
                       )
                     ],

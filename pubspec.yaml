@@ -107,6 +107,8 @@ flutter:
 
     - assets/item_list/sauce_2.png
 
+    - assets/icons/google.png
+
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

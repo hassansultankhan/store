@@ -72,19 +72,37 @@ class _loginScreenState extends State<loginScreen> {
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(fixedSize: Size(230, 50)),
                   onPressed: () => _handleGoogleSignIn(context),
-                  child: const Row(
+                  child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(
+                      const Text(
                         'Sign in with Google',
                         style: TextStyle(fontSize: 16),
                       ),
-                      SizedBox(width: 10),
-                      CircleAvatar(
-                        backgroundImage:
-                            AssetImage("assets/icons/google.png"),
-                        radius: 20,
-                      )
+                      const SizedBox(width: 10),
+                      // CircleAvatar(
+                      //   backgroundImage: AssetImage("assets/icons/google.png"),
+                      //   radius: 20,
+                      // ),
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(4),
+                          color: Colors.white,
+                        ),
+                        width: 40,
+                        height: 40,
+                        padding: EdgeInsets.all(5),
+                        child: Container(
+                          width: 35,
+                          height: 35,
+                          decoration: const BoxDecoration(
+                            image: DecorationImage(
+                              image: AssetImage("assets/icons/google.png"),
+                              fit: BoxFit.contain,
+                            ),
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -95,7 +113,10 @@ class _loginScreenState extends State<loginScreen> {
                   style: ElevatedButton.styleFrom(fixedSize: Size(230, 50)),
                   onPressed: () => signin(context),
                   child: const Row(children: [
-                    Text('Sign in with Store Account'),
+                    Text(
+                      'Sign in with Store Account',
+                      style: TextStyle(fontSize: 16),
+                    ),
                   ]),
                 ),
                 const SizedBox(height: 10),
@@ -133,12 +154,10 @@ class _loginScreenState extends State<loginScreen> {
                 ),
                 const Text(
                   'Sign in as guest',
+
                   //give text green color
 
-                  style: TextStyle(
-                    color: Color.fromARGB(255, 0, 0, 0),
-                    fontSize: 16,
-                  ),
+                  style: TextStyle(color: Colors.white, fontSize: 16),
                 ),
               ],
             ),

@@ -15,28 +15,28 @@ class _mainScreenState extends State<mainScreen> {
     'assets/images/image2.jpeg',
   ];
 
-   List<Map<String, dynamic>> packageData = [
+  List<Map<String, dynamic>> packageData = [
     {
       'imagePath': 'assets/images/packages/package1.jpg',
-      'fontColor': Colors.black,
+      'fontColor': Color.fromARGB(255, 87, 10, 10),
       'title': 'HOME MADE',
       'subtitle': 'Package of 3 sauces',
     },
     {
       'imagePath': 'assets/images/packages/package2.jpg',
-      'fontColor': Colors.green,
+      'fontColor': Color.fromARGB(255, 87, 10, 10),
       'title': 'IMPORTED YUMS',
       'subtitle': 'Package of 6',
     },
     {
       'imagePath': 'assets/images/packages/package3.jpg',
-      'fontColor': Colors.black,
+      'fontColor': Color.fromARGB(255, 87, 10, 10),
       'title': 'FASTFOOD DELICIAS',
       'subtitle': 'Package of 5',
     },
     {
       'imagePath': 'assets/images/packages/package4.jpg',
-      'fontColor': Colors.black,
+      'fontColor': Color.fromARGB(255, 87, 10, 10),
       'title': 'SPECIAL OFFERS',
       'subtitle': 'Limited Offer',
     },
@@ -45,7 +45,7 @@ class _mainScreenState extends State<mainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.amber,
+      backgroundColor: Color.fromARGB(255, 189, 223, 207),
       body: SingleChildScrollView(
         child: Container(
           width: MediaQuery.of(context).size.width,
@@ -102,7 +102,8 @@ class _mainScreenState extends State<mainScreen> {
                               Container(
                                 height: 150,
                                 decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10.0)),
                                   color: Colors.lightGreen,
                                   image: DecorationImage(
                                     image: AssetImage(data['imagePath']),
@@ -113,37 +114,50 @@ class _mainScreenState extends State<mainScreen> {
                               Positioned(
                                 top: 10,
                                 left: 16,
-                                child: Row(
-                                  children: [
-                                    IconButton(
-                                      icon: Icon(Icons.add_shopping_cart_rounded),
-                                      onPressed: () {},
-                                      color: data['fontColor'],
-                                      iconSize: 60,
-                                    ),
-                                    SizedBox(width: 10),
-                                    Column (
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                child: Container(
+                                  child: DecoratedBox(
+                                    decoration:
+                                        //set color to traslucent white
+                                        BoxDecoration(
+                                            color: Color.fromRGBO(
+                                                255, 255, 255, 0.5)),
+                                    child: Row(
                                       children: [
-                                         Text (
-                                          data['title'],
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.w700,
-                                            fontSize: 22,
-                                            color: data["fontColor"],
-                                          ),
+                                        IconButton(
+                                          icon: Icon(
+                                              Icons.add_shopping_cart_rounded),
+                                          onPressed: () {},
+                                          color: const Color.fromARGB(
+                                              255, 16, 219, 23),
+                                          iconSize: 50,
                                         ),
-                                        Text(
-                                          data['subtitle'],
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.w700,
-                                            fontSize: 20,
-                                            color: data["fontColor"],
-                                          ),
+                                        // SizedBox(width: 5),
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              data['title'],
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.w700,
+                                                fontSize: 20,
+                                                color: data["fontColor"],
+                                              ),
+                                            ),
+                                            Text(
+                                              data['subtitle'],
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.w700,
+                                                fontSize: 20,
+                                                color: data["fontColor"],
+                                              ),
+                                            ),
+                                          ],
                                         ),
+                                        SizedBox(width: 10)
                                       ],
                                     ),
-                                  ],
+                                  ),
                                 ),
                               ),
                             ],

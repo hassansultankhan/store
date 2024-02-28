@@ -1,5 +1,0 @@
-flutter_native_splash:
-  image: "assets/images/splash.png"
-  fill: "fit" 
-  android: true
-  ios: true

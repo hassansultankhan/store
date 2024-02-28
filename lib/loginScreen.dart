@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:estore/signupScreen.dart';
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:quiver/strings.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'navigationScreen.dart';
 
@@ -40,64 +41,108 @@ class _loginScreenState extends State<loginScreen> {
     ));
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Login Screen'),
-        backgroundColor: Color.fromARGB(255, 63, 158, 22),
-        centerTitle: true,
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ElevatedButton(
-              onPressed: () => _handleGoogleSignIn(context),
-              child: const Text('Sign in with Google'),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            ElevatedButton(
-              onPressed: () => signin(context),
-              child: const Text('Sign in with Store Account'),
-            ),
-            const SizedBox(height: 10),
-            GestureDetector(
-              //this function will assign new guest name and save it to firestore "guests" collection
-              //also it will save it to sharedPreferance
-              //so that it checks if there is already a guest name assigned to application.
-
-              onTap: () async {
-                if (guestName.isEmpty) {
-                  guestName = await generateUniqueGuestName();
-                  saveGuestNameToSharedPreferences(guestName);
-                  saveGuestToFirestore(guestName);
-                }
-
-                // ignore: use_build_context_synchronously
-                Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => navigationScreen(
-                      displayName: guestName,
-                      email: 'No email provided',
-                      photoUrl: '',
-                    ),
-                  ),
-                  (route) =>
-                      false, // This is the predicate to stop popping routes
-                );
-              },
-              child: const CircleAvatar(
-                radius: 25,
-                backgroundImage: AssetImage("assets/images/Carrot_icon.png"),
+      // appBar: AppBar(
+      //   title: const Text('Login Screen'),
+      //   backgroundColor: Color.fromARGB(255, 63, 158, 22),
+      //   centerTitle: true,
+      // ),
+      body: Container(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+              image: AssetImage("assets/item_list/sauce_2.png"),
+              fit: BoxFit.cover),
+        ),
+        child: Center(
+          child: Container(
+            // color: const Color.fromRGBO(106, 235, 50, 0.698),
+            decoration: const BoxDecoration(
+              borderRadius: BorderRadius.all(
+                Radius.circular(20),
               ),
+              color: Color.fromRGBO(106, 235, 50, 0.698),
             ),
-            const Text(
-                'Sign in as guest'
-                //give text green color
-                ,
-                style: TextStyle(color: Colors.green)),
-          ],
+
+            height: 300,
+            width: 300,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(fixedSize: Size(230, 50)),
+                  onPressed: () => _handleGoogleSignIn(context),
+                  child: const Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Sign in with Google',
+                        style: TextStyle(fontSize: 16),
+                      ),
+                      SizedBox(width: 10),
+                      CircleAvatar(
+                        backgroundImage:
+                            AssetImage("assets/item_list/sauce_2.png"),
+                        radius: 20,
+                      )
+                    ],
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(fixedSize: Size(230, 50)),
+                  onPressed: () => signin(context),
+                  child: const Row(children: [
+                    Text('Sign in with Store Account'),
+                  ]),
+                ),
+                const SizedBox(height: 10),
+                GestureDetector(
+                  //this function will assign new guest name and save it to firestore "guests" collection
+                  //also it will save it to sharedPreferance
+                  //so that it checks if there is already a guest name assigned to application.
+
+                  onTap: () async {
+                    if (guestName.isEmpty) {
+                      guestName = await generateUniqueGuestName();
+                      saveGuestNameToSharedPreferences(guestName);
+                      saveGuestToFirestore(guestName);
+                    }
+
+                    // ignore: use_build_context_synchronously
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => navigationScreen(
+                          displayName: guestName,
+                          email: 'No email provided',
+                          photoUrl: '',
+                        ),
+                      ),
+                      (route) =>
+                          false, // This is the predicate to stop popping routes
+                    );
+                  },
+                  child: const CircleAvatar(
+                    radius: 25,
+                    backgroundImage:
+                        AssetImage("assets/images/Carrot_icon.png"),
+                  ),
+                ),
+                const Text(
+                  'Sign in as guest',
+                  //give text green color
+
+                  style: TextStyle(
+                    color: Color.fromARGB(255, 0, 0, 0),
+                    fontSize: 16,
+                  ),
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );

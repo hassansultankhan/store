@@ -294,6 +294,7 @@ class _CheckOutState extends State<CheckOut> {
                 'productNo': item.productNo,
               })
           .toList(),
+      'orderStatus': "Pending",
       'totalAmount': total,
     };
 

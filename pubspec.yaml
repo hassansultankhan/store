@@ -104,10 +104,13 @@ flutter:
     - assets/images/packages/package4.jpg
 
     - assets/images/splash_screen/splash.png
+    - assets/images/background1.jpeg
 
     - assets/item_list/sauce_2.png
 
     - assets/icons/google.png
+
+    - assets/icons/store_signin.jpg
 
 
 

@@ -107,17 +107,49 @@ class _loginScreenState extends State<loginScreen> {
                   ),
                 ),
                 const SizedBox(
-                  height: 10,
+                  height: 20,
                 ),
                 ElevatedButton(
-                  style: ElevatedButton.styleFrom(fixedSize: Size(230, 50)),
                   onPressed: () => signin(context),
-                  child: const Row(children: [
-                    Text(
-                      'Sign in with Store Account',
-                      style: TextStyle(fontSize: 16),
+                  style: ButtonStyle(
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(
+                            4.0), // Adjust the radius as needed
+                      ),
                     ),
-                  ]),
+                    backgroundColor: MaterialStateProperty.all<Color>(
+                        Color.fromARGB(255, 87, 215, 252)),
+                  ),
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      Ink.image(
+                        image: AssetImage("assets/icons/store_signin.jpg"),
+                        fit: BoxFit.cover,
+                        width: 198,
+                        height: 50,
+                        // child: Text("Sign in with Store Account"),
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                            color: Colors.white.withOpacity(.65),
+                            borderRadius: BorderRadius.all(
+                              Radius.elliptical(3, 3),
+                            )),
+                        height: 25,
+                        width: 200,
+                      ),
+                      const Text(
+                        "Sign in with Store Account",
+                        // textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.black, // Set text color as needed
+                          fontSize: 16,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
                 const SizedBox(height: 10),
                 GestureDetector(
@@ -146,19 +178,64 @@ class _loginScreenState extends State<loginScreen> {
                           false, // This is the predicate to stop popping routes
                     );
                   },
-                  child: const CircleAvatar(
-                    radius: 25,
-                    backgroundImage:
-                        AssetImage("assets/images/Carrot_icon.png"),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            color: Colors.white, // Set border color
+                            width: 3, // Set border width
+                          ),
+                        ),
+                        child: CircleAvatar(
+                          radius: 30,
+                          backgroundImage:
+                              AssetImage("assets/images/Carrot_icon.png"),
+                        ),
+                      ),
+                      SizedBox(width: 7),
+                      Container(
+                        alignment: Alignment.center,
+                        width: 158,
+                        height: 50,
+                        decoration: BoxDecoration(
+                          color: Colors.black54,
+                          borderRadius: BorderRadiusDirectional.horizontal(
+                              end: Radius.circular(20)),
+                        ),
+                        child: const Text(
+                          'Sign in as guest',
+
+                          //give text green color
+
+                          style: TextStyle(color: Colors.white, fontSize: 16),
+                        ),
+                      )
+                    ],
                   ),
                 ),
-                const Text(
-                  'Sign in as guest',
 
-                  //give text green color
-
-                  style: TextStyle(color: Colors.white, fontSize: 16),
+                SizedBox(
+                  height: 5,
                 ),
+
+                // Container(
+                //   alignment: Alignment.center,
+                //   height: 25,
+                //   width: 150,
+                //   decoration: BoxDecoration(
+                //       color: Color.fromARGB(255, 212, 99, 6),
+                //       borderRadius: BorderRadius.all(Radius.circular(3))),
+                //   child: const Text(
+                //     'Sign in as guest',
+
+                //     //give text green color
+
+                //     style: TextStyle(color: Colors.white, fontSize: 16),
+                //   ),
+                // ),
               ],
             ),
           ),

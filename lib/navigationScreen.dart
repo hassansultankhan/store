@@ -47,12 +47,18 @@ class _navigationScreenState extends State<navigationScreen> {
     ));
     return Scaffold(
         appBar: AppBar(
-          title: const Text("Flavor up"),
+          title: const Text(
+            "Flavor up",
+            style: TextStyle(color: Colors.white),
+          ),
           centerTitle: true,
           // add avatar of photo Url from constructor
           backgroundColor: Color.fromARGB(255, 63, 158, 22),
           leading: IconButton(
-              icon: const Icon(Icons.arrow_back),
+              icon: const Icon(
+                Icons.arrow_back,
+                color: Colors.white,
+              ),
               tooltip: "Back to previous screen",
               onPressed: () async {
                 //pops back to previous screen without leaving a trace of route
@@ -71,6 +77,7 @@ class _navigationScreenState extends State<navigationScreen> {
               icon: const Icon(
                 Icons.shopping_cart_rounded,
                 size: 30,
+                color: Colors.white,
               ),
             ),
             IconButton(
@@ -301,7 +308,10 @@ class _navigationScreenState extends State<navigationScreen> {
                                       print('Dialog content is being rebuilt');
                                     });
                                   },
-                                  icon: Icon(Icons.delete),
+                                  icon: Icon(
+                                    Icons.delete,
+                                    color: Colors.blueGrey,
+                                  ),
                                 )
                               ],
                             ),
@@ -340,10 +350,17 @@ class _navigationScreenState extends State<navigationScreen> {
                         child: const Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            Text('Check Out', style: TextStyle(fontSize: 14)),
+                            Text('Check Out',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.white,
+                                )),
                             SizedBox(width: 8),
-                            Icon(Icons.shopping_cart_checkout_rounded,
-                                size: 20),
+                            Icon(
+                              Icons.shopping_cart_checkout_rounded,
+                              size: 20,
+                              color: Colors.white,
+                            ),
                           ],
                         ),
                       ),

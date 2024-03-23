@@ -70,7 +70,7 @@ class _loginScreenState extends State<loginScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 ElevatedButton(
-                  style: ElevatedButton.styleFrom(fixedSize: Size(230, 50)),
+                  style: ElevatedButton.styleFrom(fixedSize: Size(240, 50)),
                   onPressed: () => _handleGoogleSignIn(context),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -79,7 +79,7 @@ class _loginScreenState extends State<loginScreen> {
                         'Sign in with Google',
                         style: TextStyle(fontSize: 16),
                       ),
-                      const SizedBox(width: 10),
+                      const SizedBox(width: 5),
                       // CircleAvatar(
                       //   backgroundImage: AssetImage("assets/icons/google.png"),
                       //   radius: 20,

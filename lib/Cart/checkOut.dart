@@ -64,7 +64,12 @@ class _CheckOutState extends State<CheckOut> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('CHECKOUT'),
+          iconTheme: const IconThemeData(color: Colors.white),
+          backgroundColor: Color.fromARGB(255, 63, 158, 22),
+          title: const Text(
+            'CHECKOUT',
+            style: TextStyle(color: Colors.white),
+          ),
           centerTitle: true,
           actions: [
             Padding(
@@ -75,11 +80,17 @@ class _CheckOutState extends State<CheckOut> {
                 children: [
                   Text(
                     widget.displayName,
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white),
                   ),
                   Text(
                     widget.email,
-                    style: TextStyle(fontSize: 14),
+                    style: const TextStyle(
+                      fontSize: 12,
+                      color: Colors.white,
+                    ),
                   ),
                 ],
               ),

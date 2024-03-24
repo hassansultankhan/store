@@ -27,6 +27,14 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'eStore',
+      theme: ThemeData(
+        textTheme: const TextTheme(
+          bodyLarge: TextStyle(
+            fontFamily: 'Poppins regular', // default font family
+            fontWeight: FontWeight.w600, //  default font weight
+          ),
+        ),
+      ),
       home: loginScreen(),
     );
   }

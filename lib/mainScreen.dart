@@ -87,18 +87,19 @@ class _mainScreenState extends State<mainScreen> {
             SizedBox(
               height: 25,
             ),
-            SingleChildScrollView(
+            Expanded(
+            child: SingleChildScrollView(
+              
               scrollDirection: Axis.vertical,
-              // child: Container(
 
-              //   // color: Colors.amber,
-              //   width: MediaQuery.sizeOf(context).width,
-              child: Column(
+              child:
+              Column(
+       
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      SizedBox(width: 8),
+                     
                       Container(
                         child: RichText(
                           text: const TextSpan(
@@ -126,6 +127,7 @@ class _mainScreenState extends State<mainScreen> {
                           ),
                         ),
                       ),
+                      SizedBox(width: 10,),
                       Container(
                         width: 170,
                         height: 120,
@@ -143,9 +145,69 @@ class _mainScreenState extends State<mainScreen> {
                         ),
                       ),
                     ],
+                  ),
+                                    
+                  // Second ELement 
+
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      SizedBox(width: 30),
+                      Container(
+                        width: 100,
+                        height: 100,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(
+                              10), // Adjust the radius as needed
+                        ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(
+                              5), // Same radius as the BoxDecoration
+                          child: Image.asset(
+                            'assets/images/bottles.png',
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 10),
+                       Container(
+                        child: RichText(
+                          text: const TextSpan(
+                            style: TextStyle(
+                              fontFamily: 'Poppins regular',
+                              fontWeight: FontWeight.w600,
+                              color: Colors.black, // Default color
+                            ),
+                            children: [
+                              TextSpan(
+                                text: "SPICE it up\n",
+                              ),
+                              TextSpan(
+                                  text: "with our ",
+                                  style: TextStyle(
+                                      color: Color.fromARGB(255, 4, 155, 9))),
+                              TextSpan(
+                                text: "hot sauce",
+                                style: TextStyle(color: Color.fromARGB(255, 221, 114, 20)),
+                              ),
+                              
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Container(
+                    height: 120,
+                    color: Colors.green,
                   )
+
+                  //Second element of scroll
+                
+                
                 ],
               ),
+            ),
             ),
           ],
         ),

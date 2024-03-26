@@ -23,11 +23,7 @@ class _mainScreenState extends State<mainScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(
-            // image: DecorationImage(
-            //     image: AssetImage("assets/images/background1.jpeg"),
-            //     fit: BoxFit.fitHeight),
-            ),
+       
         width: MediaQuery.of(context).size.width,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -84,130 +80,194 @@ class _mainScreenState extends State<mainScreen> {
                 );
               }).toList(),
             ),
-            SizedBox(
-              height: 25,
-            ),
             Expanded(
-            child: SingleChildScrollView(
-              
-              scrollDirection: Axis.vertical,
+              child: SingleChildScrollView(
+                scrollDirection: Axis.vertical,
+                child: Column(
+                  children: [
+                    // Element 1 of scroll sheet
 
-              child:
-              Column(
-       
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                     
-                      Container(
-                        child: RichText(
-                          text: const TextSpan(
-                            style: TextStyle(
-                              fontFamily: 'Poppins regular',
-                              fontWeight: FontWeight.w600,
-                              color: Colors.black, // Default color
+                    Padding(
+                      padding: EdgeInsets.only(top: 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Container(
+                            child: RichText(
+                              text: const TextSpan(
+                                style: TextStyle(
+                                  fontFamily: 'Poppins regular',
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.black, // Default color
+                                ),
+                                children: [
+                                  TextSpan(
+                                    text: "Ketchup made from\n*rich ",
+                                  ),
+                                  TextSpan(
+                                      text: "ORGANIC ",
+                                      style: TextStyle(
+                                          color:
+                                              Color.fromARGB(255, 4, 155, 9))),
+                                  TextSpan(
+                                    text: "tomatoes",
+                                    style: TextStyle(color: Colors.red),
+                                  ),
+                                  TextSpan(
+                                    text: ".\nADD FLAVOR TO ANYTHING!",
+                                  ),
+                                ],
+                              ),
                             ),
-                            children: [
-                              TextSpan(
-                                text: "Ketchup made from\n*rich ",
-                              ),
-                              TextSpan(
-                                  text: "ORGANIC ",
-                                  style: TextStyle(
-                                      color: Color.fromARGB(255, 4, 155, 9))),
-                              TextSpan(
-                                text: "tomatoes",
-                                style: TextStyle(color: Colors.red),
-                              ),
-                              TextSpan(
-                                text: ".\nADD FLAVOR TO ANYTHING!",
-                              ),
-                            ],
                           ),
-                        ),
-                      ),
-                      SizedBox(width: 10,),
-                      Container(
-                        width: 170,
-                        height: 120,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(
-                              10), // Adjust the radius as needed
-                        ),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(
-                              5), // Same radius as the BoxDecoration
-                          child: Image.asset(
-                            'assets/images/ketchupPouring.png',
-                            fit: BoxFit.cover,
+                          SizedBox(
+                            width: 10,
                           ),
-                        ),
-                      ),
-                    ],
-                  ),
-                                    
-                  // Second ELement 
-
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      SizedBox(width: 30),
-                      Container(
-                        width: 100,
-                        height: 100,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(
-                              10), // Adjust the radius as needed
-                        ),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(
-                              5), // Same radius as the BoxDecoration
-                          child: Image.asset(
-                            'assets/images/bottles.png',
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      ),
-                      SizedBox(width: 10),
-                       Container(
-                        child: RichText(
-                          text: const TextSpan(
-                            style: TextStyle(
-                              fontFamily: 'Poppins regular',
-                              fontWeight: FontWeight.w600,
-                              color: Colors.black, // Default color
+                          Container(
+                            width: 170,
+                            height: 120,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(
+                                  10), // Adjust the radius as needed
                             ),
-                            children: [
-                              TextSpan(
-                                text: "SPICE it up\n",
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(
+                                  5), // Same radius as the BoxDecoration
+                              child: Image.asset(
+                                'assets/images/ketchupPouring.png',
+                                fit: BoxFit.cover,
                               ),
-                              TextSpan(
-                                  text: "with our ",
-                                  style: TextStyle(
-                                      color: Color.fromARGB(255, 4, 155, 9))),
-                              TextSpan(
-                                text: "hot sauce",
-                                style: TextStyle(color: Color.fromARGB(255, 221, 114, 20)),
-                              ),
-                              
-                            ],
+                            ),
                           ),
-                        ),
+                        ],
                       ),
-                    ],
-                  ),
-                  Container(
-                    height: 120,
-                    color: Colors.green,
-                  )
+                    ),
 
-                  //Second element of scroll
-                
-                
-                ],
+                    // Element 1 of scroll sheet
+
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10),
+                      child: UnconstrainedBox(
+                          child: Container(
+                          height: 110,
+                          width: MediaQuery.of(context).size.width-20,
+                          decoration: BoxDecoration(
+                          color: Color.fromARGB(255, 172, 211, 242),
+                          borderRadius: const BorderRadius.all(
+                            Radius.circular(20),
+                          ),
+                        
+                          // 
+                        ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  SizedBox(width: 30),
+                                  Container(
+                                    width: 100,
+                                    height: 100,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(
+                                          10), // Adjust the radius as needed
+                                    ),
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(
+                                          5), // Same radius as the BoxDecoration
+                                      child: Image.asset(
+                                        'assets/images/bottles.png',
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(width: 10),
+                                  Container(
+                                    child: RichText(
+                                      text: const TextSpan(
+                                        style: TextStyle(
+                                          fontFamily: 'Poppins regular',
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.black, // Default color
+                                        ),
+                                        children: [
+                                          TextSpan(
+                                            text: "SPICE up your taste buds\n",
+                                          ),
+                                          TextSpan(
+                                            text: "with HOT SAUCE",
+                                            style: TextStyle(
+                                                color:
+                                                    Color.fromARGB(255, 221, 114, 20),
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                      ),
+                    ),
+                    ),
+
+                    // Element 3 of scroll list
+
+                    Padding(
+                      padding: EdgeInsets.only(top: 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          // Container(
+                          //   child: RichText(
+                          //     text: const TextSpan(
+                          //       style: TextStyle(
+                          //         fontFamily: 'Poppins regular',
+                          //         fontWeight: FontWeight.w600,
+                          //         color: Colors.black, // Default color
+                          //       ),
+                          //       children: [
+                          //         TextSpan(
+                          //           text: "Ketchup made from\n*rich ",
+                          //         ),
+                          //         TextSpan(
+                          //             text: "ORGANIC ",
+                          //             style: TextStyle(
+                          //                 color:
+                          //                     Color.fromARGB(255, 4, 155, 9))),
+                          //         TextSpan(
+                          //           text: "tomatoes",
+                          //           style: TextStyle(color: Colors.red),
+                          //         ),
+                          //         TextSpan(
+                          //           text: ".\nADD FLAVOR TO ANYTHING!",
+                          //         ),
+                          //       ],
+                          //     ),
+                          //   ),
+                          // ),
+                       
+                          Container(
+                            width: MediaQuery.of(context).size.width-20,
+                            height: 120,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(
+                                  10), // Adjust the radius as needed
+                            ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(
+                                  5), // Same radius as the BoxDecoration
+                              child: Image.asset(
+                                'assets/images/bottleVariety.png',
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+
+                  ],
+                ),
               ),
-            ),
             ),
           ],
         ),

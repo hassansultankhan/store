@@ -103,6 +103,7 @@ flutter:
     - assets/images/packages/PanSauces.jpg
 
     - assets/images/splash_screen/splash.png
+    - assets/images/background.jpg
     - assets/images/background1.jpeg
 
     - assets/item_list/sauce_2.png

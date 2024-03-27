@@ -36,8 +36,10 @@ class _mainScreenState extends State<mainScreen> {
             Container(
               alignment: Alignment.centerLeft,
               child: Padding(
-                padding: EdgeInsets.fromLTRB(15, 15, 0, 5),
-                child: RichText(
+                padding: EdgeInsets.fromLTRB(15, 15, 0, 0),
+                child: Row(
+                  children: [
+                  RichText(
                   text: TextSpan(
                     style: Theme.of(context).textTheme.bodyLarge,
                     children: const [
@@ -49,8 +51,16 @@ class _mainScreenState extends State<mainScreen> {
                     ],
                   ),
                 ),
+               const  SizedBox(width: 5,),
+                  
+                 const  Icon(Icons.commit_rounded,
+                  size: 30,
+                  )
+                  ],
+                ),
               ),
             ),
+            
             CarouselSlider(
               options: CarouselOptions(
                 clipBehavior: Clip.antiAlias,
@@ -64,8 +74,10 @@ class _mainScreenState extends State<mainScreen> {
               items: imageAssetPaths.map((String imageAssetPath) {
                 return Builder(
                   builder: (BuildContext context) {
+                    
                     return ClipRRect(
                       borderRadius: const BorderRadius.all(Radius.circular(30)),
+                      
                       child: Container(
                         width: MediaQuery.of(context).size.width,
                         margin: const EdgeInsets.symmetric(horizontal: 5.0),
@@ -148,26 +160,31 @@ class _mainScreenState extends State<mainScreen> {
                       ),
                     ),
 
-                    // Element 1 of scroll sheet
+                    // Element 2 of scroll sheet
 
                     Padding(
                       padding: const EdgeInsets.only(top: 10),
                       child: UnconstrainedBox(
-                        child: Container(
-                          height: 110,
-                          width: MediaQuery.of(context).size.width - 50,
-                          decoration: const BoxDecoration(
+                        alignment: Alignment.center,
+                        
+                          child:Material(
                             color: Color.fromARGB(255, 172, 211, 242),
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(20),
+                            elevation: 8,
+                            shape: RoundedRectangleBorder(
+                              side: BorderSide(color: Colors.white,
+                              width: 3
+                              ) ,
+                              borderRadius: BorderRadius.circular(20),
+                              
                             ),
-
-                            //
-                          ),
-                          child: Row(
+                            
+                   
+                          child: Padding(padding: EdgeInsets.fromLTRB(15,5,25,5),
+                          child:
+                          Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              SizedBox(width: 30),
+                             
                               Container(
                                 width: 100,
                                 height: 100,
@@ -213,10 +230,13 @@ class _mainScreenState extends State<mainScreen> {
                                   ),
                                 ),
                               ),
+                              
                             ],
                           ),
-                        ),
+                        
                       ),
+                    ),
+                    ),
                     ),
 
                     // Element 3 of scroll list
@@ -247,19 +267,26 @@ class _mainScreenState extends State<mainScreen> {
                               ),
                             ),
                           ),
-                          const SizedBox(width: 15),
+                          const SizedBox(width: 10),
+                          
+                      
                           Material(
-                            color: Color.fromARGB(255, 221, 114, 20),
-                            borderRadius: BorderRadius.all(Radius.circular(20)),
+                          color: Color.fromARGB(255, 221, 114, 20),
+                           shape: RoundedRectangleBorder(
+                              side: BorderSide(color: Colors.white,
+                              width: 3) ,
+                              borderRadius: BorderRadius.circular(20),
+                            ),
                             elevation: 8,
+                            
                             child: Container(
-                              padding: EdgeInsets.all(10),
+                              padding: EdgeInsets.fromLTRB(5,10,5,10),
                               child: Container(
                                 height: 100,
                                 width: 195,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  image: const DecorationImage(
+                                decoration: const BoxDecoration(
+                                  
+                                  image:  DecorationImage(
                                     image: AssetImage(
                                       'assets/images/bottleVariety.png',
                                     ),

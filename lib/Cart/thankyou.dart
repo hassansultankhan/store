@@ -16,7 +16,21 @@ class thankyou extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
+      child:Container(
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
+        decoration: BoxDecoration(
+          image: DecorationImage(image: AssetImage("assets/images/background1.jpeg"))
+        ),
+      
       child: Center(
+        child:Container(
+          height: 300,
+          width: 300,
+        decoration: BoxDecoration(
+          color: Colors.white.withOpacity(0.8),
+          borderRadius: BorderRadius.circular(10),
+        ),
         child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
           const Icon(
             Icons.check_circle_outline_rounded,
@@ -27,7 +41,7 @@ class thankyou extends StatelessWidget {
             height: 15,
           ),
           const Text("Thank you for your order!",
-              style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold)),
+              style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold, color: Colors.black)),
           const SizedBox(
             height: 30,
           ),
@@ -60,6 +74,8 @@ class thankyou extends StatelessWidget {
                 )),
           ),
         ]),
+      ),
+      ),
       ),
     );
   }

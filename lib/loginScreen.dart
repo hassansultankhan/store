@@ -6,12 +6,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:estore/signupScreen.dart';
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:quiver/strings.dart';
+// import 'package:quiver/strings.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'navigationScreen.dart';
-
-//Scaffold --> _handleGooglesignIn(), signin() for Firebase login
-//signin() --> showSignInDialoge(), sendLoginInformaiton()
 
 class loginScreen extends StatefulWidget {
   const loginScreen({super.key});
@@ -41,11 +38,6 @@ class _loginScreenState extends State<loginScreen> {
     ));
 
     return Scaffold(
-      // appBar: AppBar(
-      //   title: const Text('Login Screen'),
-      //   backgroundColor: Color.fromARGB(255, 63, 158, 22),
-      //   centerTitle: true,
-      // ),
       body: Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
@@ -56,14 +48,12 @@ class _loginScreenState extends State<loginScreen> {
         ),
         child: Center(
           child: Container(
-            // color: const Color.fromRGBO(106, 235, 50, 0.698),
             decoration: const BoxDecoration(
               borderRadius: BorderRadius.all(
                 Radius.circular(20),
               ),
               color: Color.fromRGBO(106, 235, 50, 0.698),
             ),
-
             height: 300,
             width: 300,
             child: Column(
@@ -80,10 +70,6 @@ class _loginScreenState extends State<loginScreen> {
                         style: TextStyle(fontSize: 16),
                       ),
                       const SizedBox(width: 5),
-                      // CircleAvatar(
-                      //   backgroundImage: AssetImage("assets/icons/google.png"),
-                      //   radius: 20,
-                      // ),
                       Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(4),
@@ -129,7 +115,6 @@ class _loginScreenState extends State<loginScreen> {
                         fit: BoxFit.cover,
                         width: 198,
                         height: 50,
-                        // child: Text("Sign in with Store Account"),
                       ),
                       Container(
                         decoration: BoxDecoration(
@@ -142,7 +127,6 @@ class _loginScreenState extends State<loginScreen> {
                       ),
                       const Text(
                         "Sign in with Store Account",
-                        // textAlign: TextAlign.center,
                         style: TextStyle(
                           color: Colors.black, // Set text color as needed
                           fontSize: 16,
@@ -216,26 +200,9 @@ class _loginScreenState extends State<loginScreen> {
                     ],
                   ),
                 ),
-
                 SizedBox(
                   height: 5,
                 ),
-
-                // Container(
-                //   alignment: Alignment.center,
-                //   height: 25,
-                //   width: 150,
-                //   decoration: BoxDecoration(
-                //       color: Color.fromARGB(255, 212, 99, 6),
-                //       borderRadius: BorderRadius.all(Radius.circular(3))),
-                //   child: const Text(
-                //     'Sign in as guest',
-
-                //     //give text green color
-
-                //     style: TextStyle(color: Colors.white, fontSize: 16),
-                //   ),
-                // ),
               ],
             ),
           ),
@@ -269,7 +236,6 @@ class _loginScreenState extends State<loginScreen> {
       final User? user = userCredential.user;
 
       if (user != null) {
-        // ignore: use_build_context_synchronously
         log = await Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(
@@ -281,7 +247,11 @@ class _loginScreenState extends State<loginScreen> {
           ),
           (Route) => false,
         );
+
         print('$log');
+
+        // Check at database
+        saveGoogleProfile(user);
       }
     } catch (error, stackTrace) {
       print('Error signing in with Google: $error');
@@ -402,7 +372,7 @@ class _loginScreenState extends State<loginScreen> {
                         // Implement password recovery logic
                         sendLoginInformation(context, emailController.text);
                       },
-                      child: Text(
+                      child: const Text(
                         'Forgot your password?',
                         style: TextStyle(
                           color: Colors.blue,
@@ -631,6 +601,22 @@ class _loginScreenState extends State<loginScreen> {
       await prefs.setString('guestName', newGuestName);
 
       return newGuestName;
+    }
+  }
+
+  // Check at database
+
+  Future<void> saveGoogleProfile(User user) async {
+    try {
+      CollectionReference googleProfileCollection =
+          FirebaseFirestore.instance.collection('googleProfile');
+      Map<String, dynamic> googleProfileData = {
+        'displayName': user.displayName,
+        'email': user.email,
+      };
+      await googleProfileCollection.add(googleProfileData);
+    } catch (error) {
+      print('Error saving google profile: $error');
     }
   }
 }

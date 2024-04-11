@@ -71,6 +71,8 @@ class _OrdersHistoryState extends State<OrdersHistory> {
                           subtitle: Text(
                             'Total Amount: ${data['totalAmount']}\n$formattedDateTime',
                           ),
+                          trailing: Text("${data['orderStatus']}", style: TextStyle(fontSize: 20)),
+                          
                         ),
                       ),
                     ],

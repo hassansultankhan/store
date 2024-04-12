@@ -119,9 +119,9 @@ class _navigationScreenState extends State<navigationScreen> {
               BottomNavigationBarItem(
                   icon: Icon(Icons.menu), label: "Main Page"),
               BottomNavigationBarItem(
-                  icon: Icon(Icons.food_bank), label: "Sauces"),
-              BottomNavigationBarItem(
                   icon: Icon(Icons.food_bank), label: "Chatnis"),
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.food_bank), label: "Sauces"),
             ]));
   }
 

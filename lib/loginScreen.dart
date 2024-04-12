@@ -608,6 +608,7 @@ class _loginScreenState extends State<loginScreen> {
 
   Future<void> saveGoogleProfile(User user) async {
     try {
+      print("execution of google profile save code");
       CollectionReference googleProfileCollection =
           FirebaseFirestore.instance.collection('googleProfile');
       Map<String, dynamic> googleProfileData = {

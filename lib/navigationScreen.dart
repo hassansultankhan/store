@@ -33,7 +33,7 @@ class _navigationScreenState extends State<navigationScreen> {
   final GoogleSignIn _googleSignIn = GoogleSignIn();
   var screens = [
     mainScreen(),
-    Cat0(),
+    Cat0(false),
     Cat1(),
   ];
   int selectedCat = 0;

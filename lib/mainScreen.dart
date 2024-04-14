@@ -1,3 +1,4 @@
+import 'package:estore/Categories/cat0.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -370,7 +371,10 @@ class _mainScreenState extends State<mainScreen> {
                   // const SizedBox(width: 20),
                   Spacer(),
                   IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (constext) => Cat0(true)));
+                    },
                     icon: Icon(Icons.next_plan),
                     iconSize: 45,
                     color: Colors.green,

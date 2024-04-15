@@ -1,12 +1,22 @@
-import 'package:estore/Categories/cat0.dart';
+// import 'package:estore/Categories/cat0.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
+import 'navigationScreen.dart';
 
 class mainScreen extends StatefulWidget {
-  mainScreen({super.key});
+  final String displayName1;
+  final String email1;
+  final String photoUrl1;
+
+  mainScreen({
+    Key? key,
+    required this.displayName1,
+    required this.email1,
+    required this.photoUrl1,
+  }) : super(key: key);
 
   @override
   State<mainScreen> createState() => _mainScreenState();
@@ -372,17 +382,25 @@ class _mainScreenState extends State<mainScreen> {
                   Spacer(),
                   IconButton(
                     onPressed: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (constext) => Cat0(true)));
+                      toggleSauceScreen();
                     },
                     icon: Icon(Icons.next_plan),
                     iconSize: 45,
                     color: Colors.green,
-                  )
+                  ),
                 ],
               )
             ],
           ));
         });
+  }
+
+  toggleSauceScreen() {
+    navigationScreen(
+      displayName: widget.displayName1,
+      email: widget.email1,
+      photoUrl: widget.photoUrl1,
+      callbackSauceScreenStatus: true,
+    );
   }
 }

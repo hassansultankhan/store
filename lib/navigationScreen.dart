@@ -16,12 +16,14 @@ class navigationScreen extends StatefulWidget {
   final String displayName;
   final String email;
   final String photoUrl;
+  late bool callbackSauceScreenStatus;
 
-  const navigationScreen({
+  navigationScreen({
     Key? key,
     required this.displayName,
     required this.email,
     required this.photoUrl,
+    required this.callbackSauceScreenStatus,
   }) : super(key: key);
 
   @override
@@ -31,13 +33,25 @@ class navigationScreen extends StatefulWidget {
 class _navigationScreenState extends State<navigationScreen> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
+  late List<Widget> screens;
   var screens = [
-    mainScreen(),
+    mainScreen(
+        displayName1: widget.displayName,
+        email1: widget.email,
+        photoUrl1: widget.photoUrl),
     Cat0(false),
     Cat1(),
   ];
   int selectedCat = 0;
   bool cartNotEmpty = true;
+  @override
+  void initState() {
+    if (widget.callbackSauceScreenStatus == true) {
+      toggleToSaucesCategory();
+    }
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     // Set the status bar color here
@@ -378,6 +392,12 @@ class _navigationScreenState extends State<navigationScreen> {
           );
         },
       );
+    });
+  }
+
+  void toggleToSaucesCategory() {
+    setState(() {
+      selectedCat = 2; // Index of "Sauces" category
     });
   }
 }

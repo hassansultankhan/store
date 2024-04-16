@@ -10,12 +10,14 @@ class mainScreen extends StatefulWidget {
   final String displayName1;
   final String email1;
   final String photoUrl1;
+  final Function(bool) toggleSauceScreen;
 
   mainScreen({
     Key? key,
     required this.displayName1,
     required this.email1,
     required this.photoUrl1,
+    required this.toggleSauceScreen,
   }) : super(key: key);
 
   @override
@@ -380,14 +382,15 @@ class _mainScreenState extends State<mainScreen> {
                   ),
                   // const SizedBox(width: 20),
                   Spacer(),
-                  IconButton(
-                    onPressed: () {
-                      toggleSauceScreen();
-                    },
-                    icon: Icon(Icons.next_plan),
-                    iconSize: 45,
-                    color: Colors.green,
-                  ),
+               IconButton(
+                  onPressed: () {
+                    widget.toggleSauceScreen(true); // Call the toggle function
+                    Navigator.pop(context);
+                  },
+                  icon: Icon(Icons.next_plan),
+                  iconSize: 45,
+                  color: Colors.green,
+                ),
                 ],
               )
             ],
@@ -395,12 +398,8 @@ class _mainScreenState extends State<mainScreen> {
         });
   }
 
-  toggleSauceScreen() {
-    navigationScreen(
-      displayName: widget.displayName1,
-      email: widget.email1,
-      photoUrl: widget.photoUrl1,
-      callbackSauceScreenStatus: true,
-    );
-  }
+ void toggleSauceScreen(bool status) {
+  widget.toggleSauceScreen(status);
+}
+
 }

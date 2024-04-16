@@ -33,8 +33,22 @@ class navigationScreen extends StatefulWidget {
 class _navigationScreenState extends State<navigationScreen> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
-  late List<Widget> screens;
-  var screens = [
+  // late List<Widget> screens;
+ 
+  int selectedCat = 0;
+  bool cartNotEmpty = true;
+  @override
+  void initState() {
+    if (widget.callbackSauceScreenStatus == true) {
+      toggleToSaucesCategory();
+      print(widget.callbackSauceScreenStatus);
+    }
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+     var screens = [
     mainScreen(
         displayName1: widget.displayName,
         email1: widget.email,
@@ -42,18 +56,6 @@ class _navigationScreenState extends State<navigationScreen> {
     Cat0(false),
     Cat1(),
   ];
-  int selectedCat = 0;
-  bool cartNotEmpty = true;
-  @override
-  void initState() {
-    if (widget.callbackSauceScreenStatus == true) {
-      toggleToSaucesCategory();
-    }
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
     // Set the status bar color here
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
       statusBarColor: Color.fromARGB(

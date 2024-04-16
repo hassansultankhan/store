@@ -249,11 +249,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
           context,
           MaterialPageRoute(
               builder: (context) => navigationScreen(
-                    displayName: _firstnameController.text,
-                    email: _emailController.text,
-                    photoUrl: "assets/smiley.png",
-                    callbackSauceScreenStatus: false,
-                  )));
+                  displayName: _firstnameController.text,
+                  email: _emailController.text,
+                  photoUrl: "assets/smiley.png")));
     }
 
     // Clear text editing controller values

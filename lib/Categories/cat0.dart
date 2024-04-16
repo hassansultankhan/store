@@ -7,8 +7,8 @@ import 'package:estore/Database/dbinitialization.dart';
 import 'package:estore/Cart/cartItems.dart';
 
 class Cat0 extends StatefulWidget {
-  bool closebutton = false;
-  Cat0(this.closebutton, {Key? key}) : super(key: key);
+ 
+  Cat0( {Key? key}) : super(key: key);
 
   @override
   State<Cat0> createState() => _Cat0State();

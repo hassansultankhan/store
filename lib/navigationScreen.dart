@@ -16,14 +16,12 @@ class navigationScreen extends StatefulWidget {
   final String displayName;
   final String email;
   final String photoUrl;
-  late bool callbackSauceScreenStatus;
 
   navigationScreen({
     Key? key,
     required this.displayName,
     required this.email,
     required this.photoUrl,
-    required this.callbackSauceScreenStatus,
   }) : super(key: key);
 
   @override
@@ -37,23 +35,12 @@ class _navigationScreenState extends State<navigationScreen> {
  
   int selectedCat = 0;
   bool cartNotEmpty = true;
-  @override
-  void initState() {
-    if (widget.callbackSauceScreenStatus == true) {
-      toggleToSaucesCategory();
-      print(widget.callbackSauceScreenStatus);
-    }
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
      var screens = [
-    mainScreen(
-        displayName1: widget.displayName,
-        email1: widget.email,
-        photoUrl1: widget.photoUrl),
-    Cat0(false),
+    mainScreen(),
+    Cat0(),
     Cat1(),
   ];
     // Set the status bar color here

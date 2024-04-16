@@ -1,24 +1,12 @@
-// import 'package:estore/Categories/cat0.dart';
+import 'package:estore/Categories/cat0.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
-import 'navigationScreen.dart';
 
 class mainScreen extends StatefulWidget {
-  final String displayName1;
-  final String email1;
-  final String photoUrl1;
-  final Function(bool) toggleSauceScreen;
-
-  mainScreen({
-    Key? key,
-    required this.displayName1,
-    required this.email1,
-    required this.photoUrl1,
-    required this.toggleSauceScreen,
-  }) : super(key: key);
+  mainScreen({super.key});
 
   @override
   State<mainScreen> createState() => _mainScreenState();
@@ -382,24 +370,19 @@ class _mainScreenState extends State<mainScreen> {
                   ),
                   // const SizedBox(width: 20),
                   Spacer(),
-               IconButton(
-                  onPressed: () {
-                    widget.toggleSauceScreen(true); // Call the toggle function
-                    Navigator.pop(context);
-                  },
-                  icon: Icon(Icons.next_plan),
-                  iconSize: 45,
-                  color: Colors.green,
-                ),
+                  IconButton(
+                    onPressed: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (constext) => Cat0()));
+                    },
+                    icon: Icon(Icons.next_plan),
+                    iconSize: 45,
+                    color: Colors.green,
+                  )
                 ],
               )
             ],
           ));
         });
   }
-
- void toggleSauceScreen(bool status) {
-  widget.toggleSauceScreen(status);
-}
-
 }

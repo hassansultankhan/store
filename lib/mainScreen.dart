@@ -4,6 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:quiver/strings.dart';
+
+import 'Cart/cartItems.dart';
+import 'Database/dbinitialization.dart';
 
 class mainScreen extends StatefulWidget {
   mainScreen({super.key});
@@ -13,6 +18,7 @@ class mainScreen extends StatefulWidget {
 }
 
 class _mainScreenState extends State<mainScreen> {
+  bool soldstatus = false;
   String mainScreenTitle = "eStore";
   List<String> imageAssetPaths = [
     'assets/images/packages/PanSauces.jpg',
@@ -109,11 +115,37 @@ class _mainScreenState extends State<mainScreen> {
                       padding: EdgeInsets.only(top: 10),
                       child: InkWell(
                         onTap: () {
-                          mainScreenAlertDialog(
-                              "Organic Ketchep",
-                              "Add flovor to anything",
-                              "assets/images/sauces/Tomatosauce.jpg",
-                              "Sauces");
+                          //     mainScreenAlertDialog(
+                          //     "Organic Ketchep",
+                          //     "Add flovor to anything",
+                          //     "assets/images/sauces/Tomatosauce.jpg",
+                          //     "Sauces");
+                          Future.delayed(Duration.zero, () {
+                        showDialog(
+                          context: context, //create location tag
+                          builder: (context) => itemAlert(
+                              "Add flavor to anything",
+                              context, //pass location tag to itemAlert, that where does itemAlert lyes
+                              'assets/images/sauces/Tomatosauce.jpg',
+                              "Tomato Sauce",
+                              "Sauces",
+                              "700ml",
+                              500,
+                              1,
+                              012,
+                              soldstatus, 
+                              () {
+                            // Logic to update soldStatus to true
+                            setState(() {
+                              //function passed as parameter to itemAlert
+                              soldstatus = !soldstatus;
+                            });
+                          }
+                          ),
+                        );
+                          }
+                          );
+                          
                         },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.end,
@@ -304,86 +336,346 @@ class _mainScreenState extends State<mainScreen> {
       ),
     );
   }
-
+  // dormant function
   loadProduct() {}
-  mainScreenAlertDialog(
-      String item, String tagline, String imageAddress, String category) {
-    return showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-              title: Column(
-            children: [
-              Text(
-                "$item",
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                  fontFamily: 'Poppins regular',
-                  fontWeight: FontWeight.w600,
-                  color: Colors.black,
-                  fontSize: 18,
+
+//   mainScreenAlertDialog(
+//       String item, String tagline, String imageAddress, String category) {
+//     return showDialog(
+//         context: context,
+//         builder: (BuildContext context) {
+//           return AlertDialog(
+//               title: Column(
+//             children: [
+//               Text(
+//                 "$item",
+//                 textAlign: TextAlign.center,
+//                 style: const TextStyle(
+//                   fontFamily: 'Poppins regular',
+//                   fontWeight: FontWeight.w600,
+//                   color: Colors.black,
+//                   fontSize: 18,
+//                 ),
+//               ),
+//               Text(
+//                 tagline,
+//                 textAlign: TextAlign.center,
+//                 style: const TextStyle(
+//                   fontFamily: 'Poppins regular',
+//                   fontWeight: FontWeight.w600,
+//                   color: Colors.black,
+//                   fontSize: 14,
+//                 ),
+//               ),
+//               SizedBox(height: 10),
+//               Container(
+//                 height: MediaQuery.of(context).size.width / 3,
+//                 width: double.infinity,
+//                 decoration: BoxDecoration(
+//                   borderRadius: BorderRadius.circular(5),
+//                   color: Colors.grey[200],
+//                   image: DecorationImage(
+//                     image: AssetImage(imageAddress),
+//                     fit: BoxFit.cover,
+//                   ),
+//                 ),
+//               ),
+//               const SizedBox(
+//                 height: 25,
+//               ),
+//               Row(
+//                 children: <Widget>[
+//                   RichText(
+//                     text: TextSpan(
+//                         style: const TextStyle(
+//                           fontFamily: 'Poppins regular',
+//                           fontWeight: FontWeight.w600,
+//                           color: Colors.black, // Default color
+//                         ),
+//                         children: [
+//                           const TextSpan(text: "Select "),
+//                           TextSpan(
+//                               text: "\n${item}",
+//                               style: const TextStyle(
+//                                   color: Color.fromARGB(255, 4, 155, 9))),
+//                           TextSpan(text: "\nfrom ${category}")
+//                         ]),
+//                   ),
+//                   // const SizedBox(width: 20),
+//                   Spacer(),
+//                   IconButton(
+//                     onPressed: () {
+//                       Future.delayed(Duration.zero, () {
+//                         showDialog(
+//                           context: context, //create location tag
+//                           builder: (context) => itemAlert(
+//                               context, //pass location tag to itemAlert, that where does itemAlert lyes
+//                               'assets/images/sauces/Tomatosauce.jpg',
+//                               "Tomato Sauce",
+//                               "Sauces",
+//                               "700ml",
+//                               500,
+//                               1,
+//                               012,
+//                               soldstatus, 
+//                               () {
+//                             // Logic to update soldStatus to true
+//                             setState(() {
+//                               //function passed as parameter to itemAlert
+//                               soldstatus = !soldstatus;
+//                             });
+//                           }
+//                           ),
+//                         );
+//                       }
+//                       );
+//                     },
+//                     icon: Icon(Icons.add_shopping_cart_rounded),
+//                     iconSize: 45,
+//                     color: Colors.green,
+//                   )
+//                 ],
+//               )
+//             ],
+//           ));
+//         }
+//         )
+// ;
+//   }
+
+   Widget itemAlert(
+    String tagline,
+    BuildContext context,
+    String _imagePath,
+    String _title,
+    String _category,
+    String _size,
+    int _price,
+    int _qtySold,
+    int _productNo,
+    bool _soldStatus,
+    Function() updateSoldStatus,
+  ) {
+    int quantity = 1;
+
+    return StatefulBuilder(
+      builder: (BuildContext context, StateSetter alertSetState) {
+        return AlertDialog(
+          contentPadding: const EdgeInsets.all(5),
+          elevation: 4,
+          title: Text(
+            _title,
+            textAlign: TextAlign.center,
+            style: const TextStyle(color: Colors.green),
+          ),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                const SizedBox(
+                  height: 20,
                 ),
-              ),
-              Text(
-                tagline,
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                  fontFamily: 'Poppins regular',
-                  fontWeight: FontWeight.w600,
-                  color: Colors.black,
-                  fontSize: 14,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(20),
+                      clipBehavior: Clip.antiAlias,
+                      child: Image.asset(
+                        _imagePath,
+                        height: 150,
+                        width: 150,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+              
+                  ],
                 ),
-              ),
-              SizedBox(height: 10),
-              Container(
-                height: MediaQuery.of(context).size.width / 3,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(5),
-                  color: Colors.grey[200],
-                  image: DecorationImage(
-                    image: AssetImage(imageAddress),
-                    fit: BoxFit.cover,
+                      Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 15, 0, 15),
+                      child: Text(tagline, style:TextStyle(
+                        color: Colors.green, 
+                        fontFamily: 'Poppins regular',
+                        fontSize: 20),
+                        textAlign:TextAlign.center,),
                   ),
-                ),
-              ),
-              const SizedBox(
-                height: 25,
-              ),
-              Row(
-                children: <Widget>[
-                  RichText(
-                    text: TextSpan(
-                        style: const TextStyle(
-                          fontFamily: 'Poppins regular',
-                          fontWeight: FontWeight.w600,
-                          color: Colors.black, // Default color
+                Divider(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text("Category: $_category"),
+                        const SizedBox(
+                          height: 8,
                         ),
-                        children: [
-                          const TextSpan(text: "Select "),
-                          TextSpan(
-                              text: "\n${item}",
-                              style: const TextStyle(
-                                  color: Color.fromARGB(255, 4, 155, 9))),
-                          TextSpan(text: "\nfrom ${category}")
-                        ]),
-                  ),
-                  // const SizedBox(width: 20),
-                  Spacer(),
-                  IconButton(
-                    onPressed: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (constext) => Cat0()));
-                    },
-                    icon: Icon(Icons.next_plan),
-                    iconSize: 45,
-                    color: Colors.green,
-                  )
-                ],
-              )
-            ],
-          ));
-        });
+                        Text("Size: $_size"),
+                        const SizedBox(
+                          height: 8,
+                        ),
+                        Text("Price: $_price"),
+                      ],
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(left: 20, top: 20),
+                          child: IconButton(
+                            onPressed: () async {
+                              //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                              // update cart
+                              updateSoldStatus();
+                              alertSetState(() {
+                                _soldStatus = !_soldStatus;
+                              });
+                              showToast(_soldStatus);
+
+                              print('Title in itemAlert: $_title');
+
+                              // Create a CartItem object
+                              CartItem cartItem = CartItem.withoutId(
+                                // id: remove id assignment as it will be autogenerated
+                                title: _title,
+                                category: _category,
+                                size: _size,
+                                price: _price,
+                                imagePath: _imagePath,
+                                qtySold: _qtySold,
+                                productNo: _productNo,
+                              );
+
+                              // Get the database instance
+                              Dbfiles dbfiles = Dbfiles();
+                              await dbfiles
+                                  .db; // Ensure the database is initialized
+
+                              if (_soldStatus) {
+                                // Insert the CartItem into the database
+                                await dbfiles.insertCartItem(cartItem);
+                                // After inserting into the database
+                                // Print the image path to make sure the url value is passed
+                                print(
+                                    'Inserted Cart Item Image Path: ${cartItem.imagePath}');
+                              } else {
+                                // If _soldStatus is false, delete the entry with the given id
+                                //   await dbfiles.deleteCartItem(cartItem.id);
+                                await dbfiles
+                                    .deleteCartItem(cartItem.productNo);
+
+                                print(
+                                    "item deleted on _soldStatus being false");
+                              }
+
+                              // Retrieve and print all cart items from the database
+                              List<CartItem> allCartItems =
+                                  await dbfiles.getCartItems();
+                              for (CartItem cartItem in allCartItems) {
+                                print('Cart Item ID: ${cartItem.id}\n'
+                                    'Title: ${cartItem.title}\n'
+                                    'Category: ${cartItem.category}\n'
+                                    'Size: ${cartItem.size}\n'
+                                    'Price: ${cartItem.price}\n'
+                                    'Image URL: ${cartItem.imagePath}\n'
+                                    'Quantity Sold: ${cartItem.qtySold}\n'
+                                    'Product No. : ${cartItem.productNo}\n');
+                              }
+                              setState(() {});
+                            },
+                            icon: Icon(
+                              Icons.add_shopping_cart_rounded,
+                              color: _soldStatus ? Colors.green : Colors.black,
+                              size: 40,
+                            ),
+                          ),
+                        ),
+                        const Padding(
+                          padding: EdgeInsets.only(left: 27, top: 10),
+                          child: Text(
+                            "Place Order",
+                            style: TextStyle(
+                                fontSize: 15, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+                const SizedBox(height: 16),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    IconButton(
+                      onPressed: () {
+                        if (quantity > 1) {
+                          alertSetState(() {
+                            quantity--;
+                            _qtySold = quantity;
+                            print(_qtySold.toString());
+                          });
+                        }
+                      },
+                      icon: Icon(Icons.remove_circle),
+                    ),
+                    SizedBox(
+                      width: 50,
+                      child: Center(
+                        child: Text(
+                          '$quantity',
+                          style: TextStyle(fontSize: 18),
+                        ),
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        alertSetState(() {
+                          quantity++;
+                          _qtySold = quantity;
+                          print(_qtySold.toString());
+                        });
+                      },
+                      icon: Icon(Icons.add_box),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            IconButton(
+              icon: const Icon(
+                Icons.close,
+                size: 30,
+              ),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void showToast(bool SoldMessageStatus) async {
+    String alertMessage;
+    if (SoldMessageStatus) {
+      alertMessage = "Order added to Cart";
+    } else {
+      alertMessage = "Product removed from Cart";
+    }
+    await Fluttertoast.showToast(
+      msg: alertMessage,
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.BOTTOM,
+      timeInSecForIosWeb: 1,
+      backgroundColor: Colors.grey,
+      textColor: Colors.white,
+      fontSize: 16.0,
+    );
   }
   //mistakes reverted
 }

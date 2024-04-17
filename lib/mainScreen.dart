@@ -115,37 +115,28 @@ class _mainScreenState extends State<mainScreen> {
                       padding: EdgeInsets.only(top: 10),
                       child: InkWell(
                         onTap: () {
-                          //     mainScreenAlertDialog(
-                          //     "Organic Ketchep",
-                          //     "Add flovor to anything",
-                          //     "assets/images/sauces/Tomatosauce.jpg",
-                          //     "Sauces");
                           Future.delayed(Duration.zero, () {
-                        showDialog(
-                          context: context, //create location tag
-                          builder: (context) => itemAlert(
-                              "Add flavor to anything",
-                              context, //pass location tag to itemAlert, that where does itemAlert lyes
-                              'assets/images/sauces/Tomatosauce.jpg',
-                              "Tomato Sauce",
-                              "Sauces",
-                              "700ml",
-                              500,
-                              1,
-                              012,
-                              soldstatus, 
-                              () {
-                            // Logic to update soldStatus to true
-                            setState(() {
-                              //function passed as parameter to itemAlert
-                              soldstatus = !soldstatus;
-                            });
-                          }
-                          ),
-                        );
-                          }
-                          );
-                          
+                            showDialog(
+                              context: context, //create location tag
+                              builder: (context) => itemAlert(
+                                  "Add flavor to anything",
+                                  context, //pass location tag to itemAlert, that where does itemAlert lyes
+                                  'assets/images/sauces/Tomatosauce.jpg',
+                                  "Tomato Sauce",
+                                  "Sauces",
+                                  "700ml",
+                                  500,
+                                  1,
+                                  012,
+                                  soldstatus, () {
+                                // Logic to update soldStatus to true
+                                setState(() {
+                                  //function passed as parameter to itemAlert
+                                  soldstatus = !soldstatus;
+                                });
+                              }),
+                            );
+                          });
                         },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.end,
@@ -206,66 +197,92 @@ class _mainScreenState extends State<mainScreen> {
 
                     Padding(
                       padding: const EdgeInsets.only(top: 10),
-                      child: UnconstrainedBox(
-                        alignment: Alignment.center,
-                        child: Material(
-                          color: Color.fromARGB(255, 172, 211, 242),
-                          elevation: 8,
-                          shape: RoundedRectangleBorder(
-                            side: BorderSide(color: Colors.white, width: 3),
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: Padding(
-                            padding: EdgeInsets.fromLTRB(15, 5, 25, 5),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Container(
-                                  width: 100,
-                                  height: 100,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(
-                                        10), // Adjust the radius as needed
-                                  ),
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(
-                                        5), // Same radius as the BoxDecoration
-                                    child: Image.asset(
-                                      'assets/images/bottles.png',
-                                      fit: BoxFit.cover,
+                      child: InkWell(
+                        onTap: () {
+                          Future.delayed(Duration.zero, () {
+                            showDialog(
+                              context: context, //create location tag
+                              builder: (context) => itemAlert(
+                                  "Spice up your taste buds",
+                                  context, //pass location tag to itemAlert, that where does itemAlert lyes
+                                  'assets/images/bottles.png',
+                                  "Hot Sauce",
+                                  "Sauces",
+                                  "500ml",
+                                  400,
+                                  1,
+                                  013,
+                                  soldstatus, () {
+                                // Logic to update soldStatus to true
+                                setState(() {
+                                  //function passed as parameter to itemAlert
+                                  soldstatus = !soldstatus;
+                                });
+                              }),
+                            );
+                          });
+                        },
+                        child: UnconstrainedBox(
+                          alignment: Alignment.center,
+                          child: Material(
+                            color: Color.fromARGB(255, 172, 211, 242),
+                            elevation: 8,
+                            shape: RoundedRectangleBorder(
+                              side: BorderSide(color: Colors.white, width: 3),
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: Padding(
+                              padding: EdgeInsets.fromLTRB(15, 5, 25, 5),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Container(
+                                    width: 100,
+                                    height: 100,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(
+                                          10), // Adjust the radius as needed
                                     ),
-                                  ),
-                                ),
-                                SizedBox(width: 10),
-                                Container(
-                                  child: RichText(
-                                    text: const TextSpan(
-                                      style: TextStyle(
-                                        fontFamily: 'Poppins regular',
-                                        color: Colors.black, // Default color
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(
+                                          5), // Same radius as the BoxDecoration
+                                      child: Image.asset(
+                                        'assets/images/bottles.png',
+                                        fit: BoxFit.cover,
                                       ),
-                                      children: [
-                                        TextSpan(
-                                          text: "SPICE up your taste buds\n",
-                                          style: TextStyle(
-                                            fontWeight: FontWeight
-                                                .w600, // Apply font weight here
-                                          ),
-                                        ),
-                                        TextSpan(
-                                          text: "with HOT SAUCE",
-                                          style: TextStyle(
-                                            color: Color.fromARGB(
-                                                255, 221, 114, 20),
-                                            fontWeight: FontWeight
-                                                .bold, // Apply font weight here
-                                          ),
-                                        ),
-                                      ],
                                     ),
                                   ),
-                                ),
-                              ],
+                                  SizedBox(width: 10),
+                                  Container(
+                                    child: RichText(
+                                      text: const TextSpan(
+                                        style: TextStyle(
+                                          fontFamily: 'Poppins regular',
+                                          color: Colors.black, // Default color
+                                        ),
+                                        children: [
+                                          TextSpan(
+                                            text: "SPICE up your taste buds\n",
+                                            style: TextStyle(
+                                              fontWeight: FontWeight
+                                                  .w600, // Apply font weight here
+                                            ),
+                                          ),
+                                          TextSpan(
+                                            text: "with HOT SAUCE",
+                                            style: TextStyle(
+                                              color: Color.fromARGB(
+                                                  255, 221, 114, 20),
+                                              fontWeight: FontWeight
+                                                  .bold, // Apply font weight here
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),
@@ -276,54 +293,80 @@ class _mainScreenState extends State<mainScreen> {
 
                     Padding(
                       padding: EdgeInsets.only(top: 10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(
-                            child: RichText(
-                              text: const TextSpan(
-                                style: TextStyle(
-                                  fontFamily: 'Poppins regular',
-                                  fontWeight: FontWeight.w600,
-                                  color: Colors.black, // Default color
+                      child: InkWell(
+                        onTap: () {
+                          Future.delayed(Duration.zero, () {
+                            showDialog(
+                              context: context, //create location tag
+                              builder: (context) => itemAlert(
+                                  "Load the table",
+                                  context, //pass location tag to itemAlert, that where does itemAlert lyes
+                                  'assets/images/bottleVariety.png',
+                                  "Variety Mix Box",
+                                  "Sauces",
+                                  "",
+                                  3000,
+                                  1,
+                                  014,
+                                  soldstatus, () {
+                                // Logic to update soldStatus to true
+                                setState(() {
+                                  //function passed as parameter to itemAlert
+                                  soldstatus = !soldstatus;
+                                });
+                              }),
+                            );
+                          });
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              child: RichText(
+                                text: const TextSpan(
+                                  style: TextStyle(
+                                    fontFamily: 'Poppins regular',
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.black, // Default color
+                                  ),
+                                  children: [
+                                    TextSpan(
+                                      text: "Confused?\n",
+                                    ),
+                                    TextSpan(text: "Try "),
+                                    TextSpan(
+                                      text: "VARIETY MIX ",
+                                      style: TextStyle(color: Colors.blue),
+                                    ),
+                                  ],
                                 ),
-                                children: [
-                                  TextSpan(
-                                    text: "Confused?\n",
-                                  ),
-                                  TextSpan(text: "Try "),
-                                  TextSpan(
-                                    text: "VARIETY MIX ",
-                                    style: TextStyle(color: Colors.blue),
-                                  ),
-                                ],
                               ),
                             ),
-                          ),
-                          const SizedBox(width: 10),
-                          Material(
-                            color: Color.fromARGB(255, 221, 114, 20),
-                            shape: RoundedRectangleBorder(
-                              side: BorderSide(color: Colors.white, width: 3),
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            elevation: 8,
-                            child: Container(
-                              padding: EdgeInsets.fromLTRB(5, 10, 5, 10),
+                            const SizedBox(width: 10),
+                            Material(
+                              color: Color.fromARGB(255, 221, 114, 20),
+                              shape: RoundedRectangleBorder(
+                                side: BorderSide(color: Colors.white, width: 3),
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              elevation: 8,
                               child: Container(
-                                height: 100,
-                                width: 195,
-                                decoration: const BoxDecoration(
-                                  image: DecorationImage(
-                                    image: AssetImage(
-                                      'assets/images/bottleVariety.png',
+                                padding: EdgeInsets.fromLTRB(5, 10, 5, 10),
+                                child: Container(
+                                  height: 100,
+                                  width: 195,
+                                  decoration: const BoxDecoration(
+                                    image: DecorationImage(
+                                      image: AssetImage(
+                                        'assets/images/bottleVariety.png',
+                                      ),
                                     ),
                                   ),
                                 ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                     SizedBox(height: 20)
@@ -336,114 +379,11 @@ class _mainScreenState extends State<mainScreen> {
       ),
     );
   }
+
   // dormant function
   loadProduct() {}
 
-//   mainScreenAlertDialog(
-//       String item, String tagline, String imageAddress, String category) {
-//     return showDialog(
-//         context: context,
-//         builder: (BuildContext context) {
-//           return AlertDialog(
-//               title: Column(
-//             children: [
-//               Text(
-//                 "$item",
-//                 textAlign: TextAlign.center,
-//                 style: const TextStyle(
-//                   fontFamily: 'Poppins regular',
-//                   fontWeight: FontWeight.w600,
-//                   color: Colors.black,
-//                   fontSize: 18,
-//                 ),
-//               ),
-//               Text(
-//                 tagline,
-//                 textAlign: TextAlign.center,
-//                 style: const TextStyle(
-//                   fontFamily: 'Poppins regular',
-//                   fontWeight: FontWeight.w600,
-//                   color: Colors.black,
-//                   fontSize: 14,
-//                 ),
-//               ),
-//               SizedBox(height: 10),
-//               Container(
-//                 height: MediaQuery.of(context).size.width / 3,
-//                 width: double.infinity,
-//                 decoration: BoxDecoration(
-//                   borderRadius: BorderRadius.circular(5),
-//                   color: Colors.grey[200],
-//                   image: DecorationImage(
-//                     image: AssetImage(imageAddress),
-//                     fit: BoxFit.cover,
-//                   ),
-//                 ),
-//               ),
-//               const SizedBox(
-//                 height: 25,
-//               ),
-//               Row(
-//                 children: <Widget>[
-//                   RichText(
-//                     text: TextSpan(
-//                         style: const TextStyle(
-//                           fontFamily: 'Poppins regular',
-//                           fontWeight: FontWeight.w600,
-//                           color: Colors.black, // Default color
-//                         ),
-//                         children: [
-//                           const TextSpan(text: "Select "),
-//                           TextSpan(
-//                               text: "\n${item}",
-//                               style: const TextStyle(
-//                                   color: Color.fromARGB(255, 4, 155, 9))),
-//                           TextSpan(text: "\nfrom ${category}")
-//                         ]),
-//                   ),
-//                   // const SizedBox(width: 20),
-//                   Spacer(),
-//                   IconButton(
-//                     onPressed: () {
-//                       Future.delayed(Duration.zero, () {
-//                         showDialog(
-//                           context: context, //create location tag
-//                           builder: (context) => itemAlert(
-//                               context, //pass location tag to itemAlert, that where does itemAlert lyes
-//                               'assets/images/sauces/Tomatosauce.jpg',
-//                               "Tomato Sauce",
-//                               "Sauces",
-//                               "700ml",
-//                               500,
-//                               1,
-//                               012,
-//                               soldstatus, 
-//                               () {
-//                             // Logic to update soldStatus to true
-//                             setState(() {
-//                               //function passed as parameter to itemAlert
-//                               soldstatus = !soldstatus;
-//                             });
-//                           }
-//                           ),
-//                         );
-//                       }
-//                       );
-//                     },
-//                     icon: Icon(Icons.add_shopping_cart_rounded),
-//                     iconSize: 45,
-//                     color: Colors.green,
-//                   )
-//                 ],
-//               )
-//             ],
-//           ));
-//         }
-//         )
-// ;
-//   }
-
-   Widget itemAlert(
+  Widget itemAlert(
     String tagline,
     BuildContext context,
     String _imagePath,
@@ -466,13 +406,17 @@ class _mainScreenState extends State<mainScreen> {
           title: Text(
             _title,
             textAlign: TextAlign.center,
-            style: const TextStyle(color: Colors.green),
+            style: const TextStyle(
+                color: Colors.green,
+                fontFamily: 'Poppins regular',
+                fontWeight: FontWeight.w600,
+                fontSize: 20),
           ),
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
                 const SizedBox(
-                  height: 20,
+                  height: 10,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -483,21 +427,23 @@ class _mainScreenState extends State<mainScreen> {
                       child: Image.asset(
                         _imagePath,
                         height: 150,
-                        width: 150,
-                        fit: BoxFit.cover,
+                        width: 300,
+                        fit: BoxFit.fitHeight,
                       ),
                     ),
-              
                   ],
                 ),
-                      Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 15, 0, 15),
-                      child: Text(tagline, style:TextStyle(
-                        color: Colors.green, 
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 15, 0, 0),
+                  child: Text(
+                    tagline,
+                    style: const TextStyle(
+                        color: Color.fromARGB(255, 209, 120, 19),
                         fontFamily: 'Poppins regular',
-                        fontSize: 20),
-                        textAlign:TextAlign.center,),
+                        fontSize: 16),
+                    textAlign: TextAlign.center,
                   ),
+                ),
                 Divider(),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,

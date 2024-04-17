@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:estore/Cart/cartItems.dart';
 import 'package:estore/Database/dbinitialization.dart';
+import 'package:flutter/widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 //for readable timestamp
 import 'package:intl/intl.dart';
@@ -196,22 +197,32 @@ class _CheckOutState extends State<CheckOut> {
                   ),
                 ),
                 SizedBox(height: 20),
-                SizedBox(
-                  height: 50,
-                  width: 200,
+                UnconstrainedBox(
+                  // height: 50,
+                  // width: 150,
+
                   child: ElevatedButton(
                     onPressed:
                         formValid ? () async => await placeOrder() : null,
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: formValid ? Colors.green : Colors.grey,
+                      backgroundColor: formValid
+                          ? Color.fromARGB(255, 63, 158, 22)
+                          : Colors.grey,
                       shadowColor: Colors.black,
                       elevation: 20,
                     ),
                     child: const Row(
-                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Text("PLACE ORDER", style: TextStyle(fontSize: 18)),
-                        Icon(Icons.shopping_bag_rounded, size: 30),
+                        Padding(padding: EdgeInsets.all(20)),
+                        Text("PLACE ORDER",
+                            style:
+                                TextStyle(fontSize: 18, color: Colors.white)),
+                        Icon(
+                          Icons.shopping_bag_rounded,
+                          size: 30,
+                          color: Colors.white,
+                        ),
                       ],
                     ),
                   ),

@@ -213,8 +213,9 @@ class _CheckOutState extends State<CheckOut> {
                     ),
                     child: const Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment:  MainAxisAlignment.center,
                       children: [
-                        Padding(padding: EdgeInsets.all(20)),
+                        Padding(padding: EdgeInsets.fromLTRB(15,20,0,20)),
                         Text("PLACE ORDER",
                             style:
                                 TextStyle(fontSize: 18, color: Colors.white)),
@@ -223,6 +224,7 @@ class _CheckOutState extends State<CheckOut> {
                           size: 30,
                           color: Colors.white,
                         ),
+                        SizedBox(width: 20,)
                       ],
                     ),
                   ),

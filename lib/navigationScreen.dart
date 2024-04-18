@@ -32,17 +32,17 @@ class _navigationScreenState extends State<navigationScreen> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
   // late List<Widget> screens;
- 
+
   int selectedCat = 0;
   bool cartNotEmpty = true;
 
   @override
   Widget build(BuildContext context) {
-     var screens = [
-    mainScreen(),
-    Cat0(),
-    Cat1(),
-  ];
+    var screens = [
+      mainScreen(),
+      Cat0(),
+      Cat1(),
+    ];
     // Set the status bar color here
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
       statusBarColor: Color.fromARGB(
@@ -284,7 +284,7 @@ class _navigationScreenState extends State<navigationScreen> {
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(5),
                             ),
-                            tileColor: const Color.fromARGB(255, 147, 201, 111),
+                            tileColor: Color.fromARGB(255, 172, 211, 242),
                             contentPadding: EdgeInsets.fromLTRB(10, 0, 0, 0),
                             title: Text(
                               item.title,
@@ -343,6 +343,10 @@ class _navigationScreenState extends State<navigationScreen> {
                                 );
                               },
                         style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            side: BorderSide(color: Colors.black, width: 0.25),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
                           elevation: 7,
                           padding:
                               EdgeInsets.symmetric(horizontal: 12, vertical: 8),
@@ -355,13 +359,13 @@ class _navigationScreenState extends State<navigationScreen> {
                           children: [
                             Text('Check Out',
                                 style: TextStyle(
-                                  fontSize: 14,
+                                  fontSize: 18,
                                   color: Colors.white,
                                 )),
                             SizedBox(width: 8),
                             Icon(
                               Icons.shopping_cart_checkout_rounded,
-                              size: 20,
+                              size: 25,
                               color: Colors.white,
                             ),
                           ],

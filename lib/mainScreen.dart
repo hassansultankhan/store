@@ -18,7 +18,7 @@ class mainScreen extends StatefulWidget {
 }
 
 class _mainScreenState extends State<mainScreen> {
-  bool soldstatus = false;
+  List<bool> soldstatus = [false, false, false];
   String mainScreenTitle = "eStore";
   List<String> imageAssetPaths = [
     'assets/images/packages/PanSauces.jpg',
@@ -128,11 +128,11 @@ class _mainScreenState extends State<mainScreen> {
                                   500,
                                   1,
                                   012,
-                                  soldstatus, () {
+                                  soldstatus[0], () {
                                 // Logic to update soldStatus to true
                                 setState(() {
                                   //function passed as parameter to itemAlert
-                                  soldstatus = !soldstatus;
+                                  soldstatus[0] = !soldstatus[0];
                                 });
                               }),
                             );
@@ -212,11 +212,11 @@ class _mainScreenState extends State<mainScreen> {
                                   400,
                                   1,
                                   013,
-                                  soldstatus, () {
+                                  soldstatus[1], () {
                                 // Logic to update soldStatus to true
                                 setState(() {
                                   //function passed as parameter to itemAlert
-                                  soldstatus = !soldstatus;
+                                  soldstatus[1] = !soldstatus[1];
                                 });
                               }),
                             );
@@ -308,11 +308,11 @@ class _mainScreenState extends State<mainScreen> {
                                   3000,
                                   1,
                                   014,
-                                  soldstatus, () {
+                                  soldstatus[2], () {
                                 // Logic to update soldStatus to true
                                 setState(() {
                                   //function passed as parameter to itemAlert
-                                  soldstatus = !soldstatus;
+                                  soldstatus[2] = !soldstatus[2];
                                 });
                               }),
                             );

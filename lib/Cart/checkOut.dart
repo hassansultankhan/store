@@ -198,34 +198,35 @@ class _CheckOutState extends State<CheckOut> {
                 ),
                 SizedBox(height: 20),
                 UnconstrainedBox(
-                  // height: 50,
-                  // width: 150,
-
                   child: ElevatedButton(
                     onPressed:
                         formValid ? () async => await placeOrder() : null,
                     style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        side:
+                            const BorderSide(color: Colors.black, width: 0.25),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
                       backgroundColor: formValid
                           ? Color.fromARGB(255, 63, 158, 22)
                           : Colors.grey,
                       shadowColor: Colors.black,
                       elevation: 20,
                     ),
-                    child: const Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment:  MainAxisAlignment.center,
-                      children: [
-                        Padding(padding: EdgeInsets.fromLTRB(15,20,0,20)),
-                        Text("PLACE ORDER",
-                            style:
-                                TextStyle(fontSize: 18, color: Colors.white)),
-                        Icon(
-                          Icons.shopping_bag_rounded,
-                          size: 30,
-                          color: Colors.white,
-                        ),
-                        SizedBox(width: 20,)
-                      ],
+                    child: const Padding(
+                      padding: EdgeInsets.fromLTRB(18, 10, 18, 10),
+                      child: Row(
+                        children: [
+                          Text("PLACE ORDER",
+                              style:
+                                  TextStyle(fontSize: 18, color: Colors.white)),
+                          Icon(
+                            Icons.shopping_bag_rounded,
+                            size: 30,
+                            color: Colors.white,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),

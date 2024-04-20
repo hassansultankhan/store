@@ -19,7 +19,13 @@ class _OrdersHistoryState extends State<OrdersHistory> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Order History (${widget.displayName})"),
+        title: Text(
+          "Order History (${widget.displayName})",
+          style: const TextStyle(
+              fontFamily: 'Poppins regular',
+              fontWeight: FontWeight.w600,
+              fontSize: 18),
+        ),
         centerTitle: true,
       ),
       body: Container(
@@ -71,8 +77,8 @@ class _OrdersHistoryState extends State<OrdersHistory> {
                           subtitle: Text(
                             'Total Amount: ${data['totalAmount']}\n$formattedDateTime',
                           ),
-                          trailing: Text("${data['orderStatus']}", style: TextStyle(fontSize: 20)),
-                          
+                          trailing: Text("${data['orderStatus']}",
+                              style: TextStyle(fontSize: 20)),
                         ),
                       ),
                     ],

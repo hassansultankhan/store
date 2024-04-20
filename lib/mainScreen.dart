@@ -111,84 +111,87 @@ class _mainScreenState extends State<mainScreen> {
                   children: [
                     // Element 1 of scroll sheet
 
-                    Padding(
-                      padding: EdgeInsets.only(top: 10),
-                      child: InkWell(
-                        onTap: () {
-                          Future.delayed(Duration.zero, () {
-                            showDialog(
-                              context: context, //create location tag
-                              builder: (context) => itemAlert(
-                                  "Add flavor to anything",
-                                  context, //pass location tag to itemAlert, that where does itemAlert lyes
-                                  'assets/images/sauces/Tomatosauce.jpg',
-                                  "Tomato Sauce",
-                                  "Sauces",
-                                  "700ml",
-                                  500,
-                                  1,
-                                  012,
-                                  soldstatus[0], () {
-                                // Logic to update soldStatus to true
-                                setState(() {
-                                  //function passed as parameter to itemAlert
-                                  soldstatus[0] = !soldstatus[0];
-                                });
-                              }),
-                            );
-                          });
-                        },
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Container(
-                              child: RichText(
-                                text: const TextSpan(
-                                  style: TextStyle(
-                                    fontFamily: 'Poppins regular',
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.black, // Default color
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Padding(
+                        padding: EdgeInsets.only(top: 10),
+                        child: InkWell(
+                          onTap: () {
+                            Future.delayed(Duration.zero, () {
+                              showDialog(
+                                context: context, //create location tag
+                                builder: (context) => itemAlert(
+                                    "Add flavor to anything",
+                                    context, //pass location tag to itemAlert, that where does itemAlert lyes
+                                    'assets/images/sauces/Tomatosauce.jpg',
+                                    "Tomato Sauce",
+                                    "Sauces",
+                                    "700ml",
+                                    500,
+                                    1,
+                                    012,
+                                    soldstatus[0], () {
+                                  // Logic to update soldStatus to true
+                                  setState(() {
+                                    //function passed as parameter to itemAlert
+                                    soldstatus[0] = !soldstatus[0];
+                                  });
+                                }),
+                              );
+                            });
+                          },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Container(
+                                child: RichText(
+                                  text: const TextSpan(
+                                    style: TextStyle(
+                                      fontFamily: 'Poppins regular',
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.black, // Default color
+                                    ),
+                                    children: [
+                                      TextSpan(
+                                        text: "Ketchup made from\n*rich ",
+                                      ),
+                                      TextSpan(
+                                          text: "ORGANIC ",
+                                          style: TextStyle(
+                                              color: Color.fromARGB(
+                                                  255, 4, 155, 9))),
+                                      TextSpan(
+                                        text: "tomatoes",
+                                        style: TextStyle(color: Colors.red),
+                                      ),
+                                      TextSpan(
+                                        text: ".\nADD FLAVOR TO ANYTHING!",
+                                      ),
+                                    ],
                                   ),
-                                  children: [
-                                    TextSpan(
-                                      text: "Ketchup made from\n*rich ",
-                                    ),
-                                    TextSpan(
-                                        text: "ORGANIC ",
-                                        style: TextStyle(
-                                            color: Color.fromARGB(
-                                                255, 4, 155, 9))),
-                                    TextSpan(
-                                      text: "tomatoes",
-                                      style: TextStyle(color: Colors.red),
-                                    ),
-                                    TextSpan(
-                                      text: ".\nADD FLAVOR TO ANYTHING!",
-                                    ),
-                                  ],
                                 ),
                               ),
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Container(
-                              width: 170,
-                              height: 120,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(
-                                    10), // Adjust the radius as needed
+                              SizedBox(
+                                width: 10,
                               ),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(
-                                    5), // Same radius as the BoxDecoration
-                                child: Image.asset(
-                                  'assets/images/ketchupPouring.png',
-                                  fit: BoxFit.cover,
+                              Container(
+                                width: 145,
+                                height: 100,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(
+                                      10), // Adjust the radius as needed
+                                ),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(
+                                      5), // Same radius as the BoxDecoration
+                                  child: Image.asset(
+                                    'assets/images/ketchupPouring.png',
+                                    fit: BoxFit.cover,
+                                  ),
                                 ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                     ),
@@ -426,8 +429,8 @@ class _mainScreenState extends State<mainScreen> {
                       clipBehavior: Clip.antiAlias,
                       child: Image.asset(
                         _imagePath,
-                        height: 150,
-                        width: 300,
+                        height: 125,
+                        width: 250,
                         fit: BoxFit.fitHeight,
                       ),
                     ),

@@ -105,6 +105,11 @@ class _navigationScreenState extends State<navigationScreen> {
             ),
           ],
         ),
+        drawer: Drawer(
+            child: Container(
+          width: 50,
+          color: Colors.amber,
+        )),
         body: SizedBox(
           //set size of sized box to maximum size of screen
           height: MediaQuery.of(context).size.height * .97,
@@ -217,7 +222,7 @@ class _navigationScreenState extends State<navigationScreen> {
                       ),
                       onPressed: () {
                         Navigator.of(context).pushReplacement(MaterialPageRoute(
-                          builder: (contect) =>
+                          builder: (context) =>
                               OrdersHistory(widget.displayName),
                         ));
                       },
@@ -227,9 +232,15 @@ class _navigationScreenState extends State<navigationScreen> {
                           Text(
                             'Your Orders',
                             style: TextStyle(
-                                fontSize: 15, fontWeight: FontWeight.bold),
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                            ),
                           ),
-                          Icon(Icons.shopping_bag_rounded)
+                          Icon(
+                            Icons.shopping_bag_rounded,
+                            color: Colors.black,
+                          ),
                         ],
                       )),
                 ),

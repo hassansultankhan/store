@@ -105,11 +105,13 @@ class _navigationScreenState extends State<navigationScreen> {
             ),
           ],
         ),
-        drawer: Drawer(
-            child: Container(
-          width: 50,
-          color: Colors.amber,
-        )),
+        drawer: Container(
+          width: 100,
+          child: Drawer(
+              child: Container(
+               color: Color.fromARGB(255, 172, 211, 242)
+          )),
+        ),
         body: SizedBox(
           //set size of sized box to maximum size of screen
           height: MediaQuery.of(context).size.height * .97,

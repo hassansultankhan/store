@@ -330,7 +330,7 @@ class _mainScreenState extends State<mainScreen> {
                                   style: TextStyle(
                                     fontFamily: 'Poppins regular',
                                     fontWeight: FontWeight.w600,
-                                    color: Colors.black, // Default color
+                                    color: Colors.black,
                                   ),
                                   children: [
                                     TextSpan(

@@ -5,6 +5,7 @@ import 'package:estore/mainScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/widgets.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:estore/Database/dbinitialization.dart';
 import 'package:estore/Cart/checkOut.dart';
@@ -105,13 +106,59 @@ class _navigationScreenState extends State<navigationScreen> {
             ),
           ],
         ),
-        drawer: Container(
-          width: 100,
-          child: Drawer(
-              child: Container(
-               color: Color.fromARGB(255, 172, 211, 242)
-          )),
-        ),
+        drawer: Drawer(
+            width: 100,
+            child: Container(
+              color: Color.fromARGB(255, 214, 236, 200),
+              child: Stack(
+                children: [
+                  Container(
+                      alignment: Alignment.bottomLeft,
+                      child: Image.asset(
+                        'assets/images/drawer.png',
+                      )),
+                  Container(
+                    alignment: Alignment.topCenter,
+                    child: ListView(
+                      padding: const EdgeInsets.only(
+                        top: 70.0,
+                      ),
+                      children: [
+                        Container(
+                          height: 80,
+                          decoration: const BoxDecoration(
+                              image: DecorationImage(
+                                  image: AssetImage(
+                                      "assets/images/drawerLogo.png"),
+                                  fit: BoxFit.contain)),
+                        ),
+                        const SizedBox(
+                          height: 2,
+                        ),
+                        const Text(
+                          "Contact Us",
+                          style: TextStyle(
+                            fontFamily: 'Poppins regular',
+                            fontWeight: FontWeight.w600,
+                            color: Colors.black,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                        const SizedBox(
+                          height: 40,
+                        ),
+                        IconButton(
+                          iconSize: 40,
+                          color: Colors.orange[800],
+                          onPressed: () {},
+                          icon: Icon(Icons.design_services),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            )),
         body: SizedBox(
           //set size of sized box to maximum size of screen
           height: MediaQuery.of(context).size.height * .97,
@@ -119,20 +166,20 @@ class _navigationScreenState extends State<navigationScreen> {
         ),
         // Build bottom navigation bar with product categories
         bottomNavigationBar: BottomNavigationBar(
-            currentIndex: selectedCat,
-            backgroundColor: Color.fromARGB(255, 63, 158, 22),
-            selectedItemColor: const Color.fromARGB(255, 255, 255, 255),
-            unselectedItemColor: Color.fromARGB(255, 218, 242, 215),
-            selectedFontSize: 20,
-            onTap: (int i) => switchScreen(i, context),
-            items: const <BottomNavigationBarItem>[
-              BottomNavigationBarItem(
-                  icon: Icon(Icons.menu), label: "Main Page"),
-              BottomNavigationBarItem(
-                  icon: Icon(Icons.food_bank), label: "Chatnis"),
-              BottomNavigationBarItem(
-                  icon: Icon(Icons.food_bank), label: "Sauces"),
-            ]));
+          currentIndex: selectedCat,
+          backgroundColor: Color.fromARGB(255, 63, 158, 22),
+          selectedItemColor: const Color.fromARGB(255, 255, 255, 255),
+          unselectedItemColor: Color.fromARGB(255, 218, 242, 215),
+          selectedFontSize: 20,
+          onTap: (int i) => switchScreen(i, context),
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(icon: Icon(Icons.menu), label: "Main Page"),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.food_bank), label: "Chatnis"),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.food_bank), label: "Sauces"),
+          ],
+        ));
   }
 
   void switchScreen(int index, BuildContext context) {

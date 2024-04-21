@@ -94,7 +94,6 @@ flutter:
 
     - assets/images/sauces/sauces.jpeg
     - assets/images/sauces/sauces.png
-    - assets/images/chutni/chutnis.jpg
 
     - assets/images/packages/platter.jpg
     - assets/images/packages/package2.jpg
@@ -105,8 +104,11 @@ flutter:
     - assets/images/splash_screen/splash.png
     - assets/images/background.jpg
     - assets/images/background1.jpeg
+    - assets/images/logo.png
+    - assets/images/drawerLogo.png
 
     - assets/item_list/sauce_2.png
+    - assets/images/drawer.png
 
     - assets/icons/google.png
 

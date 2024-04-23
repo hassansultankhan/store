@@ -7,8 +7,7 @@ import 'package:estore/Database/dbinitialization.dart';
 import 'package:estore/Cart/cartItems.dart';
 
 class Cat0 extends StatefulWidget {
- 
-  Cat0( {Key? key}) : super(key: key);
+  Cat0({Key? key}) : super(key: key);
 
   @override
   State<Cat0> createState() => _Cat0State();
@@ -138,8 +137,7 @@ class _Cat0State extends State<Cat0> {
                           }),
                         );
                       });
-                    }
-                    ),
+                    }),
               ),
             ]),
           );

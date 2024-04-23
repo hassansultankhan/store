@@ -116,9 +116,9 @@ flutter:
     - assets/images/ketchupPouring.png
     - assets/images/bottles.png
     - assets/images/bottleVariety.png
-  
-
-
+    - assets/icons/whatsapp.png
+    - assets/icons/github.png
+    
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

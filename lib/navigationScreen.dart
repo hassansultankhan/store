@@ -3,6 +3,7 @@ import 'package:estore/Cart/ordersHistory.dart';
 import 'package:estore/loginScreen.dart';
 import 'package:estore/mainScreen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
@@ -113,10 +114,11 @@ class _navigationScreenState extends State<navigationScreen> {
               child: Stack(
                 children: [
                   Container(
-                      alignment: Alignment.bottomLeft,
-                      child: Image.asset(
-                        'assets/images/drawer.png',
-                      )),
+                    alignment: Alignment.bottomLeft,
+                    child: Image.asset(
+                      'assets/images/drawer.png',
+                    ),
+                  ),
                   Container(
                     alignment: Alignment.topCenter,
                     child: ListView(
@@ -124,25 +126,34 @@ class _navigationScreenState extends State<navigationScreen> {
                         top: 70.0,
                       ),
                       children: [
-                        Container(
-                          height: 80,
-                          decoration: const BoxDecoration(
-                              image: DecorationImage(
-                                  image: AssetImage(
-                                      "assets/images/drawerLogo.png"),
-                                  fit: BoxFit.contain)),
-                        ),
-                        const SizedBox(
-                          height: 2,
-                        ),
-                        const Text(
-                          "Contact Us",
-                          style: TextStyle(
-                            fontFamily: 'Poppins regular',
-                            fontWeight: FontWeight.w600,
-                            color: Colors.black,
+                        InkWell(
+                          onTap: () {
+                            drawerAlertDialog(1);
+                          },
+                          child: Column(
+                            children: [
+                              Container(
+                                height: 80,
+                                decoration: const BoxDecoration(
+                                    image: DecorationImage(
+                                        image: AssetImage(
+                                            "assets/images/drawerLogo.png"),
+                                        fit: BoxFit.contain)),
+                              ),
+                              const SizedBox(
+                                height: 2,
+                              ),
+                              const Text(
+                                "Contact Us",
+                                style: TextStyle(
+                                  fontFamily: 'Poppins regular',
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.black,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ],
                           ),
-                          textAlign: TextAlign.center,
                         ),
                         const SizedBox(
                           height: 40,
@@ -150,7 +161,9 @@ class _navigationScreenState extends State<navigationScreen> {
                         IconButton(
                           iconSize: 40,
                           color: Colors.orange[800],
-                          onPressed: () {},
+                          onPressed: () {
+                            drawerAlertDialog(0);
+                          },
                           icon: Icon(Icons.design_services),
                         ),
                       ],
@@ -452,5 +465,203 @@ class _navigationScreenState extends State<navigationScreen> {
     setState(() {
       selectedCat = 2; // Index of "Sauces" category
     });
+  }
+
+  drawerAlertDialog(int dialognumber) {
+    if (dialognumber == 1) {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text(
+              "Contact Us",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontFamily: 'Poppins regular',
+                fontWeight: FontWeight.w600,
+                color: Color.fromARGB(255, 192, 106, 26),
+              ),
+            ),
+            content: Container(
+              alignment: Alignment.center,
+              height: 200,
+              width: 100,
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.all(
+                  Radius.circular(10),
+                ),
+                image: DecorationImage(
+                    image: AssetImage("assets/images/sauces/sauces.jpeg"),
+                    fit: BoxFit.fitHeight,
+                    colorFilter:
+                        ColorFilter.mode(Colors.white10, BlendMode.dstATop)),
+              ),
+              child: RichText(
+                textAlign: TextAlign.center,
+                text: const TextSpan(
+                    style: TextStyle(
+                      fontFamily: 'Poppins regular',
+                      fontWeight: FontWeight.w600,
+                      color: Colors.black,
+                      fontSize: 16, // Default color
+                    ),
+                    children: [
+                      TextSpan(text: 'If you have any complaints\n'),
+                      TextSpan(text: 'Or'),
+                      TextSpan(text: '\nwant to join '),
+                      TextSpan(
+                        text: 'DIP',
+                        style: TextStyle(
+                          color: Colors.blueAccent,
+                        ),
+                      ),
+                      TextSpan(
+                        text: ' as Vendor',
+                      ),
+                      TextSpan(text: '\n\nEmail us at'),
+                      TextSpan(
+                          text: '\nluxonoffice@gmail.com',
+                          style: TextStyle(
+                            color: Color.fromARGB(255, 5, 75, 7),
+                          )),
+                    ]),
+              ),
+            ),
+          );
+        },
+      );
+    } else {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text(
+              "Desinged and Developed by",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontFamily: 'Poppins regular',
+                  fontWeight: FontWeight.w600,
+                  color: Colors.blueAccent,
+                  fontSize: 16),
+            ),
+            content: Container(
+              alignment: Alignment.center,
+              height: 180,
+              width: 100,
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.all(
+                  Radius.circular(10),
+                ),
+              ),
+              child: const Column(
+                children: [
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      CircleAvatar(
+                        radius: 20,
+                        backgroundImage: AssetImage('assets/images/logo.png'),
+                      ),
+                      SizedBox(
+                        width: 8,
+                      ),
+                      Text(
+                        "Hassan Sultan Khan",
+                        style: TextStyle(
+                          fontFamily: 'Poppins regular',
+                          fontWeight: FontWeight.w600,
+                          color: Colors.black,
+                        ),
+                      )
+                    ],
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(left: 5),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Icon(Icons.phone),
+                        SizedBox(
+                          width: 8,
+                        ),
+                        Text(
+                          "(PAK) 92-3004661668",
+                          style: TextStyle(
+                              fontFamily: 'Poppins regular',
+                              fontWeight: FontWeight.w600,
+                              color: Colors.black,
+                              fontSize: 12),
+                        ),
+                        SizedBox(
+                          width: 8,
+                        ),
+                        CircleAvatar(
+                          radius: 20,
+                          backgroundImage:
+                              AssetImage('assets/icons/whatsapp.png'),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Padding(
+                      padding: EdgeInsets.only(left: 5),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Icon(Icons.email),
+                          SizedBox(
+                            width: 8,
+                          ),
+                          Text(
+                            "hassansultankhan@gmail.com",
+                            style: TextStyle(
+                                fontFamily: 'Poppins regular',
+                                fontWeight: FontWeight.w600,
+                                color: Colors.black,
+                                fontSize: 12),
+                          ),
+                        ],
+                      )),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(left: 5),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        CircleAvatar(
+                          radius: 12,
+                          backgroundImage:
+                              AssetImage('assets/icons/github.png'),
+                        ),
+                        SizedBox(width: 7),
+                        Text(
+                          "hassansultankhan",
+                          style: TextStyle(
+                              fontFamily: 'Poppins regular',
+                              fontWeight: FontWeight.w600,
+                              color: Colors.black,
+                              fontSize: 12),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+      );
+    }
   }
 }

@@ -85,63 +85,77 @@ class _Cat0State extends State<Cat0> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListView.builder(
-        itemCount: menuItems.length,
-        itemBuilder: ((context, index) {
-          MenuItem menuItem = menuItems[index];
+      body: Container(
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+              image: AssetImage("assets/images/background.jpg"),
+              fit: BoxFit.fill),
+        ),
+        child: ListView.builder(
+          itemCount: menuItems.length,
+          itemBuilder: ((context, index) {
+            MenuItem menuItem = menuItems[index];
 
-          return Container(
-            child: Column(children: [
-              Padding(
-                padding: EdgeInsets.fromLTRB(15, 15, 15, 0),
-                child: ListTile(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12)),
-                    tileColor: const Color.fromARGB(255, 189, 223, 207),
-                    leading: CircleAvatar(
-                        backgroundImage: AssetImage(menuItem.imagePath),
-                        radius: 30,
-                        backgroundColor: Colors.grey),
-                    title: Text(menuItem.title,
-                        style: const TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold)),
-                    subtitle: Text("${menuItem.price.toString()} Rs.",
-                        style: const TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.w600)),
-                    trailing: Icon(
-                      Icons.add_shopping_cart_rounded,
-                      size: 30,
-                      color: menuItem.soldStatus
-                          ? Colors.green
-                          : const Color.fromARGB(255, 255, 255, 255),
+            return Container(
+              child: Column(children: [
+                Padding(
+                  padding: EdgeInsets.fromLTRB(15, 15, 15, 0),
+                  child: Container(
+                    margin: const EdgeInsets.fromLTRB(15, 15, 15, 0),
+                    decoration: BoxDecoration(
+                      color: const Color.fromARGB(255, 189, 223, 207),
+                      borderRadius: BorderRadius.circular(12),
                     ),
-                    onTap: () {
-                      Future.delayed(Duration.zero, () {
-                        showDialog(
-                          context: context, //create location tag
-                          builder: (context) => itemAlert(
-                              context, //pass location tag to itemAlert, that where does itemAlert lyes
-                              menuItem.imagePath,
-                              menuItem.title,
-                              menuItem.category,
-                              menuItem.size,
-                              menuItem.price,
-                              menuItem.qtySold,
-                              menuItem.productNo,
-                              menuItem.soldStatus, () {
-                            // Logic to update soldStatus to true
-                            setState(() {
-                              //function passed as parameter to itemAlert
-                              menuItem.soldStatus = !menuItem.soldStatus;
-                            });
-                          }),
-                        );
-                      });
-                    }),
-              ),
-            ]),
-          );
-        }),
+                    child: ListTile(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12)),
+                        tileColor: const Color.fromARGB(255, 189, 223, 207),
+                        leading: CircleAvatar(
+                            backgroundImage: AssetImage(menuItem.imagePath),
+                            radius: 30,
+                            backgroundColor: Colors.grey),
+                        title: Text(menuItem.title,
+                            style: const TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.bold)),
+                        subtitle: Text("${menuItem.price.toString()} Rs.",
+                            style: const TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.w600)),
+                        trailing: Icon(
+                          Icons.add_shopping_cart_rounded,
+                          size: 30,
+                          color: menuItem.soldStatus
+                              ? Colors.green
+                              : const Color.fromARGB(255, 255, 255, 255),
+                        ),
+                        onTap: () {
+                          Future.delayed(Duration.zero, () {
+                            showDialog(
+                              context: context, //create location tag
+                              builder: (context) => itemAlert(
+                                  context, //pass location tag to itemAlert, that where does itemAlert lyes
+                                  menuItem.imagePath,
+                                  menuItem.title,
+                                  menuItem.category,
+                                  menuItem.size,
+                                  menuItem.price,
+                                  menuItem.qtySold,
+                                  menuItem.productNo,
+                                  menuItem.soldStatus, () {
+                                // Logic to update soldStatus to true
+                                setState(() {
+                                  //function passed as parameter to itemAlert
+                                  menuItem.soldStatus = !menuItem.soldStatus;
+                                });
+                              }),
+                            );
+                          });
+                        }),
+                  ),
+                ),
+              ]),
+            );
+          }),
+        ),
       ),
     );
   }

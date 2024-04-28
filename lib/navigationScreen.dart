@@ -33,6 +33,7 @@ class navigationScreen extends StatefulWidget {
 class _navigationScreenState extends State<navigationScreen> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   // late List<Widget> screens;
 
   int selectedCat = 0;
@@ -51,6 +52,7 @@ class _navigationScreenState extends State<navigationScreen> {
           255, 14, 41, 0), // Change this color to your desired color
     ));
     return Scaffold(
+        key: _scaffoldKey,
         appBar: AppBar(
           title: const Text(
             "Flavor Up",
@@ -59,19 +61,32 @@ class _navigationScreenState extends State<navigationScreen> {
           centerTitle: true,
           // add avatar of photo Url from constructor
           backgroundColor: Color.fromARGB(255, 63, 158, 22),
-          leading: IconButton(
-              icon: const Icon(
-                Icons.arrow_back,
-                color: Colors.white,
-              ),
-              tooltip: "Back to previous screen",
-              onPressed: () async {
-                //pops back to previous screen without leaving a trace of route
-                Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(builder: (context) => loginScreen()),
-                    (route) => false);
-              }),
+          leading: Row(children: [
+            // IconButton(
+            //     icon: const Icon(
+            //       Icons.arrow_back,
+            //       color: Colors.white,
+            //     ),
+            //     tooltip: "Back to previous screen",
+            //     onPressed: () async {
+            //       //pops back to previous screen without leaving a trace of route
+            //       Navigator.pushAndRemoveUntil(
+            //           context,
+            //           MaterialPageRoute(builder: (context) => loginScreen()),
+            //           (route) => false);
+            //     }),
+
+            IconButton(
+                icon: const Icon(
+                  Icons.list,
+                  color: Colors.white,
+                  size: 30,
+                ),
+                tooltip: "Back to previous screen",
+                onPressed: () async {
+                  _scaffoldKey.currentState?.openDrawer();
+                }),
+          ]),
           actions: [
             IconButton(
               onPressed: () {
@@ -186,11 +201,10 @@ class _navigationScreenState extends State<navigationScreen> {
           selectedFontSize: 20,
           onTap: (int i) => switchScreen(i, context),
           items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(icon: Icon(Icons.menu), label: "Main Page"),
             BottomNavigationBarItem(
-                icon: Icon(Icons.food_bank), label: "Chatnis"),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.food_bank), label: "Sauces"),
+                icon: Icon(Icons.food_bank), label: "Main Page"),
+            BottomNavigationBarItem(icon: Icon(Icons.menu), label: "Chatnis"),
+            BottomNavigationBarItem(icon: Icon(Icons.menu), label: "Sauces"),
           ],
         ));
   }
